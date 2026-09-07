@@ -84,7 +84,7 @@ SF.panel.render = function (state) {
         '<p class="detail-kind">' + esc(SF.format.levels(school)) +
           ' &middot; ' + esc(school.schoolType) + ' school' +
           (showDenomination ? ' &middot; ' + esc(school.denomination) : '') + '</p>' +
-        '<p class="verified-badge">' + iconCheck() + ' Verified ' + esc(SF.format.date(school.lastVerified)) + '</p>' +
+        '<p class="verified-badge">' + Atlas.verificationBadge.render(verificationStatusFor(school), school.lastVerified) + '</p>' +
       '</header>' +
 
       (actionButtons ? '<div class="detail-actions">' + actionButtons + '</div>' : '') +
@@ -130,6 +130,18 @@ SF.panel.render = function (state) {
     '</div>';
 };
 
+/*
+ * This dataset's `verificationStatus` is still a free-text provenance note
+ * (e.g. "Confirmed — MEHRD Honiara list"), not yet the shared verified /
+ * unverified / unknown enum from shared/schema.js — see the schema-fidelity
+ * note in js/data/schools.js. A non-empty note here is what "verified" has
+ * always meant in this UI; an empty/missing one renders as unverified,
+ * never as verified.
+ */
+function verificationStatusFor(school) {
+  return school.verificationStatus ? 'verified' : 'unverified';
+}
+
 /* Only shown once a year span is actually confirmed — see the data-policy
  * note at the top of js/data/schools.js for why most secondary records
  * don't have one yet. */
@@ -160,7 +172,4 @@ function iconGlobe() {
 }
 function iconMail() {
   return '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" class="ico"><path d="M2 3.5h12c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1v-7c0-.6.4-1 1-1Zm.8 1.6L8 8.6l5.2-3.5H2.8Z"/></svg>';
-}
-function iconCheck() {
-  return '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" class="ico"><path d="M13.5 4.5 6.4 12 2.5 8.1l1-1L6.4 10l6.1-6.5z"/></svg>';
 }

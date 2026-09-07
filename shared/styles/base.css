@@ -1,0 +1,167 @@
+/* ============================================================================
+   SI Atlas — shared design tokens & primitives
+   ----------------------------------------------------------------------------
+   Visual reference: the live Solomon Islands Government service portal
+   (solomons.gov.sb) and the MEHRD site (mehrd.gov.sb). Both are Arial/Open
+   Sans over a light grey page, square-cornered almost everywhere, navy nav
+   bars, borders rather than shadows. Every SI Atlas index shares this
+   idiom — it's what makes them read as one service rather than several.
+
+   This file holds only what is genuinely generic: color/type tokens, a
+   reset, and primitives (buttons, chips, selects, badges) any index is
+   likely to need. Page-shell layout (masthead, nav, a particular workspace
+   grid) is index-specific and lives in that index's own stylesheet, which
+   loads after this one.
+   ========================================================================== */
+
+/* --- Tokens -------------------------------------------------------------- */
+:root {
+  /* Institutional blues, taken from the reference sites */
+  --navy:       #06337C;   /* nav bars and section bars */
+  --navy-dark:  #002B5C;
+  --navy-mid:   #1A4873;
+  --navy-pale:  #E8EEF6;
+  --link:       #1257A0;   /* body links, 7.3:1 on white */
+  --link-hover: #0D3F77;
+
+  --green:  #1F6B2E;       /* page headings, as on both reference sites */
+  --red:    #A5232B;       /* notices and warnings only */
+  --gold:   #C8A415;       /* decorative fills only — 2.9:1, never text */
+
+  --page:      #ECECEB;    /* body background */
+  --panel:     #FFFFFF;
+  --panel-alt: #F5F6F7;
+  --band:      #E9EDF2;    /* group headers, table headers */
+  --notice-bg: #FDF3D6;
+
+  --rule:        #D3D7DC;  /* separators between blocks */
+  --rule-soft:   #E4E7EA;
+  --rule-strong: #767C84;  /* control borders — 3.4:1, meets non-text AA */
+
+  --text:     #333333;
+  --text-mid: #555555;
+  --mute:     #63696F;
+
+  --font-ui: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --font-head: 'Open Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+
+  --shell-pad: 1rem;
+}
+
+/* --- Reset ----------------------------------------------------------------
+   Deliberately minimal: box model, hidden attribute, base typography and
+   link/button resets only. Page-level layout (height, overflow, flex shell)
+   is each index's own concern and lives in its stylesheet. */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--page);
+}
+
+h1, h2, h3 { margin: 0; font-family: var(--font-head); font-weight: 700; }
+p { margin: 0; }
+ul, ol, dl, dd { margin: 0; padding: 0; }
+li { list-style: none; }
+button { font: inherit; color: inherit; }
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
+svg { fill: currentColor; }
+
+/* --- Accessibility --------------------------------------------------------
+   Focus is navy by default; an index with dark chrome (a navy masthead/nav)
+   should override to the gold token over those elements specifically. */
+:focus-visible { outline: 3px solid var(--navy); outline-offset: 1px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 999;
+  background: var(--navy); color: #fff; padding: .5rem 1rem;
+}
+.skip-link:focus { left: 0; }
+
+/* --- Buttons, selects, chips ----------------------------------------------
+   Shared across indexes so a control looks and behaves the same way
+   wherever it appears. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+  height: 36px; padding: 0 .85rem;
+  border: 1px solid transparent;
+  font-size: .88rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+}
+.btn:disabled { opacity: .55; cursor: default; }
+.btn-primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+.btn-primary:hover { background: var(--navy-dark); border-color: var(--navy-dark); }
+.btn-secondary { background: #fff; color: var(--navy); border-color: var(--rule-strong); }
+.btn-secondary:hover { background: var(--navy-pale); border-color: var(--navy); }
+.btn-secondary.is-active { background: var(--navy-pale); border-color: var(--navy); }
+.btn-block { width: 100%; }
+
+.link-btn {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--link); font-size: .85rem;
+  text-decoration: underline;
+}
+.link-btn:hover { color: var(--link-hover); }
+
+.text-close {
+  background: #fff; border: 1px solid var(--rule-strong); cursor: pointer;
+  color: var(--navy); height: 30px; padding: 0 .6rem;
+  font-size: .82rem; font-weight: 700;
+}
+.text-close:hover { background: var(--navy-pale); border-color: var(--navy); }
+
+.select {
+  font: inherit; font-size: .88rem; color: var(--text);
+  height: 36px; padding: 0 1.7rem 0 .5rem;
+  border: 1px solid var(--rule-strong);
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23333'%3E%3Cpath d='M4 6l4 4 4-4z'/%3E%3C/svg%3E") no-repeat right .45rem center/13px;
+  appearance: none; cursor: pointer;
+}
+.select-block { width: 100%; }
+.select:disabled { opacity: .5; cursor: default; background-color: var(--panel-alt); }
+
+.count-pill {
+  display: inline-block; min-width: 20px; padding: 0 .3rem;
+  background: var(--navy); color: #fff;
+  font-size: .75rem; font-weight: 700; text-align: center;
+}
+.btn-secondary.is-active .count-pill { background: var(--navy); }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: .3rem; align-items: center; }
+.chip {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .12rem .4rem;
+  font-size: .78rem;
+  background: var(--navy-pale); color: var(--navy);
+  border: 1px solid #C4D2E6;
+}
+.chip-static { background: var(--panel-alt); color: var(--text-mid); border-color: var(--rule); }
+.chip-removable { cursor: pointer; }
+.chip-removable:hover { background: #D8E3F2; }
+.chip-removable span[aria-hidden] { font-weight: 700; }
+
+/* --- Verification badge -----------------------------------------------------
+   Rendered by shared/verification-badge.js — three states, styled the same
+   way everywhere so a reader learns the language once. 'verified' is the
+   only state that reads as confirmed; 'unverified' and 'unknown' are both
+   deliberately neutral/muted, never styled to look like a pass. */
+.badge {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .78rem; font-weight: 700; padding: .2rem .55rem;
+  border: 1px solid; line-height: 1.3;
+}
+.badge-ico { flex: none; }
+.badge-verified   { color: var(--green); border-color: var(--green); background: #EAF3EC; }
+.badge-unverified { color: var(--mute);  border-color: var(--rule-strong); background: var(--panel-alt); }
+.badge-unknown    { color: var(--mute);  border-color: var(--rule-strong); background: var(--panel-alt); font-style: italic; }

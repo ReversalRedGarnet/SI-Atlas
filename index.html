@@ -2,198 +2,109 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SchoolFinder SI — Find a school in Honiara</title>
-<meta name="description" content="Search verified Honiara schools, plus two Guadalcanal schools — by location, education level, denomination, subjects offered and fees. Real school data from public MEHRD records; verification and expansion to other provinces is ongoing.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SI Atlas — Solomon Islands public services</title>
+<meta name="description" content="SI Atlas is an open-data information layer for Solomon Islands public services. Index E (Education) is live; more indexes are planned.">
 <meta name="theme-color" content="#06337C">
 
-<!-- Link previews. og:url and og:image must be absolute URLs for scrapers, so
-     they are the only non-relative paths in this project. Update both if the
-     site moves to a custom domain or a differently named repository. -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="SchoolFinder SI">
-<meta property="og:title" content="SchoolFinder SI — Find a school in Honiara">
-<meta property="og:description" content="Search verified Honiara schools, plus two Guadalcanal schools — by location, education level, denomination, subjects offered and fees. Real school data from public MEHRD records; verification and expansion to other provinces is ongoing.">
-<meta property="og:url" content="https://reversalredgarnet.github.io/school-proto/">
-<meta property="og:image" content="https://reversalredgarnet.github.io/school-proto/assets/og-image.png">
-<meta property="og:image:width" content="2400">
-<meta property="og:image:height" content="1260">
-<meta property="og:image:alt" content="The SchoolFinder SI directory: a filterable list of schools beside a map of the Solomon Islands with colour-coded school markers.">
+<link rel="stylesheet" href="shared/styles/base.css">
+<link rel="icon" href="index-e/assets/favicon.svg" type="image/svg+xml">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SchoolFinder SI — Find a school in Honiara">
-<meta name="twitter:description" content="Search verified Honiara schools, plus two Guadalcanal schools — by location, education level, denomination, subjects offered and fees. Real school data from public MEHRD records; verification and expansion to other provinces is ongoing.">
-<meta name="twitter:image" content="https://reversalredgarnet.github.io/school-proto/assets/og-image.png">
-<meta name="twitter:image:alt" content="The SchoolFinder SI directory: a filterable list of schools beside a map of the Solomon Islands with colour-coded school markers.">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-
-<!-- Leaflet (CDN, no API key required) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-
-<link rel="stylesheet" href="css/styles.css">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="alternate icon" href="assets/favicon.png" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
+<style>
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem;
+  }
+  .portal {
+    width: 100%;
+    max-width: 640px;
+  }
+  .portal-head h1 {
+    font-size: 1.6rem;
+    color: var(--green);
+    margin-bottom: .5rem;
+  }
+  .portal-head p {
+    color: var(--text-mid);
+    max-width: 60ch;
+  }
+  .index-list {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+  .index-card {
+    display: block;
+    border: 1px solid var(--rule-strong);
+    background: var(--panel);
+    padding: 1rem 1.2rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .index-card.is-live:hover { background: var(--navy-pale); border-color: var(--navy); }
+  .index-card.is-pending {
+    color: var(--mute);
+    cursor: default;
+    background: var(--panel-alt);
+  }
+  .index-name {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--navy);
+  }
+  .index-card.is-pending .index-name { color: var(--mute); }
+  .index-desc {
+    margin-top: .25rem;
+    font-size: .88rem;
+    color: var(--text-mid);
+  }
+  .status-tag {
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: .1rem .4rem;
+    border: 1px solid var(--rule-strong);
+    color: var(--mute);
+  }
+  .index-card.is-live .status-tag { color: var(--green); border-color: var(--green); }
+  .portal-foot {
+    margin-top: 2.5rem;
+    font-size: .82rem;
+    color: var(--mute);
+  }
+</style>
 </head>
 <body>
 
-<a class="skip-link" href="#results-heading">Skip to search results</a>
+<main class="portal">
+  <div class="portal-head">
+    <h1>SI Atlas</h1>
+    <p>An open-data information layer for Solomon Islands public services: real records, searchable and mapped, with sources, verification status and last-checked dates shown plainly rather than assumed.</p>
+  </div>
 
-<!-- ── Masthead ─────────────────────────────────────────────────────────── -->
-<header class="masthead">
-  <div class="masthead-inner">
-    <a class="masthead-id" href="./">
-      <span class="crest" aria-hidden="true">
-        <svg viewBox="0 0 32 32" width="38" height="38">
-          <rect width="32" height="32" fill="#06337C"/>
-          <path d="M16 7 5 12.5l11 5.5 9-4.5V21h2v-8.5z" fill="#ffffff"/>
-          <path d="M9 16v5c0 2 3.2 3.6 7 3.6s7-1.6 7-3.6v-5l-7 3.5z" fill="#C8A415"/>
-        </svg>
-      </span>
-      <span class="masthead-text">
-        <span class="gov-line">Solomon Islands Government</span>
-        <span class="service-name">SchoolFinder SI</span>
-      </span>
+  <nav class="index-list" aria-label="Indexes">
+    <a class="index-card is-live" href="index-e/index.html">
+      <span class="index-name">Index E — Education <span class="status-tag">Live</span></span>
+      <p class="index-desc">SchoolFinder SI: a searchable directory and map of schools, currently a Honiara pilot.</p>
     </a>
-    <p class="masthead-dept">Ministry of Education &amp;<br>Human Resources Development</p>
-  </div>
-</header>
 
-<!-- ── Navigation ───────────────────────────────────────────────────────── -->
-<nav class="gov-nav" aria-label="Main">
-  <ul class="gov-nav-inner">
-    <li><button type="button" class="nav-link" data-info="about">About</button></li>
-    <li><button type="button" class="nav-link" data-info="useful">Useful Info</button></li>
-    <li><button type="button" class="nav-link" data-info="contact">Contact</button></li>
-    <li><button type="button" class="nav-link" data-info="help">Help &amp; FAQ</button></li>
-  </ul>
-</nav>
+    <a class="index-card is-pending" href="index-h/index.html">
+      <span class="index-name">Index H — Health <span class="status-tag">Coming soon</span></span>
+      <p class="index-desc">A directory and map of health facilities. Not yet built.</p>
+    </a>
+  </nav>
 
-<!-- ── Service notice ───────────────────────────────────────────────────── -->
-<div class="notice" role="note">
-  <span class="notice-label">Pilot &middot; Honiara</span>
-  <span class="notice-text"><span class="long">School names and details are sourced from public MEHRD records for Honiara, plus two Guadalcanal schools. Some fields (fees, contacts, exact coordinates) are not yet confirmed for every school — verification and expansion to other provinces is ongoing.</span><span class="short">Real Honiara-area school data. Some fields are still being verified.</span></span>
-</div>
-
-<!-- ── Page heading ─────────────────────────────────────────────────────── -->
-<section class="page-intro" id="announce">
-  <div class="page-intro-main">
-    <h1>Find a school in Honiara</h1>
-    <p><span class="long">Search verified schools in Honiara, plus two schools in Guadalcanal &mdash; by where they are, what they teach, who runs them and what they cost. More provinces are being added as their data is verified.</span><span class="short">Search verified schools in Honiara, plus two schools in Guadalcanal.</span></p>
-  </div>
-  <dl class="figures" id="announce-stats"><!-- counted from the dataset in main.js --></dl>
-  <button type="button" class="link-btn intro-hide" id="announce-close">Hide this introduction</button>
-</section>
-
-<!-- ── Search and controls ──────────────────────────────────────────────── -->
-<div class="toolbar">
-  <form class="search-form" id="search-form">
-    <label class="field-label" for="search-input">Search for a school, town or province</label>
-    <div class="search-row">
-      <input type="search" id="search-input" class="search-input" autocomplete="off">
-      <button type="submit" class="btn btn-primary">Search</button>
-      <button type="button" class="btn btn-secondary" id="search-clear" hidden>Clear</button>
-    </div>
-  </form>
-
-  <div class="tool-actions">
-    <button type="button" class="btn btn-secondary filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="filters-rail">
-      Filters <span class="count-pill" id="filter-count-pill" hidden>0</span>
-    </button>
-
-    <button type="button" class="btn btn-secondary" id="locate-btn">
-      <span id="locate-label">Use my location</span>
-    </button>
-
-    <span class="sort-field">
-      <label class="field-label" for="sort-select">Sort by</label>
-      <select id="sort-select" class="select">
-        <option value="relevance">Best match</option>
-        <option value="name">Name A to Z</option>
-        <option value="distance" disabled>Closest to me</option>
-        <option value="feeLow">Lowest fees</option>
-        <option value="feeHigh">Highest fees</option>
-      </select>
-    </span>
-  </div>
-</div>
-
-<!-- ── Workspace: filters · results · detail · map ──────────────────────── -->
-<main class="workspace">
-
-  <!-- Filters (rail on desktop, drawer on small screens) -->
-  <aside class="filters-rail" id="filters-rail" aria-label="Filters">
-    <div class="rail-head">
-      <h2>Filters</h2>
-      <button type="button" class="link-btn" id="clear-filters">Clear all</button>
-      <button type="button" class="text-close" id="drawer-close">Close <span aria-hidden="true">&times;</span></button>
-    </div>
-    <div class="rail-body" id="filter-controls"><!-- built by js/filterPanel.js --></div>
-    <div class="rail-foot">
-      <button type="button" class="btn btn-primary" id="drawer-apply">Show <span id="drawer-count">0</span> schools</button>
-      <button type="button" class="btn btn-secondary" id="drawer-clear">Clear filters</button>
-    </div>
-  </aside>
-
-  <!-- Results list -->
-  <section class="results-col" id="results-col" aria-labelledby="results-heading">
-    <div class="results-head">
-      <h2 id="results-heading">
-        <span id="result-count">0</span> schools
-        <span class="results-sub" id="result-sub"></span>
-      </h2>
-      <div class="chip-row" id="active-chips"></div>
-    </div>
-    <div class="results-list" id="results-list"></div>
-  </section>
-
-  <!-- Selected school detail -->
-  <section class="detail-col" id="detail-col" aria-labelledby="detail-name" aria-live="polite"></section>
-
-  <!-- Map -->
-  <section class="map-col" id="map-col" aria-label="Map of schools">
-    <div id="map"></div>
-    <div class="map-note" id="map-note">
-      <span><i class="k-school"></i>A school</span>
-      <span><i class="k-selected"></i>The school you picked</span>
-      <span id="key-you" hidden><i class="k-you"></i>You are here</span>
-    </div>
-    <button type="button" class="btn btn-secondary map-reset" id="map-reset">Show whole country</button>
-  </section>
+  <p class="portal-foot">Open source. No accounts, no tracking, no fabricated data — unknown fields are left blank rather than guessed.</p>
 </main>
 
-<!-- Mobile list/map switch -->
-<div class="view-switch" role="tablist" aria-label="Switch view">
-  <button type="button" role="tab" class="vs-btn is-active" data-view="list" aria-selected="true">List</button>
-  <button type="button" role="tab" class="vs-btn" data-view="map" aria-selected="false">Map</button>
-</div>
-
-<div class="scrim" id="scrim" hidden></div>
-
-<!-- Static info modal (About / Useful Info / Contact / Help) -->
-<div class="modal" id="info-modal" hidden role="dialog" aria-modal="true" aria-labelledby="info-title">
-  <div class="modal-card">
-    <button type="button" class="text-close modal-close" id="info-close">Close <span aria-hidden="true">&times;</span></button>
-    <h2 id="info-title"></h2>
-    <div id="info-body"></div>
-  </div>
-</div>
-
-<!-- Leaflet -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-
-<!-- App: data → state → logic → views → wiring -->
-<script src="js/data/schools.js"></script>
-<script src="js/state.js"></script>
-<script src="js/geolocation.js"></script>
-<script src="js/filters.js"></script>
-<script src="js/filterPanel.js"></script>
-<script src="js/list.js"></script>
-<script src="js/map.js"></script>
-<script src="js/panel.js"></script>
-<script src="js/main.js"></script>
 </body>
 </html>
