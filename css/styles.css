@@ -424,6 +424,7 @@ body.filters-open .filters-rail { transform: translateX(0); }
 .rf dt { color: var(--mute); }
 .rf dd { color: var(--text); }
 .fee-free { color: var(--green); font-weight: 700; }
+.fee-unknown { color: var(--mute); font-style: italic; }
 
 .empty { padding: 2rem 1rem; text-align: center; }
 .empty-title { font-family: var(--font-head); font-size: 1.05rem; color: var(--text); }
@@ -455,6 +456,12 @@ body.has-selection .detail-col { display: flex; }
   border-top: 1px solid var(--rule-soft);
   font-size: .82rem; color: var(--mute);
 }
+.verified-badge {
+  display: inline-flex; align-items: center; gap: .3rem;
+  margin-top: .5rem;
+  font-size: .78rem; font-weight: 700; color: var(--green);
+}
+.verified-badge .ico { flex: none; }
 
 .detail-actions { display: flex; flex-wrap: wrap; gap: .4rem; padding: .8rem .9rem; }
 .detail-actions .btn { flex: 1 1 auto; }
@@ -482,8 +489,11 @@ body.has-selection .detail-col { display: flex; }
 .fact dd { font-size: .84rem; color: var(--text); padding: .2rem 0; }
 
 .detail-section .chip-row { padding: 0 .9rem; }
+.detail-no-data { padding: 0 .9rem; font-size: .86rem; color: var(--mute); font-style: italic; }
+.approx-note { color: var(--mute); font-style: italic; }
 
 .contact-list { padding: 0 .9rem; }
+.contact-list li span { padding: .35rem 0; color: var(--mute); font-style: italic; }
 .contact-list li {
   display: flex; align-items: center; gap: .5rem;
   font-size: .86rem; color: var(--mute);
@@ -526,6 +536,10 @@ body.has-selection .detail-col { display: flex; }
   box-shadow: 0 1px 2px rgba(0,0,0,.45);
 }
 .pin-selected { border-width: 3px; box-shadow: 0 0 0 4px var(--gold), 0 1px 3px rgba(0,0,0,.45); }
+/* Approximate (memory/landmark) coordinates get a dashed white ring instead
+   of a solid one, so an estimate never reads as authoritatively as a
+   surveyed address. See js/data/schools.js for the data policy. */
+.pin-approx { border-style: dashed; }
 .you-are-here {
   display: block; width: 100%; height: 100%;
   border-radius: 50%; background: var(--green); border: 3px solid #fff;

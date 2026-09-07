@@ -12,14 +12,19 @@ SF.list = {};
 /* Shared presentation helpers, also used by panel.js. */
 SF.format = {
   fees: function (school) {
+    if (school.feeMin === null || school.feeMax === null) return 'Fee information not yet available';
     if (school.feeMin === 0 && school.feeMax === 0) return 'No fees';
     var lo = school.feeMin === 0 ? 'Free' : '$' + school.feeMin.toLocaleString('en-US');
     return lo + ' – $' + school.feeMax.toLocaleString('en-US') + ' ' + school.currency + ' a year';
   },
   /* Same figures, with "Free" picked out in the flag green. `suffix` is
    * ' a year' on cards, where nothing else says so, and the currency code in
-   * the detail panel, where the label already reads "Yearly fees". */
+   * the detail panel, where the label already reads "Yearly fees". Unknown
+   * fees are said plainly rather than left blank or guessed. */
   feesHtml: function (school, suffix) {
+    if (school.feeMin === null || school.feeMax === null) {
+      return '<span class="fee-unknown">Fee information not yet available</span>';
+    }
     if (school.feeMin === 0 && school.feeMax === 0) return '<span class="fee-free">No fees</span>';
     var lo = school.feeMin === 0
       ? '<span class="fee-free">Free</span>'
@@ -31,21 +36,34 @@ SF.format = {
     return y.min === y.max ? 'Year ' + y.min : 'Year ' + y.min + ' to Year ' + y.max;
   },
   /* Show the form groupings rather than the flat word "Secondary", in the
-   * order a reader expects: early years, primary, forms, then post-school. */
+   * order a reader expects: early years, primary, forms, then post-school.
+   * Falls back to the flat "Secondary" label when a school is confirmed to
+   * teach it but its form-group breakdown isn't confirmed yet — otherwise a
+   * secondary school with no formGroups data would show a blank level. */
   levels: function (school) {
     var has = function (l) { return school.educationLevels.indexOf(l) !== -1; };
     var out = [];
     if (has('Early Childhood')) out.push('Early Childhood');
     if (has('Primary')) out.push('Primary');
-    out = out.concat(school.formGroups || []);
+    if (has('Secondary') && (school.formGroups || []).length) {
+      out = out.concat(school.formGroups);
+    } else if (has('Secondary')) {
+      out.push('Secondary');
+    }
     if (has('Tertiary/Vocational')) out.push('Tertiary/Vocational');
     return out.map(SF.label).join(', ');
   },
   /* denomination is one of five values, and 'Other' covers government,
-   * community and private schools alike — so for those show what actually
-   * runs the school. The full pair is spelled out in the detail panel. */
+   * community and private schools alike — so for those (and for schools
+   * whose denomination simply isn't confirmed yet) show what actually runs
+   * the school. The full pair is spelled out in the detail panel. */
   operator: function (school) {
-    return school.denomination === 'Other' ? school.schoolType : school.denomination;
+    return (!school.denomination || school.denomination === 'Other') ? school.schoolType : school.denomination;
+  },
+  /* Boarding/day is unconfirmed for most real records — say so plainly. */
+  boardingStatus: function (school) {
+    if (!school.boarding) return 'Not yet confirmed';
+    return school.boarding === 'Both' ? 'Day and boarding' : school.boarding + ' only';
   },
   place: function (school) {
     return school.town === school.province
@@ -129,7 +147,7 @@ SF.list.render = function (results, state) {
     listEl.innerHTML =
       '<div class="empty">' +
         '<p class="empty-title">No schools match these filters</p>' +
-        '<p class="empty-body">Try taking off a filter, raising the fee limit, or searching for a province such as “Malaita”.</p>' +
+        '<p class="empty-body">Try taking off a filter, raising the fee limit, or searching for a town such as “Honiara”.</p>' +
         '<button type="button" class="btn btn-primary" id="empty-clear">Start again</button>' +
       '</div>';
     return;
@@ -161,12 +179,21 @@ function card(school, isSelected) {
     ['Province',  esc(school.province)],
     ['Level',     esc(SF.format.levels(school))],
     ['Run by',    esc(SF.format.operator(school))],
-    ['Attendance', esc(school.boarding === 'Both' ? 'Day and boarding' : school.boarding + ' only')],
+    ['Attendance', esc(SF.format.boardingStatus(school))],
     ['Yearly fees', SF.format.feesHtml(school, ' ' + school.currency)]
   ];
 
   if (typeof school.distanceKm === 'number') {
     rows.splice(2, 0, ['Distance', esc(SF.geo.formatDistance(school.distanceKm)) + ' away']);
+  }
+
+  /* Mount Horeb CHS and Mercy CHS have no public coordinate source — they
+   * still belong in the directory, but the map has nothing to plot. Say so
+   * rather than silently omitting the school or guessing a pin location.
+   * (Approximate-vs-exact coordinates are noted in the detail panel and on
+   * the map marker itself, not repeated on every card here.) */
+  if (school.latitude === null || school.longitude === null) {
+    rows.push(['Map', 'Map location not yet available']);
   }
 
   return '' +

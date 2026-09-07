@@ -227,8 +227,8 @@ function wireGlobalKeys() {
 var INFO = {
   about: {
     title: 'About SchoolFinder SI',
-    body: '<p>SchoolFinder SI is a prototype for a national school directory: one place where families and students can find every school in Solomon Islands, compare what each one offers, and see where it is on the map.</p>' +
-          '<p>This build is a demonstration of the concept only. All 31 school records are fictional, and nothing entered here is stored or sent anywhere.</p>'
+    body: '<p>SchoolFinder SI is a Honiara pilot for what is intended to become a national school directory: one place where families and students can find a school, compare what it offers, and see where it is on the map.</p>' +
+          '<p>School names and details in this build are real, sourced from public MEHRD records for Honiara, plus St Joseph’s Tenaru and Selwyn College in Guadalcanal. Some fields — fees, contact details, exact coordinates, subjects — are not yet confirmed for every school and are shown as such rather than guessed. Verification and expansion to other provinces is ongoing, and nothing entered here is stored or sent anywhere.</p>'
   },
   useful: {
     title: 'Useful information',
@@ -248,7 +248,7 @@ var INFO = {
     title: 'Help &amp; FAQ',
     body: '<ul><li><strong>Start by searching.</strong> The search box looks at school names, towns, provinces and subjects all at once.</li>' +
           '<li><strong>Use the Filters button</strong> to narrow things down by school level, province, subjects, fees and more.</li>' +
-          '<li><strong>Picking more than one option widens the results.</strong> Choosing both Malaita and Western shows schools in either. Adding a school level narrows them again.</li>' +
+          '<li><strong>Picking more than one option widens the results.</strong> Choosing both Honiara and Guadalcanal shows schools in either. Adding a school level narrows them again.</li>' +
           '<li><strong>Subjects work differently:</strong> a school has to teach every subject you tick.</li>' +
           '<li><strong>Share your location</strong> to see how far away each school is and to sort by the closest. Everything else works without it.</li>' +
           '<li>Tap a school in the list or on the map to see its full details. Press <kbd>Esc</kbd> to go back.</li></ul>'
@@ -285,8 +285,8 @@ function closeInfo() {
 /* --- Announcement strip -------------------------------------------------- */
 
 function wireAnnouncement() {
-  /* Counted from the dataset rather than hard-coded, so it stays true if the
-   * mock data is swapped for a real source. */
+  /* Counted from the dataset rather than hard-coded, so it stays true as
+   * more provinces are verified and added. */
   var provinces = {}, levels = {};
   SF.SCHOOLS.forEach(function (s) {
     provinces[s.province] = true;

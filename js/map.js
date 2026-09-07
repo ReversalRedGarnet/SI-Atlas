@@ -80,7 +80,7 @@ SF.map.render = function (results, state) {
 
 /** Recentre on the selected school without changing zoom unnecessarily. */
 SF.map.focus = function (school) {
-  if (!map || !school) return;
+  if (!map || !school || school.latitude === null || school.longitude === null) return;
   var target = L.latLng(school.latitude, school.longitude);
   if (!map.getBounds().pad(-0.15).contains(target)) {
     map.panTo(target, { animate: true });
@@ -129,10 +129,17 @@ function drawMarkers(results) {
   markerLayer.clearLayers();
   markers = {};
 
+  /* A couple of real records (Mount Horeb CHS, Mercy CHS) have no public
+   * coordinate source. They still belong in the list/search results — see
+   * js/data/schools.js — but there is nothing honest to plot for them here,
+   * so the map simply skips them rather than guessing a pin location. */
   results.forEach(function (school) {
+    if (school.latitude === null || school.longitude === null) return;
+
+    var approx = school.locationPrecision === 'approximate';
     var marker = L.marker([school.latitude, school.longitude], {
-      icon: pinIcon(false),
-      title: school.name,
+      icon: pinIcon(false, approx),
+      title: school.name + (approx ? ' (approximate location)' : ''),
       alt: school.name,
       riseOnHover: true,
       keyboard: true
@@ -142,18 +149,23 @@ function drawMarkers(results) {
     marker.on('keypress', function (e) {
       if (e.originalEvent.key === 'Enter') SF.select(school.id);
     });
-    marker.bindTooltip(school.name, { direction: 'top', offset: [0, -14], opacity: 1 });
+    marker.bindTooltip(school.name + (approx ? ' — approximate location' : ''), { direction: 'top', offset: [0, -14], opacity: 1 });
 
     marker.addTo(markerLayer);
     markers[school.id] = marker;
   });
 }
 
-/* Every school is the same blue; the selected one gets the flag-yellow ring. */
-function pinIcon(selected) {
+/* Every school is the same blue; the selected one gets the flag-yellow ring.
+ * Approximate-location pins (everything located in this pass — see the data
+ * policy note in js/data/schools.js) get a dashed ring instead of a solid
+ * one, so a memory/landmark estimate never reads as authoritatively as a
+ * surveyed address would. */
+function pinIcon(selected, approximate) {
+  var cls = 'pin' + (selected ? ' pin-selected' : '') + (approximate ? ' pin-approx' : '');
   return L.divIcon({
     className: '',
-    html: '<span class="pin' + (selected ? ' pin-selected' : '') + '"></span>',
+    html: '<span class="' + cls + '"></span>',
     iconSize: selected ? [26, 26] : [20, 20],
     iconAnchor: selected ? [13, 13] : [10, 10]
   });
@@ -161,7 +173,8 @@ function pinIcon(selected) {
 
 function paintSelection(selectedId) {
   Object.keys(markers).forEach(function (id) {
-    markers[id].setIcon(pinIcon(id === selectedId));
+    var school = SF.getSchoolById(id);
+    markers[id].setIcon(pinIcon(id === selectedId, school && school.locationPrecision === 'approximate'));
     markers[id].setZIndexOffset(id === selectedId ? 1000 : 0);
   });
 }
@@ -181,6 +194,8 @@ function fitTo(results) {
   /* A hidden container measures 0×0, and fitting against that gives a nonsense
    * centre. Remember the request and replay it from refresh() instead. */
   if (map.getSize().x === 0) { pendingFit = results; return; }
-  var bounds = L.latLngBounds(results.map(function (s) { return [s.latitude, s.longitude]; }));
-  map.fitBounds(bounds, { padding: [40, 40], maxZoom: results.length === 1 ? 13 : 15 });
+  var located = results.filter(function (s) { return s.latitude !== null && s.longitude !== null; });
+  if (!located.length) return; // nothing to fit to — e.g. a search matching only Mount Horeb/Mercy
+  var bounds = L.latLngBounds(located.map(function (s) { return [s.latitude, s.longitude]; }));
+  map.fitBounds(bounds, { padding: [40, 40], maxZoom: located.length === 1 ? 13 : 15 });
 }

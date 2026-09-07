@@ -12,7 +12,9 @@ SF.filterPanel = {};
 var root;
 
 var DISTANCE_OPTIONS = [5, 10, 25, 50, 100, 250];
-var FEE_CEILING = 8500;   // a little above the most expensive school in the set
+/* No school in the current dataset has confirmed fee data, so this ceiling
+ * is a placeholder pending real figures rather than derived from the set. */
+var FEE_CEILING = 8500;
 var FEE_STEP = 250;
 
 SF.filterPanel.init = function () {

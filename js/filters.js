@@ -84,18 +84,26 @@ var predicates = {
       return school.subjects.indexOf(v) !== -1;
     });
   },
+  /* Boarding/day is unconfirmed for most real records. An unconfirmed school
+   * cannot be said to match "Day" or "Boarding" — it simply doesn't, until a
+   * source confirms it, rather than being guessed into either bucket. */
   boarding: function (school, value) {
     if (!value) return true;
+    if (!school.boarding) return false;
     if (value === 'Day') return school.boarding === 'Day' || school.boarding === 'Both';
     if (value === 'Boarding') return school.boarding === 'Boarding' || school.boarding === 'Both';
     return school.boarding === value;
   },
+  /* Unconfirmed year span (yearLevels === null) never matches a specific
+   * year — see the data-policy note in js/data/schools.js. */
   yearLevel: function (school, value) {
-    return value === null || (value >= school.yearLevels.min && value <= school.yearLevels.max);
+    return value === null || (!!school.yearLevels && value >= school.yearLevels.min && value <= school.yearLevels.max);
   },
-  /* "Fees up to X" — a school qualifies if it has any place at or under X. */
+  /* "Fees up to X" — a school qualifies if it has any place at or under X.
+   * A school with no confirmed fee data cannot be said to fit under any cap,
+   * so it simply doesn't match when a fee filter is active. */
   feeMax: function (school, value) {
-    return value === null || school.feeMin <= value;
+    return value === null || (school.feeMin !== null && school.feeMin <= value);
   },
   maxDistanceKm: function (school, value) {
     return value === null || (typeof school.distanceKm === 'number' && school.distanceKm <= value);
@@ -127,7 +135,7 @@ function levelKind(value) {
 SF.filters.withDistance = function (schools, userLocation) {
   return schools.map(function (school) {
     var copy = Object.create(school);
-    copy.distanceKm = userLocation
+    copy.distanceKm = (userLocation && school.latitude !== null && school.longitude !== null)
       ? SF.geo.haversineKm(userLocation, { lat: school.latitude, lng: school.longitude })
       : null;
     return copy;
@@ -164,10 +172,20 @@ SF.filters.sort = function (schools, state) {
         if (b.distanceKm === null) return -1;
         return a.distanceKm - b.distanceKm || byName(a, b);
       });
+    /* Schools with no confirmed fee data sort after every priced school,
+     * regardless of direction — same rule as the distance sort above. */
     case 'feeLow':
-      return out.sort(function (a, b) { return a.feeMin - b.feeMin || byName(a, b); });
+      return out.sort(function (a, b) {
+        if (a.feeMin === null) return 1;
+        if (b.feeMin === null) return -1;
+        return a.feeMin - b.feeMin || byName(a, b);
+      });
     case 'feeHigh':
-      return out.sort(function (a, b) { return b.feeMax - a.feeMax || byName(a, b); });
+      return out.sort(function (a, b) {
+        if (a.feeMax === null) return 1;
+        if (b.feeMax === null) return -1;
+        return b.feeMax - a.feeMax || byName(a, b);
+      });
     default: // relevance — falls back to name when there is no query
       return out.sort(function (a, b) {
         var d = SF.filters.relevanceScore(b, state.query) - SF.filters.relevanceScore(a, state.query);
@@ -225,7 +243,7 @@ SF.filters.facetCounts = function (state, key) {
 function valuesFor(school, key) {
   switch (key) {
     case 'provinces':     return [school.province];
-    case 'denominations': return [school.denomination];
+    case 'denominations': return school.denomination ? [school.denomination] : [];
     /* 'Secondary' is not an option in the filter — its form groups are. */
     case 'levels':        return school.educationLevels
                                    .filter(function (l) { return l !== 'Secondary'; })

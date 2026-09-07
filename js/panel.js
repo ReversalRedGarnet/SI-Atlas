@@ -30,13 +30,38 @@ SF.panel.render = function (state) {
   }
 
   var esc = SF.format.esc;
-  var distanceKm = state.userLocation
+  var hasCoords = school.latitude !== null && school.longitude !== null;
+  var distanceKm = (state.userLocation && hasCoords)
     ? SF.geo.haversineKm(state.userLocation, { lat: school.latitude, lng: school.longitude })
     : null;
 
-  var directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' +
-                      school.latitude + ',' + school.longitude;
-  var telHref = 'tel:' + school.phone.replace(/[^\d+]/g, '');
+  var directionsUrl = hasCoords
+    ? 'https://www.google.com/maps/dir/?api=1&destination=' + school.latitude + ',' + school.longitude
+    : null;
+  var telHref = school.phone ? 'tel:' + school.phone.replace(/[^\d+]/g, '') : null;
+
+  /* Denomination only earns its own line when it names something — 'Other'
+   * and an unconfirmed denomination both say nothing beyond the school type
+   * already shown. */
+  var showDenomination = school.denomination && school.denomination !== 'Other';
+
+  var actionButtons = [
+    hasCoords ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions</a>' : '',
+    telHref ? '<a class="btn btn-secondary" href="' + esc(telHref) + '">' + iconPhone() + 'Call</a>' : '',
+    school.website ? '<a class="btn btn-secondary" href="' + esc(school.website) + '" target="_blank" rel="noopener">' + iconGlobe() + 'Website</a>' : ''
+  ].filter(Boolean).join('');
+
+  var contactItems = [
+    telHref ? '<li>' + iconPhone() + '<a href="' + esc(telHref) + '">' + esc(school.phone) + '</a></li>' : '',
+    school.email ? '<li>' + iconMail() + '<a href="mailto:' + esc(school.email) + '">' + esc(school.email) + '</a></li>' : '',
+    school.website ? '<li>' + iconGlobe() + '<a href="' + esc(school.website) + '" target="_blank" rel="noopener">' + esc(school.website.replace(/^https?:\/\//, '')) + '</a></li>' : '',
+    hasCoords
+      ? '<li>' + iconPin() + '<a href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' +
+          school.latitude.toFixed(4) + ', ' + school.longitude.toFixed(4) + '</a>' +
+          (school.locationPrecision === 'approximate' ? ' <span class="approx-note">(approximate location)</span>' : '') +
+        '</li>'
+      : '<li>' + iconPin() + '<span>Map location not yet available</span></li>'
+  ].filter(Boolean).join('');
 
   el.innerHTML = '' +
     '<div class="detail-inner">' +
@@ -56,19 +81,13 @@ SF.panel.render = function (state) {
           esc(school.town) + ', ' + esc(school.island) + ' &middot; ' + esc(school.province) + ' Province' +
           (distanceKm !== null ? '<span class="detail-distance">' + SF.geo.formatDistance(distanceKm) + ' away</span>' : '') +
         '</p>' +
-        /* 'Other' covers government, community and private schools, so
-         * repeating it after the school type would say nothing. */
         '<p class="detail-kind">' + esc(SF.format.levels(school)) +
           ' &middot; ' + esc(school.schoolType) + ' school' +
-          (school.denomination === 'Other' ? '' : ' &middot; ' + esc(school.denomination)) + '</p>' +
+          (showDenomination ? ' &middot; ' + esc(school.denomination) : '') + '</p>' +
+        '<p class="verified-badge">' + iconCheck() + ' Verified ' + esc(SF.format.date(school.lastVerified)) + '</p>' +
       '</header>' +
 
-      '<div class="detail-actions">' +
-        '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' +
-          iconPin() + 'Get directions</a>' +
-        '<a class="btn btn-secondary" href="' + esc(telHref) + '">' + iconPhone() + 'Call</a>' +
-        '<a class="btn btn-secondary" href="' + esc(school.website) + '" target="_blank" rel="noopener">' + iconGlobe() + 'Website</a>' +
-      '</div>' +
+      (actionButtons ? '<div class="detail-actions">' + actionButtons + '</div>' : '') +
 
       '<p class="detail-desc">' + esc(school.description) + '</p>' +
 
@@ -76,40 +95,47 @@ SF.panel.render = function (state) {
         '<h3>At a glance</h3>' +
         '<dl class="facts">' +
           fact('School level', SF.format.levels(school)) +
-          fact('Year groups', SF.format.years(school)) +
+          yearsFact(school) +
           streamFact('Form 6 streams', school, 'form6') +
           streamFact('Form 7 streams', school, 'form7') +
-          fact('Boarding or day', school.boarding === 'Both' ? 'Day and boarding' : school.boarding + ' only') +
+          fact('Boarding or day', SF.format.boardingStatus(school)) +
           fact('Yearly fees', SF.format.feesHtml(school, ' ' + school.currency)) +
-          fact('Run by', SF.label(school.denomination)) +
+          (showDenomination ? fact('Run by', SF.label(school.denomination)) : '') +
           fact('Type of school', school.schoolType) +
+          (!hasCoords ? fact('Map', 'Map location not yet available') :
+            school.locationPrecision === 'approximate' ? fact('Map', 'Approximate location') : '') +
         '</dl>' +
       '</section>' +
 
       '<section class="detail-section">' +
-        '<h3>Subjects taught <span class="muted-count">' + school.subjects.length + '</span></h3>' +
-        '<ul class="chip-row chip-row-tight">' +
-          school.subjects.map(function (s) { return '<li class="chip chip-static">' + esc(s) + '</li>'; }).join('') +
-        '</ul>' +
+        '<h3>Subjects taught' + (school.subjects.length ? ' <span class="muted-count">' + school.subjects.length + '</span>' : '') + '</h3>' +
+        (school.subjects.length
+          ? '<ul class="chip-row chip-row-tight">' +
+              school.subjects.map(function (s) { return '<li class="chip chip-static">' + esc(s) + '</li>'; }).join('') +
+            '</ul>'
+          : '<p class="detail-no-data">Subject information not yet available.</p>') +
       '</section>' +
 
       '<section class="detail-section">' +
         '<h3>Contact the school</h3>' +
-        '<ul class="contact-list">' +
-          '<li>' + iconPhone() + '<a href="' + esc(telHref) + '">' + esc(school.phone) + '</a></li>' +
-          '<li>' + iconMail() + '<a href="mailto:' + esc(school.email) + '">' + esc(school.email) + '</a></li>' +
-          '<li>' + iconGlobe() + '<a href="' + esc(school.website) + '" target="_blank" rel="noopener">' + esc(school.website.replace(/^https?:\/\//, '')) + '</a></li>' +
-          '<li>' + iconPin() + '<a href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' +
-            school.latitude.toFixed(4) + ', ' + school.longitude.toFixed(4) + '</a></li>' +
-        '</ul>' +
+        (contactItems
+          ? '<ul class="contact-list">' + contactItems + '</ul>'
+          : '<p class="detail-no-data">Contact details not yet available.</p>') +
       '</section>' +
 
       '<footer class="detail-foot">' +
-        '<p>These details were last checked on <strong class="verified">' + esc(SF.format.date(school.lastVerified)) + '</strong>.</p>' +
-        '<p class="fineprint">Demonstration record — this school is fictional. In a live service this is where a “suggest a correction” link would sit.</p>' +
+        '<p>These details were last checked against public records on <strong class="verified">' + esc(SF.format.date(school.lastVerified)) + '</strong>.</p>' +
+        '<p class="fineprint">Sourced from public MEHRD records and, where noted above, the school’s own published contact details. Fields not yet confirmed are shown as such rather than guessed.</p>' +
       '</footer>' +
     '</div>';
 };
+
+/* Only shown once a year span is actually confirmed — see the data-policy
+ * note at the top of js/data/schools.js for why most secondary records
+ * don't have one yet. */
+function yearsFact(school) {
+  return school.yearLevels ? fact('Year groups', SF.format.years(school)) : '';
+}
 
 function fact(term, value) {
   return '<div class="fact"><dt>' + term + '</dt><dd>' + value + '</dd></div>';
@@ -134,4 +160,7 @@ function iconGlobe() {
 }
 function iconMail() {
   return '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" class="ico"><path d="M2 3.5h12c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1v-7c0-.6.4-1 1-1Zm.8 1.6L8 8.6l5.2-3.5H2.8Z"/></svg>';
+}
+function iconCheck() {
+  return '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" class="ico"><path d="M13.5 4.5 6.4 12 2.5 8.1l1-1L6.4 10l6.1-6.5z"/></svg>';
 }

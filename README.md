@@ -1,13 +1,22 @@
-# SchoolFinder SI — prototype
+# SchoolFinder SI — Honiara pilot
 
-A searchable directory and interactive map of schools across Solomon Islands.
+A searchable directory and interactive map of schools in Honiara, plus two
+schools in Guadalcanal.
 
-> ## ⚠️ All school data in this project is fictional
-> Every one of the 31 school records in `js/data/schools.js` — names, contact
-> details, fees, subjects, coordinates and verification dates — is invented for
-> demonstration purposes. Place names, provinces and approximate coordinates are
-> real so the map looks plausible, but **no record corresponds to a real school**.
-> This is a concept prototype, not a public information service.
+> ## School data is real, but the pilot's coverage is limited
+> The 28 school records in `js/data/schools.js` are named, real institutions,
+> sourced from public MEHRD records (Honiara and Guadalcanal school lists,
+> Year 7 placement data, F4/F6 publication) and, where available, a school's
+> own published site. Coverage is a **Honiara pilot**: the main Honiara
+> schools plus St Joseph's Tenaru and Selwyn College in Guadalcanal — no other
+> province is represented yet. Several fields (fees, contact details, exact
+> coordinates, subjects) are unconfirmed for many schools and are recorded as
+> `null` / empty rather than guessed — see the data-policy note at the top of
+> `js/data/schools.js`. Two schools (Mount Horeb CHS, Mercy CHS) have no
+> public coordinate source and so appear in search/list results only, not on
+> the map. This is a public-service prototype built on real, verified data —
+> not a demonstration of fictional data — but it is not yet a complete or
+> authoritative national directory.
 
 ---
 
@@ -34,7 +43,7 @@ Google fonts (Inter, Source Serif 4). Nothing is installed.
 ```
 index.html              app shell / markup
 css/styles.css          all styling (single stylesheet, CSS custom properties)
-js/data/schools.js      MOCK dataset + filter vocabularies (province, subject taxonomy…)
+js/data/schools.js      Real (Honiara-pilot) dataset + filter vocabularies (province, subject taxonomy…)
 js/state.js             the single app-state object, setters and subscribers
 js/filters.js           search, filtering, sorting, facet counts — pure functions
 js/geolocation.js       geolocation request + haversine distance
@@ -118,7 +127,7 @@ picker with the streams picker entirely. Filters the user can no longer see
 are cleared rather than left silently applied — see `SF.normalizeFilters()`
 in `js/state.js`.
 
-## Swapping the mock data for an API
+## Swapping the dataset for an API
 
 `js/data/schools.js` is the only file that knows what the data is. Replace the
 assignment to `SF.SCHOOLS` with a `fetch()` that resolves before `render()` is
