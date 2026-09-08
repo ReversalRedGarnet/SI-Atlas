@@ -267,8 +267,8 @@ function trapTab(e, container) {
 
 var INFO = {
   about: {
-    title: 'About SchoolFinder SI',
-    body: '<p>SchoolFinder SI is a Honiara pilot for what is intended to become a national school directory: one place where families and students can find a school, compare what it offers, and see where it is on the map.</p>' +
+    title: 'About SI Atlas — Index E',
+    body: '<p>SI Atlas — Index E is a Honiara pilot for what is intended to become a national school directory: one place where families and students can find a school, compare what it offers, and see where it is on the map.</p>' +
           '<p>School names and details in this build are real, sourced from public MEHRD records for Honiara, plus St Joseph’s Tenaru and Selwyn College in Guadalcanal. Some fields — fees, contact details, exact coordinates, subjects — are not yet confirmed for every school and are shown as such rather than guessed. Verification and expansion to other provinces is ongoing, and nothing entered here is stored or sent anywhere.</p>'
   },
   useful: {

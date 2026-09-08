@@ -5,7 +5,7 @@ services: a family of directories, each covering one domain, built the same
 way and sharing the same visual and data conventions.
 
 - **[Index E — Education](index-e/README.md)** ([live](index-e/index.html)):
-  SchoolFinder SI, a searchable directory and map of schools — currently a
+  SI Atlas — Index E, a searchable directory and map of schools — currently a
   Honiara pilot.
 - **Index H — Health** ([stub](index-h/index.html)): a planned directory and
   map of health facilities. Not yet built.

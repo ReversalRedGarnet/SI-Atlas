@@ -1,5 +1,5 @@
 /* ============================================================================
- * SchoolFinder SI — REAL DATA (Honiara pilot)
+ * SI Atlas — Index E — REAL DATA (Honiara pilot)
  * ----------------------------------------------------------------------------
  * This is verified, named-school data, not a demonstration dataset. Coverage
  * is a Honiara pilot: the main Honiara schools plus two Guadalcanal schools

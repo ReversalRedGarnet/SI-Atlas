@@ -1,4 +1,4 @@
-# Index E — Education (SchoolFinder SI)
+# Index E — Education (SI Atlas)
 
 A searchable directory and interactive map of schools in Honiara, plus two
 schools in Guadalcanal. This is the first index of **SI Atlas** — see the
