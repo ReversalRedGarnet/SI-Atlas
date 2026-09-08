@@ -56,6 +56,9 @@ function render(state) {
   document.body.classList.toggle('filters-open', state.filtersOpen);
   document.body.classList.toggle('view-map', state.mobileView === 'map');
   document.getElementById('scrim').hidden = !state.filtersOpen;
+  /* Off-screen (translateX) alone doesn't remove the drawer from the tab
+   * order — inert does, so a closed drawer's 30+ controls are unreachable. */
+  document.getElementById('filters-rail').inert = !state.filtersOpen;
 
   /* Side effects that should only fire when the selection actually changes. */
   if (state.selectedId !== prevSelectedId) {
@@ -118,7 +121,10 @@ function wireToolbar() {
   });
 
   document.getElementById('filters-toggle').addEventListener('click', function () {
-    SF.setState({ filtersOpen: !SF.state.filtersOpen });
+    if (SF.state.filtersOpen) { closeDrawer(); return; }
+    lastFocusedBeforeDrawer = document.activeElement;
+    SF.setState({ filtersOpen: true });
+    document.getElementById('drawer-close').focus();
   });
 
   document.getElementById('map-reset').addEventListener('click', SF.map.resetView);
@@ -174,6 +180,8 @@ function resetEverything() {
 
 /* --- Filter drawer (small screens) --------------------------------------- */
 
+var lastFocusedBeforeDrawer = null;
+
 function wireDrawer() {
   document.getElementById('clear-filters').addEventListener('click', resetEverything);
   /* Clear inside the drawer leaves the drawer open, the way a search form does. */
@@ -185,6 +193,10 @@ function wireDrawer() {
 
 function closeDrawer() {
   SF.setState({ filtersOpen: false });
+  if (lastFocusedBeforeDrawer) {
+    lastFocusedBeforeDrawer.focus();
+    lastFocusedBeforeDrawer = null;
+  }
 }
 
 /* --- Mobile list/map switch ---------------------------------------------- */
@@ -215,11 +227,37 @@ function wireViewSwitch() {
 
 function wireGlobalKeys() {
   document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') {
+      if (!document.getElementById('info-modal').hidden) { trapTab(e, document.getElementById('info-modal')); return; }
+      if (SF.state.filtersOpen) { trapTab(e, document.getElementById('filters-rail')); return; }
+      return;
+    }
     if (e.key !== 'Escape') return;
     if (!document.getElementById('info-modal').hidden) { closeInfo(); return; }
     if (SF.state.filtersOpen) { closeDrawer(); return; }
     if (SF.state.selectedId) SF.clearSelection();
   });
+}
+
+/**
+ * Keep Tab/Shift+Tab cycling within an open modal/drawer instead of escaping
+ * to the (visually covered or off-screen) page behind it.
+ */
+function trapTab(e, container) {
+  var candidates = container.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  );
+  var focusable = Array.prototype.filter.call(candidates, function (el) { return el.offsetParent !== null; });
+  if (!focusable.length) return;
+
+  var first = focusable[0], last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 }
 
 /* --- Static info modal (About / Useful Info / Contact / Help) ------------- */

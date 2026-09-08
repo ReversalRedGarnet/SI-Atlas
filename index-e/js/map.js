@@ -89,8 +89,10 @@ function drawMarkers(results) {
     });
 
     marker.on('click', function () { SF.select(school.id); });
-    marker.on('keypress', function (e) {
-      if (e.originalEvent.key === 'Enter') SF.select(school.id);
+    marker.on('keydown', function (e) {
+      if (e.originalEvent.key !== 'Enter' && e.originalEvent.key !== ' ') return;
+      e.originalEvent.preventDefault();
+      SF.select(school.id);
     });
     marker.bindTooltip(school.name + (approx ? ' — approximate location' : ''), { direction: 'top', offset: [0, -14], opacity: 1 });
 
