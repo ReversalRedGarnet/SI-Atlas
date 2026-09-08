@@ -151,7 +151,7 @@ Atlas.map.pinIcon = function (selected, approximate) {
   return L.divIcon({
     className: '',
     html: '<span class="' + cls + '"></span>',
-    iconSize: selected ? [26, 26] : [20, 20],
-    iconAnchor: selected ? [13, 13] : [10, 10]
+    iconSize: selected ? [26, 26] : [24, 24],
+    iconAnchor: selected ? [13, 13] : [12, 12]
   });
 };

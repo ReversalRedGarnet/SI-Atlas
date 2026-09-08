@@ -70,11 +70,6 @@ SF.PROVINCES = ['Honiara', 'Guadalcanal'];
 
 SF.DENOMINATIONS = ['SDA', 'Anglican', 'SSEC', 'Catholic', 'Other'];
 
-/* `educationLevels` on each record keeps these four broad values. The school
- * level *filter* replaces the flat 'Secondary' bucket with the four national
- * exam form groupings below — see SF.SCHOOL_LEVEL_OPTIONS. */
-SF.EDUCATION_LEVELS = ['Early Childhood', 'Primary', 'Secondary', 'Tertiary/Vocational'];
-
 /* Secondary is grouped the way the national exams group it.
  * Form 1-3 = Year 7-9, Form 4-5 = Year 10-11, Form 6 = Year 12, Form 7 = Year 13. */
 SF.FORM_GROUPS = ['Form 1-3', 'Form 4-5', 'Form 6', 'Form 7'];
@@ -95,8 +90,6 @@ SF.SCHOOL_LEVEL_OPTIONS = [
   { value: 'Form 7',              kind: 'form'  },
   { value: 'Tertiary/Vocational', kind: 'level' }
 ];
-
-SF.BOARDING_OPTIONS = ['Day', 'Boarding', 'Both'];
 
 /* Plain-language labels for the general public. The stored values above are
    what a real API would return and never change; these are display only. */

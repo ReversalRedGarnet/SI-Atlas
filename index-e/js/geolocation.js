@@ -6,6 +6,9 @@
  * control is disabled and the rest of the app carries on unchanged.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.SF = window.SF || {};
 SF.geo = {};
 
@@ -80,3 +83,5 @@ SF.geo.clear = function () {
 };
 
 function toRad(deg) { return deg * Math.PI / 180; }
+
+})();

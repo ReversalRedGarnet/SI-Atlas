@@ -9,6 +9,9 @@
  * and the map, so the two views can never disagree.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.SF = window.SF || {};
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -355,3 +358,5 @@ function debounce(fn, ms) {
     t = setTimeout(fn, ms);
   };
 }
+
+})();

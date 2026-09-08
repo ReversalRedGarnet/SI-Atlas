@@ -6,6 +6,9 @@
  * typing in the subject search box never loses focus to a re-render.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.SF = window.SF || {};
 SF.filterPanel = {};
 
@@ -347,3 +350,5 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                   .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
+
+})();

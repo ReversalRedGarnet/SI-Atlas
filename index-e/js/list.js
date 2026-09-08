@@ -6,6 +6,9 @@
  * action a marker click performs in map.js.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.SF = window.SF || {};
 SF.list = {};
 
@@ -197,7 +200,7 @@ function card(school, isSelected) {
   }
 
   return '' +
-    '<article class="result' + (isSelected ? ' is-selected' : '') + '" data-id="' + esc(school.id) + '"' +
+    '<div class="result' + (isSelected ? ' is-selected' : '') + '" data-id="' + esc(school.id) + '"' +
       ' role="button" tabindex="0" aria-pressed="' + (isSelected ? 'true' : 'false') + '">' +
       '<h3 class="result-name">' + esc(school.name) + '</h3>' +
       '<dl class="result-facts">' +
@@ -205,5 +208,7 @@ function card(school, isSelected) {
           return '<div class="rf"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>';
         }).join('') +
       '</dl>' +
-    '</article>';
+    '</div>';
 }
+
+})();

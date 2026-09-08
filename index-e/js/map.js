@@ -12,6 +12,9 @@
  * filters anything itself; it only draws what it is handed.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.SF = window.SF || {};
 SF.map = {};
 
@@ -46,9 +49,6 @@ SF.map.focus = function (school) {
 SF.map.resetView = function () {
   if (atlasMap) atlasMap.resetView();
 };
-
-/** True once the map has a real size — used to decide whether a fit can run. */
-SF.map.isVisible = function () { return !!atlasMap && atlasMap.isVisible(); };
 
 /**
  * Call after the map container changes size (panel opens, mobile view switch).
@@ -108,3 +108,5 @@ function paintSelection(selectedId) {
     markers[id].setZIndexOffset(id === selectedId ? 1000 : 0);
   });
 }
+
+})();

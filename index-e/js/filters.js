@@ -6,6 +6,9 @@
  * server, in a test, or against a real API response unchanged.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.SF = window.SF || {};
 SF.filters = {};
 
@@ -259,3 +262,5 @@ function setKey(key, value) { var o = {}; o[key] = value; return o; }
 
 /* Pre-compute the search blobs once so filtered copies inherit them. */
 SF.SCHOOLS.forEach(haystack);
+
+})();

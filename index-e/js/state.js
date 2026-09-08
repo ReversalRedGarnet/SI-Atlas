@@ -8,6 +8,9 @@
  * truth — no reactivity framework required at this size.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.SF = window.SF || {};
 
 SF.state = {
@@ -134,10 +137,6 @@ SF.activeFilterCount = function () {
   return n;
 };
 
-SF.hasActiveFilters = function () {
-  return SF.activeFilterCount() > 0 || SF.state.query.trim() !== '';
-};
-
 SF.getSchoolById = function (id) {
   return SF.SCHOOLS.filter(function (s) { return s.id === id; })[0] || null;
 };
@@ -147,3 +146,5 @@ function setOne(key, value) {
   o[key] = value;
   return o;
 }
+
+})();

@@ -6,6 +6,9 @@
  * directions open Google Maps, "Call" is a tel: link, "Website" is an href.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.SF = window.SF || {};
 SF.panel = {};
 
@@ -173,3 +176,5 @@ function iconGlobe() {
 function iconMail() {
   return '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" class="ico"><path d="M2 3.5h12c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1v-7c0-.6.4-1 1-1Zm.8 1.6L8 8.6l5.2-3.5H2.8Z"/></svg>';
 }
+
+})();

@@ -26,7 +26,10 @@
 
   --green:  #1F6B2E;       /* page headings, as on both reference sites */
   --red:    #A5232B;       /* notices and warnings only */
-  --gold:   #C8A415;       /* decorative fills only — 2.9:1, never text */
+  --gold:   #C8A415;       /* decorative fills, plus text only on dark (navy)
+                              surfaces — 4.95:1 on navy, but only 2.39:1 on
+                              white/panel, so never use it as text on a light
+                              surface */
 
   --page:      #ECECEB;    /* body background */
   --panel:     #FFFFFF;

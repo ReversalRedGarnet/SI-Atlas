@@ -10,6 +10,9 @@
  * as verified. See shared/schema.js for the status values and default.
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.Atlas = window.Atlas || {};
 Atlas.verificationBadge = {};
 
@@ -63,3 +66,5 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                   .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
+
+})();
