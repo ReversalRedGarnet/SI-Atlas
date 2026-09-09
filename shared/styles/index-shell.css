@@ -1,49 +1,64 @@
 /* ============================================================================
-   SI Atlas — shared index shell (masthead · nav · notice · page heading)
+   SI Atlas — shared index shell
    ----------------------------------------------------------------------------
-   The chrome that runs across the top of every SI Atlas index, in one place.
-   Index E and Index P had byte-identical copies of all of this in their own
-   stylesheets; Index P got them by being hand-built to mirror Index E rather
-   than by sharing anything. This file is that shared piece, so a change to the
-   shell lands on every index at once and a new index inherits the current
-   convention for free.
+   The page skeleton every SI Atlas index is built on, in one place: the chrome
+   across the top (masthead · nav · notice · page heading), the search toolbar,
+   the frame the workspace columns sit in, the mobile list/map switch, and the
+   scrim + modal overlay. Index E and Index P had byte-identical copies of all
+   of it; Index P got them by being hand-built to mirror Index E rather than by
+   sharing anything. This file is that shared piece, so a change to the shell
+   lands on every index at once and a new index inherits the current convention
+   for free.
 
    Load order (see any index's index.html):
        shared/styles/base.css        tokens, reset, primitives
-       shared/styles/index-shell.css this file — the page-shell chrome
-       css/styles.css                that index's own workspace + specifics
+       shared/styles/index-shell.css this file — the page skeleton
+       css/styles.css                that index's own region contents
 
    It loads BEFORE the index's own stylesheet, so an index can still override
    any of this for a genuine local need — but the default is that it doesn't.
 
-   Scope: the top-of-page chrome only — app-shell layout, masthead, nav bar,
-   service notice, and the page heading. Everything below the heading (the
-   search toolbar and the results · detail · map workspace) stays in each
-   index's own stylesheet, because those diverge in real ways between indexes.
+   ---------------------------------------------------------------------------
+   WHERE THE LINE IS
+   ---------------------------------------------------------------------------
+   This file owns the REGIONS and how they reflow: where the columns sit, how
+   wide they are, what happens to them below 860px. An index's own stylesheet
+   owns what goes INSIDE those regions: its filter drawer, its result rows, its
+   detail-panel sections, its map legend and markers.
+
+   So `.map-col` (the frame) is here and `#map` / the legend contents are not;
+   `.results-col` (the column) is here and `.result` (a row in it) is not.
 
    ---------------------------------------------------------------------------
-   TWO THINGS ARE DELIBERATELY ABSENT, AND SHOULD STAY ABSENT
+   THREE THINGS ARE DELIBERATELY ABSENT, AND SHOULD STAY ABSENT
    ---------------------------------------------------------------------------
-   1. An attribution subtitle in the masthead (`.masthead-dept`). Index E
-      carried "Ministry of Education & Human Resources Development" and Index P
-      "Royal Solomon Islands Police Force — facilities". Both are gone. An SI
-      Atlas index is an independent open-data directory compiled from public
-      records; naming an agency in the masthead implied an endorsement or
-      authorship none of these indexes has. Do not reintroduce it — say what
-      the sources are in the service notice and the About panel instead, where
-      it can be stated accurately.
+   1. A government attribution line in the masthead (`.gov-line`). Index E
+      carried "Solomon Islands Government" and Index P "Solomon Islands public
+      services" above the service name. Both are gone, and so is the
+      `.masthead-text` column wrapper that existed only to stack that line
+      above the service name. The masthead is now the logo and the service
+      name, side by side, and nothing else.
 
-   2. A collapsible statistics widget above the results (`.figures` / `.stat`)
-      and its "Hide this introduction" toggle (`.intro-hide`). The counts were
-      a summary of what the page already shows, and the toggle was an
-      affordance for hiding a two-line paragraph. Both are gone.
+   2. An agency attribution subtitle in the masthead (`.masthead-dept`). Index
+      E carried "Ministry of Education & Human Resources Development" and Index
+      P "Royal Solomon Islands Police Force — facilities".
+
+   3. A collapsible statistics widget above the results (`.figures` / `.stat`)
+      and its "Hide this introduction" toggle (`.intro-hide`).
+
+   (1) and (2) are the same point: an SI Atlas index is an independent open-data
+   directory compiled from public records, and putting a government name in the
+   masthead implied an endorsement or authorship none of these indexes has. Say
+   what the sources actually are in the service notice and the About panel,
+   where it can be stated accurately. (3) restated what the page already showed,
+   behind a control for hiding two lines of text.
 
    The intro paragraph itself stays, and is ALWAYS VISIBLE — there is no
    collapse or hide affordance on it at all. If a future index needs a headline
    figure, it belongs in the paragraph's own prose, not in a separate widget.
 
-   See "Adding a new index" in the repo-root README.md for the same convention
-   stated as a rule.
+   See "Adding a new index" in the repo-root README.md for the same conventions
+   stated as rules.
    ========================================================================== */
 
 /* --- App-shell layout (fixed viewport, no page scroll) --------------------
@@ -65,7 +80,9 @@ body {
 .gov-nav :focus-visible,
 .masthead :focus-visible { outline-color: var(--gold); }
 
-/* --- Masthead ------------------------------------------------------------ */
+/* --- Masthead ------------------------------------------------------------
+   The logo and the service name, side by side. Nothing else — see the note
+   at the top of this file. */
 .masthead {
   flex: none;
   background: var(--panel);
@@ -77,14 +94,10 @@ body {
 }
 .masthead-id { display: flex; align-items: center; gap: .7rem; text-decoration: none; }
 .crest { display: flex; flex: none; }
-.masthead-text { display: flex; flex-direction: column; line-height: 1.15; }
-.gov-line {
-  font-size: .72rem; font-weight: 700; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--text-mid);
-}
 .service-name {
   font-family: var(--font-head);
   font-size: 1.4rem; font-weight: 700; color: var(--navy);
+  line-height: 1.15;
 }
 
 /* --- Navigation ---------------------------------------------------------- */
@@ -128,10 +141,92 @@ body {
 .page-intro h1 { font-size: 1.45rem; color: var(--green); margin-bottom: .2rem; }
 .page-intro p { font-size: .9rem; color: var(--text-mid); max-width: 78ch; }
 
+/* --- Search + controls --------------------------------------------------- */
+.toolbar {
+  flex: none;
+  display: flex; align-items: flex-end; gap: 1.25rem; flex-wrap: wrap;
+  padding: .7rem var(--shell-pad) .75rem;
+  background: var(--panel-alt);
+  border-bottom: 1px solid var(--rule);
+}
+.field-label {
+  display: block;
+  font-size: .8rem; font-weight: 700; color: var(--text-mid);
+  margin-bottom: .25rem;
+}
+.search-form { flex: 1 1 460px; max-width: 640px; }
+.search-row { display: flex; gap: .4rem; }
+.search-input {
+  flex: 1 1 auto; min-width: 0;
+  font: inherit; color: var(--text);
+  height: 36px; padding: 0 .55rem;
+  border: 1px solid var(--rule-strong);
+  background: #fff;
+}
+.search-input:focus { outline: 3px solid var(--navy); outline-offset: -1px; border-color: var(--navy); }
+.search-input::-webkit-search-cancel-button { display: none; }
+
+.tool-actions { display: flex; align-items: flex-end; gap: .5rem; margin-left: auto; }
+.sort-field { display: block; }
+
+/* --- Workspace frame ------------------------------------------------------
+   The three columns and their geometry. What goes inside each one is the
+   index's own business — see "Where the line is" at the top of this file. */
+.workspace { flex: 1 1 auto; min-height: 0; display: flex; align-items: stretch; }
+.results-col, .detail-col {
+  background: var(--panel);
+  border-right: 1px solid var(--rule);
+  display: flex; flex-direction: column; min-height: 0;
+}
+.results-col { flex: 0 1 400px; width: 400px; min-width: 320px; }
+
+.detail-col { display: none; flex: 0 0 420px; width: 420px; }
+body.has-selection .detail-col { display: flex; }
+.detail-inner { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; }
+/* Only ever visible as the bottom-sheet grab handle below 860px. */
+.sheet-grip { display: none; }
+
+/* z-index makes .map-col a stacking context so Leaflet's panes and controls
+   (400–1000) cannot paint over the drawer or the mobile bottom sheet. */
+.map-col { flex: 1 1 auto; min-width: 0; position: relative; z-index: 1; background: #dbe3ee; }
+
+/* --- List / map switch (small screens) ----------------------------------- */
+.view-switch { display: none; }
+
+/* --- Scrim + modal ------------------------------------------------------- */
+.scrim { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.45); }
+
+.modal {
+  position: fixed; inset: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem; background: rgba(0,0,0,.5);
+}
+.modal[hidden] { display: none; }
+.modal-card {
+  position: relative;
+  background: #fff; border: 1px solid var(--rule-strong);
+  border-top: 4px solid var(--navy);
+  padding: 1.1rem 1.2rem;
+  max-width: 620px; width: 100%; max-height: 84vh; overflow-y: auto;
+}
+.modal-card h2 { font-size: 1.2rem; color: var(--navy); margin-bottom: .6rem; padding-right: 5rem; }
+.modal-card p { font-size: .9rem; color: var(--text); line-height: 1.5; margin-bottom: .55rem; }
+.modal-card ul { margin: .3rem 0 .7rem; padding-left: 1.15rem; }
+.modal-card li { list-style: disc; font-size: .9rem; color: var(--text); line-height: 1.5; margin-bottom: .3rem; }
+.modal-card kbd {
+  font-family: ui-monospace, Menlo, monospace; font-size: .82rem;
+  background: var(--panel-alt); border: 1px solid var(--rule-strong); padding: 0 .25rem;
+}
+.modal-close { position: absolute; right: .8rem; top: .8rem; }
+
 /* ==========================================================================
-   Responsive — shell only. Each index's own stylesheet carries the matching
-   media queries for its toolbar and workspace.
+   Responsive — the shell's own reflow. An index's stylesheet carries the
+   matching media queries for whatever lives inside the regions.
    ========================================================================== */
+
+@media (max-width: 1199px) {
+  body.has-selection .results-col { display: none; }
+}
 
 @media (max-width: 859px) {
   /* Tightens the gutter for every element that uses it, shell or not. */
@@ -139,7 +234,6 @@ body {
 
   .masthead-inner { padding: .45rem var(--shell-pad); }
   .service-name { font-size: 1.15rem; }
-  .gov-line { font-size: .66rem; }
 
   /* Nav scrolls sideways rather than wrapping — as on the reference sites. */
   .gov-nav-inner { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -152,4 +246,57 @@ body {
   .page-intro { flex-wrap: wrap; gap: .35rem; padding: .5rem var(--shell-pad) .55rem; }
   .page-intro h1 { font-size: 1.08rem; line-height: 1.25; }
   .page-intro p { font-size: .83rem; }
+
+  .toolbar { gap: .45rem; padding: .5rem var(--shell-pad) .55rem; }
+  .field-label { font-size: .76rem; margin-bottom: .18rem; }
+  .search-form { flex: 1 1 100%; max-width: none; }
+  .tool-actions { margin-left: 0; flex: 1 1 100%; }
+  .tool-actions .btn { flex: 0 1 auto; }
+  .sort-field { margin-left: auto; }
+  .sort-field .field-label { display: none; }
+
+  .workspace { position: relative; }
+  .results-col { flex: 1 1 auto; width: 100%; border-right: 0; padding-bottom: 46px; }
+  .map-col { display: none; }
+  body.view-map .results-col { display: none; }
+  body.view-map .map-col { display: block; }
+  body.has-selection .results-col { display: flex; }
+  body.view-map.has-selection .results-col { display: none; }
+
+  .detail-col {
+    position: fixed; z-index: 45; left: 0; right: 0; bottom: 0;
+    width: auto; max-height: 78vh;
+    border-right: 0; border-top: 3px solid var(--navy);
+    box-shadow: 0 -3px 10px rgba(0,0,0,.22);
+  }
+  .sheet-grip { display: block; width: 40px; height: 4px; background: var(--rule-strong); margin: .4rem auto .1rem; }
+  .detail-actions { position: sticky; bottom: 0; background: #fff; border-top: 1px solid var(--rule); }
+
+  /* A plain pair of buttons, not an oversized pill. */
+  .view-switch {
+    display: flex;
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    z-index: 46;
+    border: 1px solid var(--navy);
+    box-shadow: 0 1px 4px rgba(0,0,0,.28);
+  }
+  .vs-btn {
+    background: #fff; border: 0; cursor: pointer;
+    height: 34px; padding: 0 1.4rem;
+    font-size: .86rem; font-weight: 700; color: var(--navy);
+  }
+  .vs-btn + .vs-btn { border-left: 1px solid var(--navy); }
+  .vs-btn.is-active { background: var(--navy); color: #fff; }
+  body.has-selection .view-switch { display: none; }
+
+  /* Placement of the map's own overlays. What they contain is index-specific;
+     where they sit over the map is not. */
+  .map-note { bottom: 56px; left: 6px; font-size: .74rem; }
+  .map-reset { top: 78px; right: 6px; }
+  .leaflet-bottom.leaflet-right { bottom: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

@@ -3,12 +3,13 @@
 
    Design tokens, the CSS reset, and generic primitives (buttons, chips,
    selects, the verification badge, focus/sr-only basics) live in
-   ../shared/styles/base.css; the page-shell chrome above the search box
-   (masthead, nav bar, service notice, page heading) lives in
+   ../shared/styles/base.css; the page skeleton — masthead, nav, notice, page
+   heading, search toolbar, the workspace column frame, the mobile list/map
+   switch, the scrim + modal, and their responsive reflow — lives in
    ../shared/styles/index-shell.css. Both load before this file — see
-   index.html. This stylesheet holds only what is specific to Index P: the
-   search toolbar, the filters·results·detail·map workspace, and the four
-   facility-type map pins.
+   index.html. This stylesheet holds only what goes inside those regions for
+   Index P: the filter drawer, the result rows, the detail panel, the map
+   contents and the four facility-type pins.
 
    Visual reference is the same as every other SI Atlas index: the live
    Solomon Islands Government service portal (solomons.gov.sb). Arial/Open Sans
@@ -24,45 +25,11 @@
    ========================================================================== */
 
 /* --- Page shell ----------------------------------------------------------
-   The masthead, nav bar, service notice and page heading are shared across
-   every index and live in ../shared/styles/index-shell.css, loaded before
-   this file. This stylesheet starts at the search toolbar. */
-
-/* --- Search + controls --------------------------------------------------- */
-.toolbar {
-  flex: none;
-  display: flex; align-items: flex-end; gap: 1.25rem; flex-wrap: wrap;
-  padding: .7rem var(--shell-pad) .75rem;
-  background: var(--panel-alt);
-  border-bottom: 1px solid var(--rule);
-}
-.field-label {
-  display: block;
-  font-size: .8rem; font-weight: 700; color: var(--text-mid);
-  margin-bottom: .25rem;
-}
-.search-form { flex: 1 1 460px; max-width: 640px; }
-.search-row { display: flex; gap: .4rem; }
-.search-input {
-  flex: 1 1 auto; min-width: 0;
-  font: inherit; color: var(--text);
-  height: 36px; padding: 0 .55rem;
-  border: 1px solid var(--rule-strong);
-  background: #fff;
-}
-.search-input:focus { outline: 3px solid var(--navy); outline-offset: -1px; border-color: var(--navy); }
-.search-input::-webkit-search-cancel-button { display: none; }
-
-.tool-actions { display: flex; align-items: flex-end; gap: .5rem; margin-left: auto; }
-.sort-field { display: block; }
-
-/* --- Workspace ----------------------------------------------------------- */
-.workspace { flex: 1 1 auto; min-height: 0; display: flex; align-items: stretch; }
-.results-col, .detail-col {
-  background: var(--panel);
-  border-right: 1px solid var(--rule);
-  display: flex; flex-direction: column; min-height: 0;
-}
+   The page skeleton — masthead, nav, notice, page heading, search toolbar,
+   the workspace column frame, the mobile list/map switch and the scrim +
+   modal — is shared across every index and lives in
+   ../shared/styles/index-shell.css, loaded before this file. What follows
+   is only what goes INSIDE those regions. */
 
 /* --- Filter drawer ------------------------------------------------------- */
 .filters-rail {
@@ -153,7 +120,6 @@ body.filters-open .filters-rail { transform: translateX(0); }
 .seg input:focus-visible + span { outline: 3px solid var(--navy); outline-offset: -3px; }
 
 /* --- Results ------------------------------------------------------------- */
-.results-col { flex: 0 1 400px; width: 400px; min-width: 320px; }
 
 .results-head {
   flex: none;
@@ -206,10 +172,6 @@ body.filters-open .filters-rail { transform: translateX(0); }
 .empty-body { font-size: .88rem; color: var(--text-mid); margin: .4rem 0 1rem; }
 
 /* --- Detail panel -------------------------------------------------------- */
-.detail-col { display: none; flex: 0 0 420px; width: 420px; }
-body.has-selection .detail-col { display: flex; }
-.detail-inner { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; }
-.sheet-grip { display: none; }
 
 .detail-bar {
   position: sticky; top: 0; z-index: 2;
@@ -300,7 +262,6 @@ body.has-selection .detail-col { display: flex; }
 /* --- Map ----------------------------------------------------------------- */
 /* z-index makes .map-col a stacking context so Leaflet's panes and controls
    (400–1000) cannot paint over the drawer or the mobile bottom sheet. */
-.map-col { flex: 1 1 auto; min-width: 0; position: relative; z-index: 1; background: #dbe3ee; }
 .leaflet-tile-pane { filter: saturate(.8) contrast(.97); }
 #map { position: absolute; inset: 0; }
 
@@ -389,101 +350,13 @@ body.has-selection .detail-col { display: flex; }
 .leaflet-control-zoom a { border-radius: 0 !important; }
 .leaflet-tooltip { font-size: .8rem; border-radius: 0; border: 1px solid var(--rule-strong); color: var(--text); }
 
-/* --- List / map switch (small screens) ----------------------------------- */
-.view-switch { display: none; }
-
-/* --- Scrim + modal ------------------------------------------------------- */
-.scrim { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.45); }
-
-.modal {
-  position: fixed; inset: 0; z-index: 60;
-  display: flex; align-items: center; justify-content: center;
-  padding: 1rem; background: rgba(0,0,0,.5);
-}
-.modal[hidden] { display: none; }
-.modal-card {
-  position: relative;
-  background: #fff; border: 1px solid var(--rule-strong);
-  border-top: 4px solid var(--navy);
-  padding: 1.1rem 1.2rem;
-  max-width: 620px; width: 100%; max-height: 84vh; overflow-y: auto;
-}
-.modal-card h2 { font-size: 1.2rem; color: var(--navy); margin-bottom: .6rem; padding-right: 5rem; }
-.modal-card p { font-size: .9rem; color: var(--text); line-height: 1.5; margin-bottom: .55rem; }
-.modal-card ul { margin: .3rem 0 .7rem; padding-left: 1.15rem; }
-.modal-card li { list-style: disc; font-size: .9rem; color: var(--text); line-height: 1.5; margin-bottom: .3rem; }
-.modal-card kbd {
-  font-family: ui-monospace, Menlo, monospace; font-size: .82rem;
-  background: var(--panel-alt); border: 1px solid var(--rule-strong); padding: 0 .25rem;
-}
-.modal-close { position: absolute; right: .8rem; top: .8rem; }
-
 /* ==========================================================================
-   Responsive
+   Responsive — this index's own regions. The shell's reflow (toolbar,
+   columns, mobile switch, map overlay placement) lives in
+   ../shared/styles/index-shell.css.
    ========================================================================== */
-
-@media (max-width: 1199px) {
-  body.has-selection .results-col { display: none; }
-}
-
-@media (max-width: 859px) {
-
-
-
-
-  .toolbar { gap: .45rem; padding: .5rem var(--shell-pad) .55rem; }
-  .field-label { font-size: .76rem; margin-bottom: .18rem; }
-  .search-form { flex: 1 1 100%; max-width: none; }
-  .tool-actions { margin-left: 0; flex: 1 1 100%; }
-  .tool-actions .btn { flex: 0 1 auto; }
-  .sort-field { margin-left: auto; }
-  .sort-field .field-label { display: none; }
-
-  .workspace { position: relative; }
-  .results-col { flex: 1 1 auto; width: 100%; border-right: 0; padding-bottom: 46px; }
-  .map-col { display: none; }
-  body.view-map .results-col { display: none; }
-  body.view-map .map-col { display: block; }
-  body.has-selection .results-col { display: flex; }
-  body.view-map.has-selection .results-col { display: none; }
-
-  .detail-col {
-    position: fixed; z-index: 45; left: 0; right: 0; bottom: 0;
-    width: auto; max-height: 78vh;
-    border-right: 0; border-top: 3px solid var(--navy);
-    box-shadow: 0 -3px 10px rgba(0,0,0,.22);
-  }
-  .sheet-grip { display: block; width: 40px; height: 4px; background: var(--rule-strong); margin: .4rem auto .1rem; }
-  .detail-actions { position: sticky; bottom: 0; background: #fff; border-top: 1px solid var(--rule); }
-
-  /* A plain pair of government buttons, not an oversized pill. */
-  .view-switch {
-    display: flex;
-    position: fixed; left: 50%; transform: translateX(-50%);
-    bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-    z-index: 46;
-    border: 1px solid var(--navy);
-    box-shadow: 0 1px 4px rgba(0,0,0,.28);
-  }
-  .vs-btn {
-    background: #fff; border: 0; cursor: pointer;
-    height: 34px; padding: 0 1.4rem;
-    font-size: .86rem; font-weight: 700; color: var(--navy);
-  }
-  .vs-btn + .vs-btn { border-left: 1px solid var(--navy); }
-  .vs-btn.is-active { background: var(--navy); color: #fff; }
-  body.has-selection .view-switch { display: none; }
-
-  .map-note { bottom: 56px; left: 6px; font-size: .74rem; }
-  .map-reset { top: 78px; right: 6px; }
-  .leaflet-bottom.leaflet-right { bottom: 40px; }
-}
 
 @media (max-width: 340px) {
   .result-facts { grid-template-columns: 1fr; row-gap: 0; }
   .rf dt { font-size: .74rem; padding-top: .15rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

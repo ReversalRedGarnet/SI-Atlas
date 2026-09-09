@@ -76,8 +76,11 @@ si-atlas/
 │   ├── verification-badge.js   verified/unverified/unknown badge renderer (Atlas.verificationBadge)
 │   └── styles/
 │       ├── base.css         shared design tokens, reset, generic UI primitives
-│       └── index-shell.css  the page-shell chrome every index shares:
-│                             masthead, nav bar, service notice, page heading
+│       └── index-shell.css  the page skeleton every index shares: masthead,
+│                             nav bar, service notice, page heading, search
+│                             toolbar, workspace column frame, mobile
+│                             list/map switch, scrim + modal, and their
+│                             responsive reflow
 ├── index-e/                Index E — Education (see index-e/README.md)
 ├── index-p/                Index P — Policing (see index-p/README.md)
 └── index-h/                Index H — Health (stub, not yet built)
@@ -98,9 +101,14 @@ logic (Index E uses `SF`, Index P uses `SP`).
    `../shared/schema.js` / `../shared/map.js` /
    `../shared/verification-badge.js` before its own scripts.
 
-   `index-shell.css` carries the masthead, nav bar, service notice and page
-   heading, so an index's own stylesheet starts at the search toolbar. Do
-   not re-declare that chrome locally.
+   `index-shell.css` carries the whole page skeleton — masthead, nav bar,
+   service notice, page heading, search toolbar, the workspace column frame,
+   the mobile list/map switch, the scrim + modal, and how all of it reflows
+   below 860px. An index's own stylesheet holds only what goes *inside* those
+   regions: its filter drawer, result rows, detail-panel sections and map
+   contents. The dividing line is region vs. contents — `.map-col` is shared,
+   `#map` and the legend are not; `.results-col` is shared, `.result` is not.
+   Do not re-declare the skeleton locally.
 2. Build entity records through `Atlas.schema.createEntity()` (or at least
    in its shape) so verification status defaults safely and provenance has
    somewhere to live. `index-p/js/data/stations.js` is the reference for
@@ -116,11 +124,14 @@ The top of every index is a masthead, a nav bar, a service notice and a page
 heading — in that order, styled by `shared/styles/index-shell.css`. Three
 rules apply to it, and they are the current convention for every index:
 
-- **No attribution subtitle in the masthead.** Index E carried "Ministry of
-  Education & Human Resources Development" and Index P "Royal Solomon Islands
-  Police Force — facilities"; both were removed. An SI Atlas index is an
-  independent open-data directory compiled from public records, and naming an
-  agency in the masthead implied an endorsement or authorship none of these
+- **The masthead is the logo and the service name, side by side. Nothing
+  else.** No government attribution line above the name (Index E carried
+  "Solomon Islands Government", Index P "Solomon Islands public services"),
+  and no agency subtitle beside it (Index E carried "Ministry of Education &
+  Human Resources Development", Index P "Royal Solomon Islands Police Force —
+  facilities"). All four are gone. An SI Atlas index is an independent
+  open-data directory compiled from public records, and putting a government
+  name in the masthead implied an endorsement or authorship none of these
   indexes has. Say what the sources actually are in the service notice and the
   About panel, where it can be stated accurately.
 - **No collapsible statistics widget.** No "N records / N provinces covered"
