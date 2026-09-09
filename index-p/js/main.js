@@ -15,6 +15,8 @@
 window.SP = window.SP || {};
 
 document.addEventListener('DOMContentLoaded', function () {
+  syncStaticCounts();
+
   SP.filterPanel.init();
   SP.list.init();
   SP.map.init();
@@ -35,6 +37,23 @@ document.addEventListener('DOMContentLoaded', function () {
   SP.subscribe(render);
   render(SP.state);
 });
+
+/* --- Whole-dataset counts (fixed for the page's lifetime, unlike the
+ * filtered counts render() produces on every pass) ------------------------
+ * Computed once from SP.STATIONS rather than typed in, so a future data
+ * update can never leave the notice banner or the About/Help text quoting a
+ * stale figure the way several hardcoded "20 of 42"s once did here. */
+var TOTAL_COUNT = SP.STATIONS.length;
+var UNMAPPED_COUNT = SP.STATIONS.filter(SP.filters.needsCoordinates).length;
+
+function syncStaticCounts() {
+  ['notice-unmapped-long', 'notice-unmapped-short'].forEach(function (id) {
+    document.getElementById(id).textContent = UNMAPPED_COUNT;
+  });
+  ['notice-total-long', 'notice-total-short'].forEach(function (id) {
+    document.getElementById(id).textContent = TOTAL_COUNT;
+  });
+}
 
 /* --- The single render pass --------------------------------------------- */
 
@@ -287,7 +306,7 @@ var INFO = {
   about: {
     title: 'About SI Atlas — Index P',
     body: '<p>SI Atlas — Index P is a directory of Royal Solomon Islands Police Force stations, posts and outposts: where they are, what kind of facility each one is, and — just as importantly — how well each record is actually confirmed.</p>' +
-          '<p>All 42 records are real, compiled from RSIPF annual reports and media releases, Solomon Islands Government news articles and, where a record says so, non-official sources such as news outlets or mapping data. Nothing is invented. A field with no confirmed source is left blank rather than guessed, and coordinates are never substituted with a town or island centre — which is why 20 of the 42 records appear in this list but not on the map.</p>' +
+          '<p>All ' + TOTAL_COUNT + ' records are real, compiled from RSIPF annual reports and media releases, Solomon Islands Government news articles and, where a record says so, non-official sources such as news outlets or mapping data. Nothing is invented. A field with no confirmed source is left blank rather than guessed, and coordinates are never substituted with a town or island centre — which is why ' + UNMAPPED_COUNT + ' of the ' + TOTAL_COUNT + ' records appear in this list but not on the map.</p>' +
           '<p>This is an independent open-data prototype built from public records. It is not an official RSIPF service, and nothing entered on this page is stored or sent anywhere. In an emergency, call the police directly.</p>'
   },
   useful: {
@@ -309,7 +328,7 @@ var INFO = {
     body: '<ul><li><strong>Start by searching.</strong> The search box looks at station names, addresses, provinces, wards and notes all at once.</li>' +
           '<li><strong>Use the Filters button</strong> to narrow by kind of facility, province, verification status, whether a record has coordinates, and whether it has a phone number.</li>' +
           '<li><strong>Picking more than one option widens the results.</strong> Choosing both Western and Choiseul shows stations in either. Adding a facility type narrows them again.</li>' +
-          '<li><strong>Some records are not on the map.</strong> 20 of the 42 have no confirmed coordinates, and this directory will not invent one. They are still fully searchable — filter “Map location” to “Not yet” to see exactly which.</li>' +
+          '<li><strong>Some records are not on the map.</strong> ' + UNMAPPED_COUNT + ' of the ' + TOTAL_COUNT + ' have no confirmed coordinates, and this directory will not invent one. They are still fully searchable — filter “Map location” to “Not yet” to see exactly which.</li>' +
           '<li><strong>Every marker is a dashed circle.</strong> That means an approximate coordinate. No coordinate in this dataset comes from an official surveyed source, so none is drawn as exact.</li>' +
           '<li><strong>Some records list two or three phone numbers.</strong> Different sources of different dates gave different numbers and the difference has not been resolved, so all are kept. The record’s notes explain each case.</li>' +
           '<li>Tap a station in the list or on the map to see its full record, including its sources. Press <kbd>Esc</kbd> to go back.</li></ul>'

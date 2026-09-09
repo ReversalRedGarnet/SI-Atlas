@@ -9,8 +9,11 @@
  * columns were mapped onto SI Atlas's shared entity envelope, which judgement
  * calls the mapping had to make, and every change made to a record since.
  *
- * THIS FILE IS NO LONGER A PURE CONVERSION. Seven records carry additions or
- * changes made after the conversion, each one marked in its own `dataFlag`.
+ * THIS FILE IS NO LONGER A PURE CONVERSION. Thirteen records carry additions
+ * or changes made after the conversion. Eleven of them are marked in their own
+ * `dataFlag`; two (Kariki, Kulitanai) are plain coordinate additions using the
+ * file's standard Google Maps citation -- the same pattern Munda or Honiara
+ * Central already use -- so neither needed a flag.
  * Re-running a fresh conversion from the workbook would silently discard them.
  * If the workbook is ever re-exported, reapply the POST-CONVERSION EDITS list
  * below -- or fold those facts back into the workbook first and re-export.
@@ -25,7 +28,7 @@
  *   - Nothing is invented or estimated. A blank field means nothing
  *     verifiable was found -- not zero, and not unknown-but-guessable.
  *   - Coordinates are NEVER substituted with a town or island centroid.
- *     20 of 42 records have no coordinates and carry
+ *     14 of 42 records have no coordinates and carry
  *     `location.lat: null`, `location.lng: null`. They still appear in
  *     search, in the result list and in the profile view; js/map.js simply
  *     does not plot them, and the list and profile say so in words.
@@ -94,7 +97,7 @@
  *
  * KNOWN OPEN ISSUES inherited from the workbook. These are unresolved on
  * purpose -- open questions the sources do not settle, not cleanup jobs:
- *   - 20 of 42 records still have no coordinates at all.
+ *   - 14 of 42 records still have no coordinates at all.
  *   - Honiara Central, Henderson, Auki, Kirakira, Gizo and Taro each carry
  *     more than one phone number, from sources of different vintages. Read
  *     the record's `notes` before treating any one of them as "the" number.
@@ -109,7 +112,9 @@
  *     unrest, and their current operating status has not been reconfirmed by
  *     a dated official source.
  *   - Ulawa may have been built but not yet staffed as of its only (undated,
- *     non-official) source.
+ *     non-official) source. A September 2026 phone call reached staff at the
+ *     post, which may bear on this, but a phone call is not a written source
+ *     and does not resolve the question either way.
  *
  * DISCREPANCY FOUND DURING CONVERSION -- flagged, not corrected. The
  * workbook's README sheet says coordinates are "present for 15 of 42 rows"
@@ -132,10 +137,10 @@
  * where it is a fact about the facility, appended to `notes` behind an
  * "UPDATE (added September 2026...)" marker. No pre-existing sourced fact was
  * deleted or rewritten by any of these -- superseded statements are left
- * standing and the update says that it supersedes them. None of the three
- * sourced additions came with a URL, so `sourceUrls` is untouched on all
- * three and only `sources` gained a citation; this is exactly the case the
- * parallel-list decision (3, above) exists for.
+ * standing and the update says that it supersedes them. None of the sourced
+ * additions below came with a URL, so `sourceUrls` is untouched on every one
+ * of them and only `sources` gained new citations; this is exactly the case
+ * the parallel-list decision (3, above) exists for.
  *
  *   - Kukum Police Station. Destroyed in the November 2021 unrest, rebuilt
  *     under RAPPP, reopened 2024 as the "Kukum Traffic Centre" (AFP media
@@ -156,6 +161,28 @@
  *     associate with that command.
  *   - Chinatown, Tetere, Ringi Cove, Seghe. `dataFlag` only -- no data
  *     changed. See the discrepancy note above.
+ *   - Noro Police Station. Coordinate added, obtained by phone -- a direct
+ *     call was placed to Noro Police Station and the location was confirmed
+ *     verbally with station staff. First-hand but not a written or official
+ *     source; `verification_status` stays 'verified' regardless, since that
+ *     reflects the station's confirmed existence per Annex D, not the
+ *     coordinate.
+ *   - Ulawa Police Post. Same treatment as Noro -- coordinate confirmed by a
+ *     direct phone call to Ulawa Police Post. Flagged because reaching a
+ *     staffed line by phone may bear on the record's existing
+ *     newly-built-but-maybe-unstaffed concern, though a phone call does not
+ *     confirm or resolve that either way.
+ *   - Lata Police Station, Taro Police Station. Coordinate is for a building
+ *     visible on Google Maps at the given location; the building itself is
+ *     not labeled as a police site on the map. Confirmed as the station via
+ *     informal inquiry with local residents in the town, not an official or
+ *     written source -- weaker sourcing than a labeled Google Maps pin, which
+ *     several other records in this file rely on instead.
+ *   - Kariki Police Post, Kulitanai Police Station. Coordinate added; both
+ *     are listed and labeled as police sites on Google Maps (unlike Lata/Taro
+ *     above), so this is a plain coordinate addition using the same citation
+ *     already used for Munda, Honiara Central and others -- not a correction
+ *     or an ambiguous case, and no `dataFlag` was added for either.
  *
  * A NOTE ON `dataFlag`. The source workbook defines this column narrowly, as
  * a log of corrections made during its own cleanup (Maka is its one use). This
@@ -772,12 +799,14 @@ SP.STATION_RECORDS = [
     "name": "Lata Police Station",
     "type": "provincial_hq",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -10.7243941704146,
+      "lng": 165.79821336753,
+      "precision": "approximate"
     },
     "sources": [
-      "RSIPF Annual Report 2018/2019"
+      "RSIPF Annual Report 2018/2019",
+      "Google Maps (unlabeled building, not marked as a police site)",
+      "personal inquiry with local residents in Lata (September 2026)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -786,7 +815,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "No verifiable station-specific coordinates found (only the general Lata/Santa Cruz locality, which was not used to avoid guessing).",
+    "notes": "No verifiable station-specific coordinates found (only the general Lata/Santa Cruz locality, which was not used to avoid guessing). UPDATE (September 2026): a coordinate has since been added for a building visible on Google Maps at this location; the building itself is not labeled as a police site on the map. The location was confirmed as the station via informal inquiry with local residents in Lata — not an official or written source. This is weaker sourcing than a labeled Google Maps pin, and supersedes the “no verifiable coordinates found” statement above, which is kept as originally recorded.",
     "province": "Temotu Province",
     "constituencyWard": null,
     "address": "Lata Town, Santa Cruz Island",
@@ -794,7 +823,7 @@ SP.STATION_RECORDS = [
       "https://www.rsipf.gov.sb/sites/default/files/Annual%20Report%20-2018.pdf"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion addition (September 2026): coordinate is for a building visible on Google Maps at this location; the building is not itself labeled as a police site on the map. Confirmed as the station via informal inquiry with local residents in Lata, not an official or written source — unofficial, unlabeled-building sourcing, weaker than a labeled Google Maps pin. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "manuopo-police-post",
@@ -921,13 +950,14 @@ SP.STATION_RECORDS = [
     "name": "Ulawa Police Post",
     "type": "post",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -9.72712608776949,
+      "lng": 161.982106635308,
+      "precision": "approximate"
     },
     "sources": [
       "RSIPF Annual Report 2019 (Annex D)",
-      "community news aggregator report"
+      "community news aggregator report",
+      "Personal inquiry — phone call to Ulawa Police Post (September 2026)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -936,7 +966,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "A non-official community news source (undated, precise date could not be confirmed) reported community concern over delayed officer deployment to a newly built post in Ulawa - suggests the post may have been newly constructed but not yet fully staffed as of that report; current staffing status not reconfirmed by an official source.",
+    "notes": "A non-official community news source (undated, precise date could not be confirmed) reported community concern over delayed officer deployment to a newly built post in Ulawa - suggests the post may have been newly constructed but not yet fully staffed as of that report; current staffing status not reconfirmed by an official source. UPDATE (September 2026): coordinates added, obtained by phone — a direct call was placed to Ulawa Police Post and the location was confirmed verbally with post staff (first-hand confirmation, not a written or official source). Reaching a staffed line by phone may bear on the staffing concern noted above, though this is not confirmed by a written source, so that concern is not resolved by this update alone.",
     "province": "Makira-Ulawa Province",
     "constituencyWard": null,
     "address": "Ulawa Island, Makira-Ulawa Province",
@@ -945,7 +975,7 @@ SP.STATION_RECORDS = [
       "https://makira2.rssing.com/chan-62208060/all_p1.html"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion addition (September 2026): coordinate added from a direct phone call to Ulawa Police Post, confirmed verbally with post staff — first-hand but not from a written or official source. Reaching a staffed line by phone may bear on this record's existing staffing-concern note, though that is not confirmed by a written source and is not resolved by this update. `verification_status` is left as 'verified', which reflects the post's confirmed existence per RSIPF Annual Report 2019 (Annex D), not the coordinate itself. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "falamai-police-post",
@@ -1040,12 +1070,13 @@ SP.STATION_RECORDS = [
     "name": "Kariki Police Post",
     "type": "post",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -6.89855345550965,
+      "lng": 156.087554493136,
+      "precision": "approximate"
     },
     "sources": [
-      "Solomon Islands Government official news portal"
+      "Solomon Islands Government official news portal",
+      "Google Maps"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -1054,7 +1085,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Designated Immigration Outer Border Post for traditional border crossings under the Immigration Act 2012.",
+    "notes": "Designated Immigration Outer Border Post for traditional border crossings under the Immigration Act 2012. Coordinates from Google Maps (unverified, not an official government source).",
     "province": "Western Province",
     "constituencyWard": "Shortland Islands (Fauro Island)",
     "address": "Kariki, Fauro Island, Shortland Islands",
@@ -1069,13 +1100,14 @@ SP.STATION_RECORDS = [
     "name": "Kulitanai Police Station",
     "type": "station",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -7.07754591378498,
+      "lng": 155.858982668306,
+      "precision": "approximate"
     },
     "sources": [
       "Solomon Islands Government official news portal",
-      "RSIPF official news articles"
+      "RSIPF official news articles",
+      "Google Maps"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -1084,7 +1116,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Functions as a designated Immigration Outer Border Post/'forward base' for traditional border crossings under the Immigration Act 2012, in addition to normal policing duties.",
+    "notes": "Functions as a designated Immigration Outer Border Post/'forward base' for traditional border crossings under the Immigration Act 2012, in addition to normal policing duties. Coordinates from Google Maps (unverified, not an official government source).",
     "province": "Western Province",
     "constituencyWard": "Shortland Islands (Alu Island)",
     "address": "Kulitanai, Alu Island, Shortland Islands, near the PNG/Bougainville border",
@@ -1130,13 +1162,14 @@ SP.STATION_RECORDS = [
     "name": "Noro Police Station",
     "type": "station",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -8.23603334728294,
+      "lng": 157.198835473971,
+      "precision": "approximate"
     },
     "sources": [
       "RSIPF Annual Report 2019 (Annex D)",
-      "RSIPF official media releases"
+      "RSIPF official media releases",
+      "Personal inquiry — phone call to Noro Police Station (September 2026)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -1145,7 +1178,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Referenced in multiple official RSIPF media releases (e.g. assisting Immigration to escort a yacht in 2018). No coordinates found.",
+    "notes": "Referenced in multiple official RSIPF media releases (e.g. assisting Immigration to escort a yacht in 2018). No coordinates found. UPDATE (September 2026): coordinates now added; obtained by phone — a direct call was placed to Noro Police Station and the location was confirmed verbally with station staff (first-hand confirmation, not from a written or official source). This supersedes the “No coordinates found” statement above, which is kept as originally recorded.",
     "province": "Western Province",
     "constituencyWard": null,
     "address": "Noro Town, New Georgia Island",
@@ -1153,7 +1186,7 @@ SP.STATION_RECORDS = [
       "https://www.rsipf.gov.sb/sites/default/files/RSIPF%202019%20Annual%20Report.pdf"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion addition (September 2026): coordinate added from a direct phone call to Noro Police Station, confirmed verbally with station staff — first-hand but not from a written or official source. `verification_status` is left as 'verified', which reflects the station's confirmed existence per RSIPF Annual Report 2019 (Annex D), not the coordinate itself. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "poitete-police-post",
@@ -1373,13 +1406,15 @@ SP.STATION_RECORDS = [
     "name": "Taro Police Station",
     "type": "provincial_hq",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -6.71010883132044,
+      "lng": 156.397966590516,
+      "precision": "approximate"
     },
     "sources": [
       "RSIPF Annual Report 2018/2019",
-      "Solomon Islands Government official news portal"
+      "Solomon Islands Government official news portal",
+      "Google Maps (unlabeled building, not marked as a police site)",
+      "personal inquiry with local residents in Taro (September 2026)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -1388,7 +1423,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Two different phone numbers found across official sources of different dates (2018/2019 report vs. 2020 government article) - both given for reference; the number may have changed over time. No station-specific coordinates found.",
+    "notes": "Two different phone numbers found across official sources of different dates (2018/2019 report vs. 2020 government article) - both given for reference; the number may have changed over time. No station-specific coordinates found. UPDATE (September 2026): a coordinate has since been added for a building visible on Google Maps at this location; the building itself is not labeled as a police site on the map. The location was confirmed as the station via informal inquiry with local residents in Taro — not an official or written source. This is weaker sourcing than a labeled Google Maps pin, and supersedes the “No station-specific coordinates found” statement above, which is kept as originally recorded.",
     "province": "Choiseul Province",
     "constituencyWard": null,
     "address": "Taro Town, Taro Island",
@@ -1397,7 +1432,7 @@ SP.STATION_RECORDS = [
       "https://solomons.gov.sb/police-call-on-bougainvilleans-to-respect-the-common-border-between-png-si-and-its-resources/"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion addition (September 2026): coordinate is for a building visible on Google Maps at this location; the building is not itself labeled as a police site on the map. Confirmed as the station via informal inquiry with local residents in Taro, not an official or written source — unofficial, unlabeled-building sourcing, weaker than a labeled Google Maps pin. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "wagina-police-station",

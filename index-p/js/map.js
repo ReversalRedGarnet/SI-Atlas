@@ -71,11 +71,11 @@ SP.map.refresh = function () {
 
 /* --- internals ----------------------------------------------------------- */
 
-/* 20 of the 42 records have no coordinate source, and the source workbook's
- * rule is that a blank coordinate is more honest than a town-centroid
- * approximation. There is nothing to plot for those, so they are left out of
- * the point set entirely — they remain in the list and in search, which is
- * where they belong. */
+/* Some records have no coordinate source, and the source workbook's rule is
+ * that a blank coordinate is more honest than a town-centroid approximation.
+ * There is nothing to plot for those, so they are left out of the point set
+ * entirely — they remain in the list and in search, which is where they
+ * belong. */
 function locatedPoints(results) {
   return results
     .filter(SP.filters.isLocated)

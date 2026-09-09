@@ -141,7 +141,7 @@ SP.panel.render = function (state) {
 /* --- section builders ---------------------------------------------------- */
 
 /* The coordinate line does three different things depending on the record: a
- * link for a located one, a plain statement for the 20 with nothing to plot,
+ * link for a located one, a plain statement for those with nothing to plot,
  * and in both located cases a note that the coordinate is an estimate. */
 function locationFact(station, directionsUrl) {
   var esc = SP.format.esc;

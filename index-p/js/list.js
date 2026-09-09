@@ -5,7 +5,7 @@
  * Clicking (or Enter/Space on) a row selects that station — exactly the same
  * action a marker click performs in map.js.
  *
- * Every record in the dataset appears here, including the 20 with no
+ * Every record in the dataset appears here, including those with no
  * coordinates. Those simply say so on the row; they are never dropped from the
  * list to keep the map tidy.
  * ==========================================================================*/
@@ -166,7 +166,7 @@ function row(station, isSelected) {
     ? esc(phone)
     : '<span class="no-data">Not recorded</span>']);
 
-  /* 20 of the 42 records have no coordinate source, and coordinates are never
+  /* Some records have no coordinate source, and coordinates are never
    * estimated from a town or island centre. Those records still belong in the
    * directory, so the row says the map has nothing to plot rather than the
    * record quietly disappearing. */

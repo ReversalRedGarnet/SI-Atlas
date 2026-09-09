@@ -13,7 +13,7 @@ This document covers Index P's own implementation.
 > 9 September 2026). They are sourced from RSIPF annual reports and media
 > releases, Solomon Islands Government news articles, and — where a record
 > says so in its own notes — non-official sources such as news outlets and
-> mapping data. **20 of the 42 records have no confirmed coordinates.** They
+> mapping data. **14 of the 42 records have no confirmed coordinates.** They
 > appear in search, in the result list and in the profile view; they are simply
 > not drawn on the map. Coordinates are never substituted with a town or island
 > centroid: the source workbook's rule is that a blank coordinate is more
@@ -173,7 +173,7 @@ still takes the gold ring.
 
 ## Records without coordinates
 
-20 of 42. They are first-class records here, not omissions:
+14 of 42. They are first-class records here, not omissions:
 
 - They appear in the result list, with a **"Map — No coordinates yet — not on
   the map"** row, and in search results like any other record.
@@ -226,7 +226,7 @@ Mostly inherited from the source workbook, and deliberately unresolved — these
 are open questions the sources do not settle, not cleanup jobs. Every one is
 recorded in the relevant record's `notes` and surfaced in its profile.
 
-- **20 of 42 records have no coordinates.** When leads arrive, only
+- **14 of 42 records have no coordinates.** When leads arrive, only
   `location.lat` / `location.lng` (and `location.precision`) need touching.
 - **Four records hold more than one phone number in the phone field itself** —
   Honiara Central, Auki, Kirakira and Taro — from sources of different dates,
@@ -252,7 +252,10 @@ recorded in the relevant record's `notes` and surfaced in its profile.
 - **Unconfirmed current status.** Ulawa may have been built but not yet staffed
   as of its only (undated, non-official) source. *(Naha's status was an open
   issue until the September 2026 update — a September 2023 RSIPF media release
-  now confirms it operational again.)*
+  now confirms it operational again. Ulawa's own September 2026 update added a
+  coordinate confirmed by a direct phone call reaching post staff — evidence
+  someone answers the phone there, but not a written source, so the staffing
+  question itself is left exactly as unresolved as before.)*
 - **A counting discrepancy in the source workbook, flagged not corrected.**
   Its README sheet says coordinates are "present for 15 of 42 rows" and that
   "27 of 42 rows have no coordinates yet". The Police Stations sheet as
@@ -271,16 +274,19 @@ recorded in the relevant record's `notes` and surfaced in its profile.
 
 ## Post-conversion edits
 
-`js/data/stations.js` is **no longer a pure conversion of the workbook.** Seven
-records carry additions or a change made after it, each recorded in that
-record's own `dataFlag` and, where it is a fact about the facility, appended to
-`notes` behind an `UPDATE (added September 2026…)` marker.
+`js/data/stations.js` is **no longer a pure conversion of the workbook.**
+Thirteen records carry additions or a change made after it. Eleven are
+recorded in that record's own `dataFlag` and, where it is a fact about the
+facility, appended to `notes` behind an `UPDATE (added September 2026…)`
+marker. Two more (Kariki, Kulitanai) are plain coordinate additions using the
+file's standard Google Maps citation, so neither needed a flag — see the table
+below.
 
 No pre-existing sourced fact was deleted or rewritten by any of these.
 Superseded statements are left standing, with the update saying that it
-supersedes them. None of the three sourced additions came with a URL, so
-`sourceUrls` is untouched on all three and only `sources` gained a citation —
-exactly the case the parallel-list decision above exists for.
+supersedes them. None of the sourced additions below came with a URL, so
+`sourceUrls` is untouched on every one of them and only `sources` gained new
+citations — exactly the case the parallel-list decision above exists for.
 
 | Record | Change |
 | --- | --- |
@@ -288,10 +294,27 @@ exactly the case the parallel-list decision above exists for.
 | Naha Police Station | Notes + source: damaged in the same 2021 unrest, RAPPP renovation 2022, confirmed operational again by a September 2023 RSIPF media release (O.K Haus community hut opening). `date_accessed` refreshed. |
 | Henderson Police Station | `type` changed `station` → `provincial_hq`, plus notes + source. RSIPF's structure names a separate Provincial Police Commander for Guadalcanal Province, distinct from Honiara City's, and Henderson is the only Guadalcanal-province station RSIPF materials associate with that command. **The only `type` value in the file that differs from the workbook.** |
 | Chinatown, Tetere, Ringi Cove, Seghe | `dataFlag` only — no data changed. See the coordinate discrepancy above. |
+| Noro Police Station | Coordinate added, notes + source: obtained by phone — a direct call was placed to Noro Police Station and the location was confirmed verbally with station staff. First-hand but not a written or official source; `verification_status` stays `verified` (that reflects the station's confirmed existence per Annex D, not the coordinate). |
+| Ulawa Police Post | Coordinate added, notes + source: same phone-confirmation treatment as Noro, placed to Ulawa Police Post. Flagged because reaching a staffed line by phone may bear on the record's existing newly-built-but-maybe-unstaffed concern — noted, but not resolved by a non-written source. |
+| Lata Police Station | Coordinate added, notes + source: for a building visible on Google Maps at this location, not itself labeled as a police site on the map; confirmed as the station via informal inquiry with local residents in Lata — not an official or written source, and weaker sourcing than a labeled Google Maps pin. |
+| Taro Police Station | Same treatment as Lata: coordinate for an unlabeled Google Maps building, confirmed via informal inquiry with local residents in Taro. |
+| Kariki Police Post, Kulitanai Police Station | Coordinate added, source: `; Google Maps` appended to `source_name`. Both are listed and labeled as police sites on Google Maps (unlike Lata/Taro above), so this is a plain coordinate addition using the same citation already used for Munda, Honiara Central and others — not a correction or an ambiguous case, and **no `dataFlag`** was added for either. |
 
 > **If the workbook is ever re-exported, these edits must be reapplied** — a
 > fresh conversion would silently discard them. Better still, fold the facts
 > back into the workbook first and re-export from there.
+>
+> *(Update, September 2026: the Noro/Ulawa/Lata/Taro coordinates and their
+> provenance above were in fact folded back into the source workbook first,
+> then applied here to match — see the workbook's own `Police Stations` sheet,
+> whose `source_name`, `notes` and `data_flag` columns carry the identical
+> text for those four rows. The Summary sheet's live formulas read 26 records
+> with coordinates and 16 without at that point, up from 22/20.)*
+>
+> *(Further update, September 2026: Kariki and Kulitanai's coordinates were
+> added the same way — folded into the source workbook first, then applied
+> here to match. The Summary sheet's live formulas now read 28 records with
+> coordinates and 14 without.)*
 
 ### A note on `dataFlag`
 
@@ -300,7 +323,7 @@ during its own cleanup (Maka is its one use). This index widens it to mean
 *"something about this record needs a human's attention"* — a correction, a
 post-conversion edit, or an unresolved conflict between two fields. `js/panel.js`
 renders it under a neutral **"Flagged on this record"** heading for that reason,
-rather than calling everything a correction. Eight of the 42 records carry one.
+rather than calling everything a correction. Twelve of the 42 records carry one.
 
 ## Out of scope
 

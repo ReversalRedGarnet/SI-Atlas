@@ -184,8 +184,8 @@ function verificationSection() {
       'government or RSIPF source — not merely found somewhere.</p>', false);
 }
 
-/* Not cosmetic: 20 of the 42 records have no coordinates, and this is how you
- * see either half of that deliberately. */
+/* Not cosmetic: some records have no coordinates, and this is how you see
+ * either half of that deliberately. */
 function mappedSection() {
   var opts = [['', 'Any'], ['yes', 'On the map'], ['no', 'Not yet']];
   var body = '<div class="segmented" role="radiogroup" aria-label="Map location">' +
