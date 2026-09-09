@@ -7,6 +7,10 @@ way and sharing the same visual and data conventions.
 - **[Index E — Education](index-e/README.md)** ([live](index-e/index.html)):
   SI Atlas — Index E, a searchable directory and map of schools — currently a
   Honiara pilot.
+- **[Index P — Policing](index-p/README.md)** ([live](index-p/index.html)):
+  SI Atlas — Index P, a searchable directory and map of RSIPF police stations,
+  posts and outposts — 42 records across ten provinces, 22 of them with
+  confirmed coordinates.
 - **Index H — Health** ([stub](index-h/index.html)): a planned directory and
   map of health facilities. Not yet built.
 - Further indexes (government services, disaster/emergency, agriculture,
@@ -72,6 +76,7 @@ si-atlas/
 │   ├── verification-badge.js   verified/unverified/unknown badge renderer (Atlas.verificationBadge)
 │   └── styles/base.css     shared design tokens, reset, generic UI primitives
 ├── index-e/                Index E — Education (see index-e/README.md)
+├── index-p/                Index P — Policing (see index-p/README.md)
 └── index-h/                Index H — Health (stub, not yet built)
 ```
 
@@ -79,16 +84,20 @@ si-atlas/
 `Atlas` global namespace — not ES modules — specifically so every index
 keeps working when opened directly from `file://`, with no local server and
 no build step. Each index keeps its own namespace for its own state and
-logic (Index E uses `SF`).
+logic (Index E uses `SF`, Index P uses `SP`).
 
 ## Adding a new index
 
-1. Copy the shape of `index-h/` for a stub, or `index-e/` for a working
-   example: an `index.html` at `index-<letter>/`, its own `css/` and `js/`,
-   loading `../shared/styles/base.css` before its own stylesheet and
-   `../shared/map.js` / `../shared/verification-badge.js` before its own
-   scripts.
+1. Copy the shape of `index-h/` for a stub, or `index-e/` / `index-p/` for a
+   working example: an `index.html` at `index-<letter>/`, its own `css/` and
+   `js/`, loading `../shared/styles/base.css` before its own stylesheet and
+   `../shared/schema.js` / `../shared/map.js` /
+   `../shared/verification-badge.js` before its own scripts.
 2. Build entity records through `Atlas.schema.createEntity()` (or at least
    in its shape) so verification status defaults safely and provenance has
-   somewhere to live.
+   somewhere to live. `index-p/js/data/stations.js` is the reference for
+   this — its records *are* the shared envelope, and its header documents
+   how a source spreadsheet's columns were mapped onto it. (Index E's
+   dataset predates the shared schema and keeps its own shape; aligning it
+   is a known follow-up.)
 3. Link the new index from this file and from the root `index.html` portal.

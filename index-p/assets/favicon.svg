@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- SI Atlas — Index P. A neutral shield service mark in the SI Atlas
+       palette (navy #06337C, gold #C8A415). Deliberately not the national
+       coat of arms and not an RSIPF badge: a real crest should only ever be
+       used with the responsible agency's authorisation. -->
+  <rect width="32" height="32" fill="#06337C"/>
+  <path d="M16 5 7 8.5v7c0 5 3.8 9.4 9 11 5.2-1.6 9-6 9-11v-7z" fill="#ffffff"/>
+  <path d="M16 8.4 10 10.7v4.8c0 3.4 2.5 6.4 6 7.6 3.5-1.2 6-4.2 6-7.6v-4.8z" fill="#C8A415"/>
+</svg>

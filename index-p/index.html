@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SI Atlas — Index P: Find a police station in Solomon Islands</title>
+<meta name="description" content="Search all 42 known RSIPF police stations, posts and outposts across ten provinces — by province, kind of facility and verification status. Real data from RSIPF and Solomon Islands Government records; 20 records have no confirmed coordinates and are listed but not mapped.">
+<meta name="theme-color" content="#06337C">
+
+<!-- Link previews. og:url must be an absolute URL for scrapers, so it is the
+     only non-relative path in this index. Update it if the site moves to a
+     custom domain or a differently named repository. There is deliberately no
+     og:image: no screenshot has been produced for this index yet, and pointing
+     at another index's image would misrepresent it. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SI Atlas — Index P">
+<meta property="og:title" content="SI Atlas — Index P: Find a police station in Solomon Islands">
+<meta property="og:description" content="Search all 42 known RSIPF police stations, posts and outposts across ten provinces — by province, kind of facility and verification status. Real data from RSIPF and Solomon Islands Government records; 20 records have no confirmed coordinates and are listed but not mapped.">
+<meta property="og:url" content="https://reversalredgarnet.github.io/SI-Atlas/index-p/">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SI Atlas — Index P: Find a police station in Solomon Islands">
+<meta name="twitter:description" content="Search all 42 known RSIPF police stations, posts and outposts across ten provinces. Real data, with sources and verification status on every record.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Leaflet (CDN, no API key required) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+
+<link rel="stylesheet" href="../shared/styles/base.css">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<a class="skip-link" href="#results-heading">Skip to search results</a>
+
+<!-- ── Masthead ─────────────────────────────────────────────────────────── -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="masthead-id" href="./">
+      <!-- A neutral service mark, not the national coat of arms and not an
+           RSIPF badge. Following Index E: a real crest should only ever be
+           added with the responsible agency's authorisation. -->
+      <span class="crest" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="38" height="38">
+          <rect width="32" height="32" fill="#06337C"/>
+          <path d="M16 5 7 8.5v7c0 5 3.8 9.4 9 11 5.2-1.6 9-6 9-11v-7z" fill="#ffffff"/>
+          <path d="M16 8.4 10 10.7v4.8c0 3.4 2.5 6.4 6 7.6 3.5-1.2 6-4.2 6-7.6v-4.8z" fill="#C8A415"/>
+        </svg>
+      </span>
+      <span class="masthead-text">
+        <span class="gov-line">Solomon Islands public services</span>
+        <span class="service-name">SI Atlas — Index P</span>
+      </span>
+    </a>
+    <p class="masthead-dept">Royal Solomon Islands<br>Police Force &mdash; facilities</p>
+  </div>
+</header>
+
+<!-- ── Navigation ───────────────────────────────────────────────────────── -->
+<nav class="gov-nav" aria-label="Main">
+  <ul class="gov-nav-inner">
+    <li><button type="button" class="nav-link" data-info="about">About</button></li>
+    <li><button type="button" class="nav-link" data-info="useful">Useful Info</button></li>
+    <li><button type="button" class="nav-link" data-info="contact">Contact</button></li>
+    <li><button type="button" class="nav-link" data-info="help">Help &amp; FAQ</button></li>
+  </ul>
+</nav>
+
+<!-- ── Service notice ───────────────────────────────────────────────────── -->
+<div class="notice" role="note">
+  <span class="notice-label">Prototype &middot; not an RSIPF service</span>
+  <span class="notice-text"><span class="long">An independent open-data directory compiled from public RSIPF and Solomon Islands Government records. 20 of the 42 records have no confirmed coordinates and are searchable but not mapped — coordinates are never estimated. In an emergency, call the police directly.</span><span class="short">Independent open-data directory from public records. 20 of 42 records are not yet mapped.</span></span>
+</div>
+
+<!-- ── Page heading ─────────────────────────────────────────────────────── -->
+<section class="page-intro" id="announce">
+  <div class="page-intro-main">
+    <h1>Find a police station in Solomon Islands</h1>
+    <p><span class="long">Every RSIPF station, post and outpost found in public records &mdash; where it is, what kind of facility it is, which sources say so, and how well confirmed each record actually is. Records without a confirmed coordinate are listed here in full; they are simply not drawn on the map.</span><span class="short">Every RSIPF station, post and outpost found in public records, with its sources.</span></p>
+  </div>
+  <dl class="figures" id="announce-stats"><!-- counted from the dataset in main.js --></dl>
+  <button type="button" class="link-btn intro-hide" id="announce-close">Hide this introduction</button>
+</section>
+
+<!-- ── Search and controls ──────────────────────────────────────────────── -->
+<div class="toolbar">
+  <form class="search-form" id="search-form">
+    <label class="field-label" for="search-input">Search for a station, place or province</label>
+    <div class="search-row">
+      <input type="search" id="search-input" class="search-input" autocomplete="off">
+      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="button" class="btn btn-secondary" id="search-clear" hidden>Clear</button>
+    </div>
+  </form>
+
+  <div class="tool-actions">
+    <button type="button" class="btn btn-secondary filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="filters-rail">
+      Filters <span class="count-pill" id="filter-count-pill" hidden>0</span>
+    </button>
+
+    <button type="button" class="btn btn-secondary" id="locate-btn">
+      <span id="locate-label">Use my location</span>
+    </button>
+
+    <span class="sort-field">
+      <label class="field-label" for="sort-select">Sort by</label>
+      <select id="sort-select" class="select">
+        <option value="relevance">Best match</option>
+        <option value="name">Name A to Z</option>
+        <option value="province">Province</option>
+        <option value="distance" disabled>Closest to me</option>
+      </select>
+    </span>
+  </div>
+</div>
+
+<!-- ── Workspace: filters · results · detail · map ──────────────────────── -->
+<main class="workspace">
+
+  <!-- Filters (overlay drawer at every size) -->
+  <aside class="filters-rail" id="filters-rail" aria-label="Filters">
+    <div class="rail-head">
+      <h2>Filters</h2>
+      <button type="button" class="link-btn" id="clear-filters">Clear all</button>
+      <button type="button" class="text-close" id="drawer-close">Close <span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="rail-body" id="filter-controls"><!-- built by js/filterPanel.js --></div>
+    <div class="rail-foot">
+      <button type="button" class="btn btn-primary" id="drawer-apply">Show <span id="drawer-count">0</span> results</button>
+      <button type="button" class="btn btn-secondary" id="drawer-clear">Clear filters</button>
+    </div>
+  </aside>
+
+  <!-- Results list -->
+  <section class="results-col" id="results-col" aria-labelledby="results-heading">
+    <div class="results-head">
+      <h2 id="results-heading">
+        <span id="result-count">0</span> stations and posts
+        <span class="results-sub" id="result-sub"></span>
+      </h2>
+      <div class="chip-row" id="active-chips"></div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+  </section>
+
+  <!-- Selected station detail -->
+  <section class="detail-col" id="detail-col" aria-labelledby="detail-name" aria-live="polite"></section>
+
+  <!-- Map -->
+  <section class="map-col" id="map-col" aria-label="Map of police stations">
+    <div id="map"></div>
+    <!-- The legend is the facility-type vocabulary: one entry per
+         facility_type value, using the same pin classes the markers do. -->
+    <div class="map-note" id="map-note">
+      <span class="map-key-title">Kind of facility</span>
+      <span><i class="key-pin pin-national" aria-hidden="true"></i>National HQ</span>
+      <span><i class="key-pin pin-provincial" aria-hidden="true"></i>Provincial / city HQ</span>
+      <span><i class="key-pin pin-station" aria-hidden="true"></i>Police station</span>
+      <span><i class="key-pin pin-post" aria-hidden="true"></i>Police post or outpost</span>
+      <span id="key-you" hidden><i class="k-you" aria-hidden="true"></i>You are here</span>
+      <span class="map-note-sub">Every marker is dashed: no coordinate in this dataset comes from an official surveyed source.</span>
+      <span class="map-note-sub" id="map-unmapped" hidden></span>
+    </div>
+    <button type="button" class="btn btn-secondary map-reset" id="map-reset">Show whole country</button>
+  </section>
+</main>
+
+<!-- Mobile list/map switch -->
+<div class="view-switch" role="tablist" aria-label="Switch view">
+  <button type="button" role="tab" class="vs-btn is-active" data-view="list" aria-selected="true">List</button>
+  <button type="button" role="tab" class="vs-btn" data-view="map" aria-selected="false">Map</button>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+
+<!-- Static info modal (About / Useful Info / Contact / Help) -->
+<div class="modal" id="info-modal" hidden role="dialog" aria-modal="true" aria-labelledby="info-title">
+  <div class="modal-card">
+    <button type="button" class="text-close modal-close" id="info-close">Close <span aria-hidden="true">&times;</span></button>
+    <h2 id="info-title"></h2>
+    <div id="info-body"></div>
+  </div>
+</div>
+
+<!-- Leaflet -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<!-- Shared SI Atlas modules (Atlas.*) — schema first, because js/data builds
+     its records through Atlas.schema.createEntity() at load time. -->
+<script src="../shared/schema.js"></script>
+<script src="../shared/map.js"></script>
+<script src="../shared/verification-badge.js"></script>
+
+<!-- App: data → state → logic → views → wiring -->
+<script src="js/data/stations.js"></script>
+<script src="js/state.js"></script>
+<script src="js/geolocation.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/filterPanel.js"></script>
+<script src="js/list.js"></script>
+<script src="js/map.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
