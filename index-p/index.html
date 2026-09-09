@@ -148,17 +148,27 @@
   <!-- Map -->
   <section class="map-col" id="map-col" aria-label="Map of police stations">
     <div id="map"></div>
-    <!-- The legend is the facility-type vocabulary: one entry per
-         facility_type value, using the same pin classes the markers do. -->
+    <!-- Collapsible map key. The entries are the facility-type vocabulary: one
+         per facility_type value, using the same pin classes the markers do.
+         The disclosure behaviour (aria-expanded, the remembered state) is
+         shared — see ../shared/map-legend.js. Collapsed, this shrinks to the
+         toggle bar alone rather than disappearing. -->
     <div class="map-note" id="map-note">
-      <span class="map-key-title">Kind of facility</span>
-      <span><i class="key-pin pin-national" aria-hidden="true"></i>National HQ</span>
-      <span><i class="key-pin pin-provincial" aria-hidden="true"></i>Provincial / city HQ</span>
-      <span><i class="key-pin pin-station" aria-hidden="true"></i>Police station</span>
-      <span><i class="key-pin pin-post" aria-hidden="true"></i>Police post or outpost</span>
-      <span id="key-you" hidden><i class="k-you" aria-hidden="true"></i>You are here</span>
-      <span class="map-note-sub">Every marker is dashed: no coordinate in this dataset comes from an official surveyed source.</span>
-      <span class="map-note-sub" id="map-unmapped" hidden></span>
+      <button type="button" class="map-note-toggle" id="map-note-toggle"
+              aria-expanded="true" aria-controls="map-note-body">
+        <span class="map-note-toggle-label">Map key</span>
+        <svg class="map-note-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+      </button>
+      <div class="map-note-body" id="map-note-body">
+        <span class="map-key-title">Kind of facility</span>
+        <span><i class="key-pin pin-national" aria-hidden="true"></i>National HQ</span>
+        <span><i class="key-pin pin-provincial" aria-hidden="true"></i>Provincial / city HQ</span>
+        <span><i class="key-pin pin-station" aria-hidden="true"></i>Police station</span>
+        <span><i class="key-pin pin-post" aria-hidden="true"></i>Police post or outpost</span>
+        <span id="key-you" hidden><i class="k-you" aria-hidden="true"></i>You are here</span>
+        <span class="map-note-sub">Every marker is dashed: no coordinate in this dataset comes from an official surveyed source.</span>
+        <span class="map-note-sub" id="map-unmapped" hidden></span>
+      </div>
     </div>
     <button type="button" class="btn btn-secondary map-reset" id="map-reset">Show whole country</button>
   </section>
@@ -189,6 +199,7 @@
 <script src="../shared/schema.js"></script>
 <script src="../shared/map.js"></script>
 <script src="../shared/verification-badge.js"></script>
+<script src="../shared/map-legend.js"></script>
 
 <!-- App: data → state → logic → views → wiring -->
 <script src="js/data/stations.js"></script>

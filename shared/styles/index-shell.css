@@ -139,7 +139,12 @@ body {
 }
 .page-intro-main { flex: 1 1 auto; min-width: 0; }
 .page-intro h1 { font-size: 1.45rem; color: var(--green); margin-bottom: .2rem; }
-.page-intro p { font-size: .9rem; color: var(--text-mid); max-width: 78ch; }
+/* Deliberately uncapped. This paragraph used to carry `max-width: 78ch`, the
+   usual readability measure; it was removed on purpose so the text runs the
+   full width of the page rather than stopping short of it. If you are about to
+   "fix" this by reinstating a measure cap — don't. It is the intended
+   behaviour, not an oversight. */
+.page-intro p { font-size: .9rem; color: var(--text-mid); }
 
 /* --- Search + controls --------------------------------------------------- */
 .toolbar {
@@ -189,6 +194,63 @@ body.has-selection .detail-col { display: flex; }
 /* z-index makes .map-col a stacking context so Leaflet's panes and controls
    (400–1000) cannot paint over the drawer or the mobile bottom sheet. */
 .map-col { flex: 1 1 auto; min-width: 0; position: relative; z-index: 1; background: #dbe3ee; }
+#map { position: absolute; inset: 0; }
+.map-reset { position: absolute; right: 10px; top: 84px; z-index: 500; }
+
+/* --- Map key (collapsible) ------------------------------------------------
+   The box, where it sits, and how it collapses. What goes INSIDE it — which
+   swatches, which labels — is each index's own business and lives in its
+   stylesheet, the same region/contents line as everywhere else.
+
+   Behaviour is shared/map-legend.js: a real <button aria-expanded> controlling
+   a `hidden` panel, with the reader's choice remembered in localStorage.
+
+   Collapsed, the key does not vanish — it becomes the toggle bar alone, a slim
+   rectangle in the same corner of the map. That is the whole point: give the
+   map its space back while leaving an obvious way to get the key returned. */
+.map-note {
+  position: absolute; left: 10px; bottom: 20px; z-index: 500;
+  max-width: min(300px, calc(100% - 20px));
+  background: #fff; border: 1px solid var(--rule-strong);
+  font-size: .78rem; color: var(--text);
+}
+
+.map-note-toggle {
+  display: flex; align-items: center; gap: .4rem;
+  width: 100%;
+  padding: .25rem .45rem;
+  background: var(--band); border: 0; border-bottom: 1px solid var(--rule-soft);
+  cursor: pointer;
+  font-family: var(--font-head);
+  font-size: .76rem; font-weight: 700; color: var(--navy);
+  text-align: left;
+}
+.map-note-toggle:hover { background: #DDE4EC; }
+.map-note-toggle:focus-visible { outline: 3px solid var(--navy); outline-offset: -3px; }
+.map-note-toggle-label { flex: 1 1 auto; }
+.map-note-chev {
+  flex: none; width: 12px; height: 12px;
+  fill: none; stroke: var(--navy); stroke-width: 2;
+  transition: transform .12s;
+}
+/* Chevron points down when open (press to close it downward), up when
+   collapsed (press to bring it back up). */
+.map-note.is-collapsed .map-note-chev { transform: rotate(180deg); }
+
+/* Collapsed: no bottom rule under the bar, because there is nothing under it. */
+.map-note.is-collapsed .map-note-toggle { border-bottom: 0; }
+
+.map-note-body {
+  padding: .4rem .55rem;
+  display: flex; flex-direction: column; gap: .22rem;
+}
+.map-note-body span { display: flex; align-items: center; gap: .4rem; }
+
+/* "You are here" is drawn by shared/map.js, so its swatch is shared too. */
+.map-note .k-you {
+  width: 10px; height: 10px; border-radius: 50%; flex: none;
+  background: var(--green);
+}
 
 /* --- List / map switch (small screens) ----------------------------------- */
 .view-switch { display: none; }

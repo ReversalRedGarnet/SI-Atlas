@@ -263,24 +263,9 @@ body.filters-open .filters-rail { transform: translateX(0); }
 /* z-index makes .map-col a stacking context so Leaflet's panes and controls
    (400–1000) cannot paint over the drawer or the mobile bottom sheet. */
 .leaflet-tile-pane { filter: saturate(.8) contrast(.97); }
-#map { position: absolute; inset: 0; }
-
-.map-reset { position: absolute; right: 10px; top: 84px; z-index: 500; }
-
-.map-note {
-  position: absolute; left: 10px; bottom: 20px; z-index: 500;
-  max-width: min(300px, calc(100% - 20px));
-  background: #fff; border: 1px solid var(--rule-strong);
-  padding: .4rem .55rem;
-  display: flex; flex-direction: column; gap: .22rem;
-  font-size: .78rem; color: var(--text);
-}
-.map-note span { display: flex; align-items: center; gap: .4rem; }
-.map-note .k-you { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--green); }
-
-/* The four facility types, and the two states any of them can be in. Kept in
-   one block so the legend, the filter list, the result rows and the markers
-   can never drift apart — they all use these same classes. */
+/* The map key's box, position and collapse behaviour are shared — see
+   ../shared/styles/index-shell.css and ../shared/map-legend.js. What follows
+   is only Index P's own entries inside it. */
 .map-key-title {
   font-weight: 700; color: var(--navy);
   padding-bottom: .1rem; margin-bottom: .1rem;

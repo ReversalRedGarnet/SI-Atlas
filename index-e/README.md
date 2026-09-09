@@ -71,7 +71,8 @@ and the intro paragraph is always visible. The Solomon-Islands-locked Leaflet se
 lives in [`../shared/map.js`](../shared/map.js) (`Atlas.map`); the
 verified/unverified badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)
-(`Atlas.verificationBadge`).
+(`Atlas.verificationBadge`); the collapsible map key's disclosure behaviour and remembered state come from
+[`../shared/map-legend.js`](../shared/map-legend.js) (`Atlas.mapLegend`).
 
 Scripts are plain `<script>` tags sharing global namespaces (`SF` for this
 index, `Atlas` for shared modules) rather than ES modules, so the app also

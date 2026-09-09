@@ -19,6 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
   SP.list.init();
   SP.map.init();
   SP.panel.init();
+  /* The collapsible map key. Behaviour and the remembered state are
+   * shared; the entries inside it are this index's own markup. */
+  Atlas.mapLegend.init({
+    root: 'map-note', toggle: 'map-note-toggle', body: 'map-note-body',
+    storageKey: 'si-atlas:index-p:map-legend'
+  });
 
   wireToolbar();
   wireDrawer();

@@ -19,6 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
   SF.list.init();
   SF.map.init();
   SF.panel.init();
+  /* The collapsible map key. Behaviour and the remembered state are
+   * shared; the entries inside it are this index's own markup. */
+  Atlas.mapLegend.init({
+    root: 'map-note', toggle: 'map-note-toggle', body: 'map-note-body',
+    storageKey: 'si-atlas:index-e:map-legend'
+  });
 
   wireToolbar();
   wireDrawer();
@@ -268,7 +274,8 @@ var INFO = {
   about: {
     title: 'About SI Atlas — Index E',
     body: '<p>SI Atlas — Index E is a Honiara pilot for what is intended to become a national school directory: one place where families and students can find a school, compare what it offers, and see where it is on the map.</p>' +
-          '<p>School names and details in this build are real, sourced from public MEHRD records for Honiara, plus St Joseph’s Tenaru and Selwyn College in Guadalcanal. Some fields — fees, contact details, exact coordinates, subjects — are not yet confirmed for every school and are shown as such rather than guessed. Verification and expansion to other provinces is ongoing, and nothing entered here is stored or sent anywhere.</p>'
+          '<p>School names and details in this build are real, sourced from public MEHRD records for Honiara, plus St Joseph’s Tenaru and Selwyn College in Guadalcanal. Some fields — fees, contact details, exact coordinates, subjects — are not yet confirmed for every school and are shown as such rather than guessed. Verification and expansion to other provinces is ongoing.</p>' +
+          '<p>This is an independent open-data prototype built from public records. It is not an official MEHRD service and is not affiliated with or endorsed by the Ministry of Education &amp; Human Resources Development, and nothing entered on this page is stored or sent anywhere. Check with a school directly before acting on anything here.</p>'
   },
   useful: {
     title: 'Useful information',

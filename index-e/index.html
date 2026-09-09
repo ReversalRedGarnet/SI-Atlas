@@ -73,8 +73,8 @@
 
 <!-- ── Service notice ───────────────────────────────────────────────────── -->
 <div class="notice" role="note">
-  <span class="notice-label">Pilot &middot; Honiara</span>
-  <span class="notice-text"><span class="long">School names and details are sourced from public MEHRD records for Honiara, plus two Guadalcanal schools. Some fields (fees, contacts, exact coordinates) are not yet confirmed for every school — verification and expansion to other provinces is ongoing.</span><span class="short">Real Honiara-area school data. Some fields are still being verified.</span></span>
+  <span class="notice-label">Prototype &middot; not an MEHRD service</span>
+  <span class="notice-text"><span class="long">An independent open-data directory compiled from public MEHRD records for Honiara, plus two Guadalcanal schools. Some fields (fees, contacts, exact coordinates) are not yet confirmed for every school — verification and expansion to other provinces is ongoing. Check with a school directly before acting on anything here.</span><span class="short">Independent open-data directory from public MEHRD records. Some fields are still being verified.</span></span>
 </div>
 
 <!-- ── Page heading ─────────────────────────────────────────────────────── -->
@@ -153,10 +153,20 @@
   <!-- Map -->
   <section class="map-col" id="map-col" aria-label="Map of schools">
     <div id="map"></div>
+    <!-- Collapsible map key. The disclosure behaviour (aria-expanded, the
+         remembered state) is shared — see ../shared/map-legend.js. Collapsed,
+         this shrinks to the toggle bar alone rather than disappearing. -->
     <div class="map-note" id="map-note">
-      <span><i class="k-school"></i>A school</span>
-      <span><i class="k-selected"></i>The school you picked</span>
-      <span id="key-you" hidden><i class="k-you"></i>You are here</span>
+      <button type="button" class="map-note-toggle" id="map-note-toggle"
+              aria-expanded="true" aria-controls="map-note-body">
+        <span class="map-note-toggle-label">Map key</span>
+        <svg class="map-note-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+      </button>
+      <div class="map-note-body" id="map-note-body">
+        <span><i class="k-school"></i>A school</span>
+        <span><i class="k-selected"></i>The school you picked</span>
+        <span id="key-you" hidden><i class="k-you"></i>You are here</span>
+      </div>
     </div>
     <button type="button" class="btn btn-secondary map-reset" id="map-reset">Show whole country</button>
   </section>
@@ -185,6 +195,7 @@
 <!-- Shared SI Atlas modules (Atlas.*) -->
 <script src="../shared/map.js"></script>
 <script src="../shared/verification-badge.js"></script>
+<script src="../shared/map-legend.js"></script>
 
 <!-- App: data → state → logic → views → wiring -->
 <script src="js/data/schools.js"></script>

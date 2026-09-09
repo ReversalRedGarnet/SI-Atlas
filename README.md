@@ -74,6 +74,8 @@ si-atlas/
 │   ├── schema.js           the generic entity envelope every index's data conforms to
 │   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map)
 │   ├── verification-badge.js   verified/unverified/unknown badge renderer (Atlas.verificationBadge)
+│   ├── map-legend.js        collapsible map key: disclosure behaviour +
+│   │                         remembered state (Atlas.mapLegend)
 │   └── styles/
 │       ├── base.css         shared design tokens, reset, generic UI primitives
 │       └── index-shell.css  the page skeleton every index shares: masthead,
@@ -138,9 +140,24 @@ rules apply to it, and they are the current convention for every index:
   readout above the results, and no "Hide this introduction" toggle. The counts
   restated what the page already showed, and the toggle was an affordance for
   hiding two lines of text.
-- **The intro paragraph is always visible.** One heading, one descriptive
-  paragraph, no collapse or hide affordance of any kind. If a headline figure
-  matters, put it in the paragraph's own prose.
+- **The intro paragraph is always visible, and runs the full width.** One
+  heading, one descriptive paragraph, no collapse or hide affordance of any
+  kind. If a headline figure matters, put it in the paragraph's own prose. The
+  paragraph deliberately carries **no `max-width` measure cap** — it is meant
+  to span the page rather than stop at a readability measure. Don't reinstate
+  one.
+- **Every index says plainly that it is not an official service.** Both in the
+  service notice (`Prototype · not an <agency> service`) and in the About
+  panel, which states it is not affiliated with or endorsed by the agency whose
+  records it draws on. An index that names an agency's records anywhere must
+  carry this in both places.
+- **The map key is collapsible, and remembers.** Use `Atlas.mapLegend`
+  (`shared/map-legend.js`) — a real `<button aria-expanded>` controlling a
+  `hidden` panel, with the reader's choice kept in `localStorage` under a
+  per-index key. Collapsed, the key shrinks to its toggle bar rather than
+  disappearing, so there is always a visible way to bring it back. The box and
+  the collapsed bar are styled in `index-shell.css`; only the entries inside
+  belong to the index.
 
 `index-shell.css` has no styles for any of the removed pieces, so an index
 built on it gets this shape by default — the markup for them would simply be

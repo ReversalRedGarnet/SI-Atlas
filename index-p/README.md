@@ -79,7 +79,8 @@ verified/unverified/unknown badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)
 (`Atlas.verificationBadge`), used unmodified so the badge looks and behaves
 identically to every other index; and the entity envelope comes from
-[`../shared/schema.js`](../shared/schema.js) (`Atlas.schema`).
+[`../shared/schema.js`](../shared/schema.js) (`Atlas.schema`); the collapsible map key's disclosure behaviour and remembered state come from
+[`../shared/map-legend.js`](../shared/map-legend.js) (`Atlas.mapLegend`).
 
 Scripts are plain `<script>` tags sharing global namespaces (`SP` for this
 index, `Atlas` for shared modules) rather than ES modules, so the app also runs
