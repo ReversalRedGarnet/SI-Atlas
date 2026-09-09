@@ -1,0 +1,155 @@
+/* ============================================================================
+   SI Atlas — shared index shell (masthead · nav · notice · page heading)
+   ----------------------------------------------------------------------------
+   The chrome that runs across the top of every SI Atlas index, in one place.
+   Index E and Index P had byte-identical copies of all of this in their own
+   stylesheets; Index P got them by being hand-built to mirror Index E rather
+   than by sharing anything. This file is that shared piece, so a change to the
+   shell lands on every index at once and a new index inherits the current
+   convention for free.
+
+   Load order (see any index's index.html):
+       shared/styles/base.css        tokens, reset, primitives
+       shared/styles/index-shell.css this file — the page-shell chrome
+       css/styles.css                that index's own workspace + specifics
+
+   It loads BEFORE the index's own stylesheet, so an index can still override
+   any of this for a genuine local need — but the default is that it doesn't.
+
+   Scope: the top-of-page chrome only — app-shell layout, masthead, nav bar,
+   service notice, and the page heading. Everything below the heading (the
+   search toolbar and the results · detail · map workspace) stays in each
+   index's own stylesheet, because those diverge in real ways between indexes.
+
+   ---------------------------------------------------------------------------
+   TWO THINGS ARE DELIBERATELY ABSENT, AND SHOULD STAY ABSENT
+   ---------------------------------------------------------------------------
+   1. An attribution subtitle in the masthead (`.masthead-dept`). Index E
+      carried "Ministry of Education & Human Resources Development" and Index P
+      "Royal Solomon Islands Police Force — facilities". Both are gone. An SI
+      Atlas index is an independent open-data directory compiled from public
+      records; naming an agency in the masthead implied an endorsement or
+      authorship none of these indexes has. Do not reintroduce it — say what
+      the sources are in the service notice and the About panel instead, where
+      it can be stated accurately.
+
+   2. A collapsible statistics widget above the results (`.figures` / `.stat`)
+      and its "Hide this introduction" toggle (`.intro-hide`). The counts were
+      a summary of what the page already shows, and the toggle was an
+      affordance for hiding a two-line paragraph. Both are gone.
+
+   The intro paragraph itself stays, and is ALWAYS VISIBLE — there is no
+   collapse or hide affordance on it at all. If a future index needs a headline
+   figure, it belongs in the paragraph's own prose, not in a separate widget.
+
+   See "Adding a new index" in the repo-root README.md for the same convention
+   stated as a rule.
+   ========================================================================== */
+
+/* --- App-shell layout (fixed viewport, no page scroll) --------------------
+   Everything else (tokens, box-sizing, typography reset) comes from
+   shared/styles/base.css. */
+html, body { height: 100%; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Focus: navy on light surfaces, gold over the navy bars where navy would
+   disappear (gold on navy measures 4.3:1). Base default is navy — see
+   shared/styles/base.css. */
+.gov-nav :focus-visible,
+.masthead :focus-visible { outline-color: var(--gold); }
+
+/* --- Masthead ------------------------------------------------------------ */
+.masthead {
+  flex: none;
+  background: var(--panel);
+  border-bottom: 3px solid var(--navy);
+}
+.masthead-inner {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .55rem var(--shell-pad);
+}
+.masthead-id { display: flex; align-items: center; gap: .7rem; text-decoration: none; }
+.crest { display: flex; flex: none; }
+.masthead-text { display: flex; flex-direction: column; line-height: 1.15; }
+.gov-line {
+  font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text-mid);
+}
+.service-name {
+  font-family: var(--font-head);
+  font-size: 1.4rem; font-weight: 700; color: var(--navy);
+}
+
+/* --- Navigation ---------------------------------------------------------- */
+.gov-nav { flex: none; background: var(--navy); }
+.gov-nav-inner { display: flex; padding: 0 var(--shell-pad); }
+.gov-nav li { display: flex; }
+.nav-link {
+  background: none; border: 0; cursor: pointer;
+  padding: .6rem 1.05rem;
+  color: #fff; font-size: .92rem;
+  border-right: 1px solid rgba(255,255,255,.22);
+}
+.gov-nav li:first-child .nav-link { border-left: 1px solid rgba(255,255,255,.22); }
+.nav-link:hover { background: var(--navy-dark); }
+
+/* --- Service notice ------------------------------------------------------ */
+.notice {
+  flex: none;
+  display: flex; align-items: baseline; gap: .6rem;
+  padding: .4rem var(--shell-pad);
+  background: var(--notice-bg);
+  border-bottom: 1px solid #E3D5A4;
+  border-left: 5px solid var(--red);
+  font-size: .82rem; color: var(--text);
+}
+.notice-label { font-weight: 700; color: var(--red); white-space: nowrap; }
+.notice-text { color: var(--text-mid); }
+.notice .short, .page-intro .short { display: none; }
+
+/* --- Page heading --------------------------------------------------------
+   Heading plus one descriptive paragraph. Always visible: no stats widget,
+   no hide toggle. See the note at the top of this file. */
+.page-intro {
+  flex: none;
+  display: flex; align-items: flex-start; gap: 1.25rem;
+  padding: .8rem var(--shell-pad) .85rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--rule);
+}
+.page-intro-main { flex: 1 1 auto; min-width: 0; }
+.page-intro h1 { font-size: 1.45rem; color: var(--green); margin-bottom: .2rem; }
+.page-intro p { font-size: .9rem; color: var(--text-mid); max-width: 78ch; }
+
+/* ==========================================================================
+   Responsive — shell only. Each index's own stylesheet carries the matching
+   media queries for its toolbar and workspace.
+   ========================================================================== */
+
+@media (max-width: 859px) {
+  /* Tightens the gutter for every element that uses it, shell or not. */
+  :root { --shell-pad: .7rem; }
+
+  .masthead-inner { padding: .45rem var(--shell-pad); }
+  .service-name { font-size: 1.15rem; }
+  .gov-line { font-size: .66rem; }
+
+  /* Nav scrolls sideways rather than wrapping — as on the reference sites. */
+  .gov-nav-inner { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .nav-link { padding: .5rem .8rem; font-size: .86rem; white-space: nowrap; }
+
+  .notice { padding: .3rem var(--shell-pad); gap: .35rem; flex-wrap: wrap; }
+  .notice .long, .page-intro .long { display: none; }
+  .notice .short, .page-intro .short { display: inline; }
+
+  .page-intro { flex-wrap: wrap; gap: .35rem; padding: .5rem var(--shell-pad) .55rem; }
+  .page-intro h1 { font-size: 1.08rem; line-height: 1.25; }
+  .page-intro p { font-size: .83rem; }
+}

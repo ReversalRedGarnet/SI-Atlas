@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
   wireViewSwitch();
   wireGlobalKeys();
   wireInfoModal();
-  wireAnnouncement();
 
   SF.subscribe(render);
   render(SF.state);
@@ -321,32 +320,6 @@ function openInfo(key) {
 function closeInfo() {
   document.getElementById('info-modal').hidden = true;
   if (lastFocused) lastFocused.focus();
-}
-
-/* --- Announcement strip -------------------------------------------------- */
-
-function wireAnnouncement() {
-  /* Counted from the dataset rather than hard-coded, so it stays true as
-   * more provinces are verified and added. */
-  var provinces = {}, levels = {};
-  SF.SCHOOLS.forEach(function (s) {
-    provinces[s.province] = true;
-    s.educationLevels.forEach(function (l) { levels[l] = true; });
-  });
-  document.getElementById('announce-stats').innerHTML = [
-    stat(SF.SCHOOLS.length, 'schools listed'),
-    stat(Object.keys(provinces).length, 'provinces covered'),
-    stat(Object.keys(levels).length, 'education levels')
-  ].join('');
-
-  document.getElementById('announce-close').addEventListener('click', function () {
-    document.getElementById('announce').hidden = true;
-    refreshMapSoon();
-  });
-}
-
-function stat(n, label) {
-  return '<div class="stat"><dt>' + n + '</dt><dd>' + label + '</dd></div>';
 }
 
 /* --- utils --------------------------------------------------------------- */

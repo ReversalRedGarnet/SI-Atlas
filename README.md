@@ -74,7 +74,10 @@ si-atlas/
 │   ├── schema.js           the generic entity envelope every index's data conforms to
 │   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map)
 │   ├── verification-badge.js   verified/unverified/unknown badge renderer (Atlas.verificationBadge)
-│   └── styles/base.css     shared design tokens, reset, generic UI primitives
+│   └── styles/
+│       ├── base.css         shared design tokens, reset, generic UI primitives
+│       └── index-shell.css  the page-shell chrome every index shares:
+│                             masthead, nav bar, service notice, page heading
 ├── index-e/                Index E — Education (see index-e/README.md)
 ├── index-p/                Index P — Policing (see index-p/README.md)
 └── index-h/                Index H — Health (stub, not yet built)
@@ -90,9 +93,14 @@ logic (Index E uses `SF`, Index P uses `SP`).
 
 1. Copy the shape of `index-h/` for a stub, or `index-e/` / `index-p/` for a
    working example: an `index.html` at `index-<letter>/`, its own `css/` and
-   `js/`, loading `../shared/styles/base.css` before its own stylesheet and
+   `js/`, loading `../shared/styles/base.css` then
+   `../shared/styles/index-shell.css` before its own stylesheet, and
    `../shared/schema.js` / `../shared/map.js` /
    `../shared/verification-badge.js` before its own scripts.
+
+   `index-shell.css` carries the masthead, nav bar, service notice and page
+   heading, so an index's own stylesheet starts at the search toolbar. Do
+   not re-declare that chrome locally.
 2. Build entity records through `Atlas.schema.createEntity()` (or at least
    in its shape) so verification status defaults safely and provenance has
    somewhere to live. `index-p/js/data/stations.js` is the reference for
@@ -101,3 +109,28 @@ logic (Index E uses `SF`, Index P uses `SP`).
    dataset predates the shared schema and keeps its own shape; aligning it
    is a known follow-up.)
 3. Link the new index from this file and from the root `index.html` portal.
+
+### Header and intro conventions
+
+The top of every index is a masthead, a nav bar, a service notice and a page
+heading — in that order, styled by `shared/styles/index-shell.css`. Three
+rules apply to it, and they are the current convention for every index:
+
+- **No attribution subtitle in the masthead.** Index E carried "Ministry of
+  Education & Human Resources Development" and Index P "Royal Solomon Islands
+  Police Force — facilities"; both were removed. An SI Atlas index is an
+  independent open-data directory compiled from public records, and naming an
+  agency in the masthead implied an endorsement or authorship none of these
+  indexes has. Say what the sources actually are in the service notice and the
+  About panel, where it can be stated accurately.
+- **No collapsible statistics widget.** No "N records / N provinces covered"
+  readout above the results, and no "Hide this introduction" toggle. The counts
+  restated what the page already showed, and the toggle was an affordance for
+  hiding two lines of text.
+- **The intro paragraph is always visible.** One heading, one descriptive
+  paragraph, no collapse or hide affordance of any kind. If a headline figure
+  matters, put it in the paragraph's own prose.
+
+`index-shell.css` has no styles for any of the removed pieces, so an index
+built on it gets this shape by default — the markup for them would simply be
+unstyled. Keep it that way.

@@ -46,9 +46,11 @@ Google font (Open Sans). Nothing is installed.
 ```
 index.html              app shell / markup
 assets/favicon.svg      a neutral service mark — see "Design notes"
-css/styles.css          Index-P-specific styles: masthead, nav, notice,
-                         toolbar, filters/results/detail/map workspace, and
-                         the four facility-type map pins
+css/styles.css          Index-P-specific styles: search toolbar, the
+                         filters/results/detail/map workspace, and the four
+                         facility-type map pins. The masthead, nav, notice
+                         and page heading come from
+                         ../shared/styles/index-shell.css
 js/data/stations.js     the 42 records + filter vocabularies; the only file
                          that knows what the data is
 js/state.js             the single app-state object, setters and subscribers
@@ -64,8 +66,13 @@ js/main.js              wiring: events → state → single render pass
 
 Design tokens, the CSS reset, and generic primitives (buttons, chips, selects,
 the verification badge) live in
-[`../shared/styles/base.css`](../shared/styles/base.css), loaded before
-`css/styles.css` — see `index.html`. The Solomon-Islands-locked Leaflet setup
+[`../shared/styles/base.css`](../shared/styles/base.css); the page-shell chrome
+above the search box — masthead, nav bar, service notice, page heading — lives
+in [`../shared/styles/index-shell.css`](../shared/styles/index-shell.css). Both
+load before `css/styles.css` — see `index.html`. Per the convention recorded in
+the [repo-root README](../README.md#header-and-intro-conventions), that shell
+carries no agency attribution subtitle and no collapsible stats widget, and the
+intro paragraph is always visible. The Solomon-Islands-locked Leaflet setup
 lives in [`../shared/map.js`](../shared/map.js) (`Atlas.map`); the
 verified/unverified/unknown badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)

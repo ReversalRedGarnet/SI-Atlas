@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
   wireViewSwitch();
   wireGlobalKeys();
   wireInfoModal();
-  wireAnnouncement();
 
   SP.subscribe(render);
   render(SP.state);
@@ -336,33 +335,6 @@ function openInfo(key) {
 function closeInfo() {
   document.getElementById('info-modal').hidden = true;
   if (lastFocused) lastFocused.focus();
-}
-
-/* --- Announcement strip -------------------------------------------------- */
-
-function wireAnnouncement() {
-  /* Counted from the dataset rather than hard-coded, so these stay true as
-   * coordinates and records are added. The coordinate figure is deliberately
-   * one of the three: the gap is a headline fact about this dataset, not a
-   * footnote. */
-  var provinces = {};
-  SP.STATIONS.forEach(function (s) { provinces[s.province] = true; });
-  var located = SP.STATIONS.filter(SP.filters.isLocated).length;
-
-  document.getElementById('announce-stats').innerHTML = [
-    stat(SP.STATIONS.length, 'stations and posts'),
-    stat(Object.keys(provinces).length, 'provinces covered'),
-    stat(located + ' of ' + SP.STATIONS.length, 'with coordinates')
-  ].join('');
-
-  document.getElementById('announce-close').addEventListener('click', function () {
-    document.getElementById('announce').hidden = true;
-    refreshMapSoon();
-  });
-}
-
-function stat(n, label) {
-  return '<div class="stat"><dt>' + n + '</dt><dd>' + label + '</dd></div>';
 }
 
 /* --- utils --------------------------------------------------------------- */
