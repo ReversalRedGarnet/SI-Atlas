@@ -9,8 +9,8 @@
  * columns were mapped onto SI Atlas's shared entity envelope, which judgement
  * calls the mapping had to make, and every change made to a record since.
  *
- * THIS FILE IS NO LONGER A PURE CONVERSION. Thirteen records carry additions
- * or changes made after the conversion. Eleven of them are marked in their own
+ * THIS FILE IS NO LONGER A PURE CONVERSION. Fourteen records carry additions
+ * or changes made after the conversion. Twelve of them are marked in their own
  * `dataFlag`; two (Kariki, Kulitanai) are plain coordinate additions using the
  * file's standard Google Maps citation -- the same pattern Munda or Honiara
  * Central already use -- so neither needed a flag.
@@ -28,7 +28,7 @@
  *   - Nothing is invented or estimated. A blank field means nothing
  *     verifiable was found -- not zero, and not unknown-but-guessable.
  *   - Coordinates are NEVER substituted with a town or island centroid.
- *     14 of 42 records have no coordinates and carry
+ *     13 of 42 records have no coordinates and carry
  *     `location.lat: null`, `location.lng: null`. They still appear in
  *     search, in the result list and in the profile view; js/map.js simply
  *     does not plot them, and the list and profile say so in words.
@@ -97,10 +97,12 @@
  *
  * KNOWN OPEN ISSUES inherited from the workbook. These are unresolved on
  * purpose -- open questions the sources do not settle, not cleanup jobs:
- *   - 14 of 42 records still have no coordinates at all.
- *   - Honiara Central, Henderson, Auki, Kirakira, Gizo and Taro each carry
- *     more than one phone number, from sources of different vintages. Read
- *     the record's `notes` before treating any one of them as "the" number.
+ *   - 13 of 42 records still have no coordinates at all.
+ *   - Honiara Central, Auki, Kirakira and Taro each hold more than one phone
+ *     number in the `contact.phone` field itself, from sources of different
+ *     vintages. Read the record's `notes` before treating any one of them as
+ *     "the" number. Henderson and Gizo hold one number each with an
+ *     alternative described in `notes` instead.
  *   - Mbiti Police Post may or may not be the same place as the older
  *     RAMSI-era "Mbambanakira" post; Aola Police Station may or may not be
  *     the same facility as the Police Maritime base of the same name; Bellona
@@ -183,6 +185,14 @@
  *     above), so this is a plain coordinate addition using the same citation
  *     already used for Munda, Honiara Central and others -- not a correction
  *     or an ambiguous case, and no `dataFlag` was added for either.
+ *   - Kirakira Police Station. Coordinate added, obtained via a live GPS
+ *     location ping sent by an officer physically at the provincial HQ, in
+ *     response to a phone call -- a device-generated reading, not a verbal
+ *     description or a map estimate. Flagged as notably higher-confidence
+ *     than this dataset's typical unofficial sourcing (e.g. Noro/Ulawa's
+ *     phone confirmations above), though still not a written or official
+ *     record; `location.precision` stays at this file's blanket
+ *     'approximate' -- no 'exact' tier was introduced for it.
  *
  * A NOTE ON `dataFlag`. The source workbook defines this column narrowly, as
  * a log of corrections made during its own cleanup (Maka is its one use). This
@@ -340,7 +350,7 @@ SP.STATION_RECORDS = [
     "sources": [
       "RSIPF Annual Report 2019 (Annex D)",
       "RSIPF media release",
-      "AFP media release, \"AFP delivers new RSIPF traffic centre\""
+      "AFP media release, 'AFP delivers new RSIPF traffic centre' (2024)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -349,16 +359,17 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Same Dec 2021 media release reported Kukum services temporarily closed after social unrest; current status not reconfirmed. Coordinates are for 'Kukum Traffic Police Station' per Google Maps (unverified) - may be a sub-unit location rather than the main station. UPDATE (added September 2026, after the workbook conversion): an AFP media release, \u201cAFP delivers new RSIPF traffic centre\u201d, reports that the station was destroyed in the November 2021 unrest, rebuilt under the RSIPF-AFP Policing Partnership Program (RAPPP), and reopened in 2024 as the \u201cKukum Traffic Centre\u201d. The new name suggests the reopened facility's scope may be narrower \u2014 traffic-focused \u2014 than the general police station listed in the 2019 Annex D; whether it still carries the original station's full range of duties is not established by this source. This may also bear on the Google Maps coordinate caveat above, which is for \u201cKukum Traffic Police Station\u201d, but the two have not been confirmed as the same site.",
+    "notes": "Same Dec 2021 media release reported Kukum services temporarily closed after social unrest; current status not reconfirmed. Coordinates are for 'Kukum Traffic Police Station' per Google Maps (unverified) - may be a sub-unit location rather than the main station. UPDATE (added September 2026, after the workbook conversion): destroyed in the November 2021 Honiara unrest; rebuilt via the RSIPF-AFP Policing Partnership Program (RAPPP), with construction beginning October 2022; reopened in 2024 as the 'Kukum Traffic Centre', a purpose-built facility for traffic officers, per an AFP media release, \u201cAFP delivers new RSIPF traffic centre\u201d. The new facility's scope relative to the original general-duties station is not yet confirmed \u2014 this supersedes the 'current status not reconfirmed' statement above, which is kept as originally recorded. `name`/`type` are left unchanged pending confirmation that the new facility is the same site as this record's existing Google Maps coordinate ('Kukum Traffic Police Station').",
     "province": "Honiara City",
     "constituencyWard": null,
     "address": "Kukum Highway, Honiara City (includes National Traffic Dept unit)",
     "sourceUrls": [
       "https://www.rsipf.gov.sb/sites/default/files/RSIPF%202019%20Annual%20Report.pdf",
-      "https://www.rsipf.gov.sb/?q=node%2F2087"
+      "https://www.rsipf.gov.sb/?q=node%2F2087",
+      "https://www.afp.gov.au/news-centre/media-release/afp-delivers-new-rsipf-traffic-centre"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": "Post-conversion addition (September 2026): notes and sources extended from an AFP media release (\u201cAFP delivers new RSIPF traffic centre\u201d) reporting destruction in the November 2021 unrest, a RAPPP rebuild, and reopening in 2024 as the \u201cKukum Traffic Centre\u201d. Flagged because the reopened facility's scope may be narrower (traffic-focused) than the general station this record describes. `name` and `type` are deliberately left unchanged pending confirmation. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
+    "dataFlag": "Post-conversion addition (September 2026): notes and sources extended from an AFP media release, \u201cAFP delivers new RSIPF traffic centre\u201d, reporting destruction in the November 2021 unrest, a RAPPP rebuild, and reopening in 2024 as the 'Kukum Traffic Centre'. Flagged because the reopened facility's scope may be narrower \u2014 traffic-focused \u2014 than the general station this record describes. `name` and `type` are deliberately left unchanged pending confirmation."
   },
   {
     "id": "naha-police-station",
@@ -373,7 +384,7 @@ SP.STATION_RECORDS = [
       "RSIPF Annual Report 2019 (Annex D)",
       "RSIPF media release",
       "Google Maps",
-      "RSIPF media release (September 2023, O.K Haus community hut opening)"
+      "RSIPF media release, 'Naha Police and Communities Welcome the opening of O.K Haus' (2023)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -382,16 +393,17 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "RSIPF media release (Dec 2021) reported services temporarily closed after social unrest, with residents directed to Central Police Station in the interim; current operating status not reconfirmed by a dated official source. Coordinates/phone from Google Maps (unverified). UPDATE (added September 2026, after the workbook conversion): the station was damaged in the same 2021 unrest, renovated by the RSIPF-AFP Policing Partnership Program (RAPPP) in 2022, and confirmed operational again by a September 2023 RSIPF media release covering the opening of the O.K Haus community hut. This supersedes the \u201ccurrent operating status not reconfirmed\u201d statement above, which is kept as originally recorded rather than deleted.",
+    "notes": "RSIPF media release (Dec 2021) reported services temporarily closed after social unrest, with residents directed to Central Police Station in the interim; current operating status not reconfirmed by a dated official source. Coordinates/phone from Google Maps (unverified). UPDATE (added September 2026, after the workbook conversion): confirmed reopened. An RSIPF media release, \u201cNaha Police and Communities Welcome the opening of O.K Haus\u201d (4 October 2023), describes officers operating from Naha Police Station and reports a 2022 RAPPP-funded large-scale renovation after the November 2021 damage. This supersedes the \u201ccurrent operating status not reconfirmed\u201d statement above, which is kept as originally recorded rather than deleted.",
     "province": "Honiara City",
     "constituencyWard": null,
     "address": "Naha, Honiara City",
     "sourceUrls": [
       "https://www.rsipf.gov.sb/sites/default/files/RSIPF%202019%20Annual%20Report.pdf",
-      "https://www.rsipf.gov.sb/?q=node%2F2087"
+      "https://www.rsipf.gov.sb/?q=node%2F2087",
+      "https://www.rsipf.gov.sb/?q=node/2767"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": "Post-conversion addition (September 2026): notes and sources extended with a September 2023 RSIPF media release (O.K Haus community hut opening) confirming the station operational again after the 2021 unrest and a 2022 RAPPP renovation. `date_accessed` was refreshed to the date of this check, which is the same 2026-09-09 the workbook already carried. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
+    "dataFlag": "Post-conversion addition (September 2026): notes and sources extended with an RSIPF media release, \u201cNaha Police and Communities Welcome the opening of O.K Haus\u201d (October 2023), confirming the station operational again after the 2021 unrest and a 2022 RAPPP renovation. `date_accessed` was refreshed to the date of this check, which is the same 2026-09-09 the workbook already carried."
   },
   {
     "id": "rove-police-headquarters",
@@ -531,7 +543,7 @@ SP.STATION_RECORDS = [
     "sources": [
       "RSIPF Annual Report 2018/2019",
       "Google Maps",
-      "RSIPF announcement of Provincial Police Commander appointments (Guadalcanal Province and Honiara City)"
+      "RSIPF announcement naming PPC Guadalcanal Province and PPC Honiara City (2018)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -540,15 +552,16 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Listed as one of RSIPF's 'Principal Locations' in official Annual Reports with phone +677 36200; Google Maps lists a slightly different number (+677 36201) for the same station - both given for reference. UPDATE (added September 2026, after the workbook conversion): recorded as a provincial headquarters rather than a station. RSIPF's own structure names a separate Provincial Police Commander for Guadalcanal Province, distinct from Honiara City's, and Henderson is the only Guadalcanal-province station RSIPF materials associate with that command \u2014 per an RSIPF announcement naming both PPC appointments alongside a joint Commissioner visit to Honiara Central and Henderson.",
+    "notes": "Listed as one of RSIPF's 'Principal Locations' in official Annual Reports with phone +677 36200; Google Maps lists a slightly different number (+677 36201) for the same station - both given for reference. UPDATE (added September 2026, after the workbook conversion): reclassified from 'station' to 'provincial_hq'. RSIPF's own structure names a Provincial Police Commander (PPC) for Guadalcanal Province, distinct from Honiara City's PPC \u2014 a 2018 RSIPF announcement names both appointments together with a joint Commissioner visit to Honiara Central and Henderson police stations. Henderson is the only Guadalcanal-province station RSIPF materials associate with that command; RSIPF's own Annex D list never formally relabels it. This resolves Guadalcanal previously being the only province with no listed provincial_hq.",
     "province": "Guadalcanal Province",
     "constituencyWard": null,
     "address": "Guadalcanal Plains, near Henderson International Airport, Guadalcanal Island",
     "sourceUrls": [
-      "https://www.rsipf.gov.sb/sites/default/files/Annual%20Report%20-2018.pdf"
+      "https://www.rsipf.gov.sb/sites/default/files/Annual%20Report%20-2018.pdf",
+      "https://www.rsipf.gov.sb/?q=node%2F855"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": "Post-conversion change (September 2026): `facility_type` changed from \u201cstation\u201d to \u201cprovincial_hq\u201d. RSIPF's own structure names a separate Provincial Police Commander for Guadalcanal Province, distinct from Honiara City's, and Henderson is the only Guadalcanal-province station RSIPF materials associate with that command (source: RSIPF announcement naming both PPC appointments alongside a joint Commissioner visit to Honiara Central and Henderson). This is the only `type` value in the dataset that differs from the source workbook. No source URL was supplied with this change, so `sourceUrls` is unchanged."
+    "dataFlag": "Post-conversion change (September 2026): `facility_type` changed from 'station' to 'provincial_hq' \u2014 not an error in the original research, a reclassification based on RSIPF's command structure. RSIPF's own structure names a separate Provincial Police Commander for Guadalcanal Province, distinct from Honiara City's, and Henderson is the only Guadalcanal-province station RSIPF materials associate with that command, per an RSIPF announcement naming both PPC appointments alongside a joint Commissioner visit to Honiara Central and Henderson. This is the only `type` value in the dataset that differs from the source workbook."
   },
   {
     "id": "marau-police-station",
@@ -888,13 +901,14 @@ SP.STATION_RECORDS = [
     "name": "Kirakira Police Station",
     "type": "provincial_hq",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -10.4555582363835,
+      "lng": 161.919096888658,
+      "precision": "approximate"
     },
     "sources": [
       "RSIPF Annual Report 2018/2019",
-      "Solomon Islands Government official news portal"
+      "Solomon Islands Government official news portal",
+      "Personal inquiry — live GPS location ping from an officer at Kirakira Police Station (September 2026)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -903,7 +917,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Phone 50276 given in RSIPF Annual Reports; a 2022 official government article lists two further numbers (50299, 50266) for Kirakira police. No station-specific coordinates found (only the general Kirakira town locality, not used to avoid guessing).",
+    "notes": "Phone 50276 given in RSIPF Annual Reports; a 2022 official government article lists two further numbers (50299, 50266) for Kirakira police. No station-specific coordinates found (only the general Kirakira town locality, not used to avoid guessing). UPDATE (September 2026): a coordinate has since been added, obtained via a live GPS location ping sent by an officer physically at Kirakira Police Station's provincial HQ, in response to a phone call. This is a device-generated location reading, not a verbal description or a map estimate, and is notably higher-confidence than typical unofficial sourcing in this dataset — though it is still not from a written or official record. This supersedes the “No station-specific coordinates found” statement above, which is kept as originally recorded.",
     "province": "Makira-Ulawa Province",
     "constituencyWard": null,
     "address": "Kirakira Town, Makira Island",
@@ -912,7 +926,7 @@ SP.STATION_RECORDS = [
       "https://solomons.gov.sb/rsipf-crime-prevention-team-continue-to-roll-out-in-makira-ulawa-province/"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion addition (September 2026): coordinate came from a live GPS location ping sent by an officer physically at Kirakira Police Station's provincial HQ, in response to a phone call — a device-generated reading, not a verbal description or a map estimate. Flagged as notably higher-confidence than this dataset's typical unofficial sourcing (e.g. the Noro/Ulawa phone confirmations), though still not a written or official record. `verification_status` is left as 'verified', which reflects the station's confirmed existence per official RSIPF/government sources, not this coordinate. `location.precision` is left at this file's blanket 'approximate' default rather than promoted to 'exact' — the higher confidence is carried here and in `notes`, not by a special-cased precision tier. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "namuga-police-post",

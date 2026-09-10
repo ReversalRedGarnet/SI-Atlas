@@ -9,7 +9,7 @@ way and sharing the same visual and data conventions.
   Honiara pilot.
 - **[Index P — Policing](index-p/README.md)** ([live](index-p/index.html)):
   SI Atlas — Index P, a searchable directory and map of RSIPF police stations,
-  posts and outposts — 42 records across ten provinces, 28 of them with
+  posts and outposts — 42 records across ten provinces, 29 of them with
   confirmed coordinates.
 - **Index H — Health** ([stub](index-h/index.html)): a planned directory and
   map of health facilities. Not yet built.
