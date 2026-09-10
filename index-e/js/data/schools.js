@@ -6108,14 +6108,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_eleoteve_chs",
     "name": "Eleoteve CHS",
-    "description": "A community school in Western Province, offering secondary education.",
+    "description": "A community school at Eleoteve, Vella Lavella Island. The coordinate is the place itself, not a surveyed school address.",
     "denomination": null,
     "province": "Western",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Vella Lavella",
+    "town": "Eleoteve",
+    "latitude": -7.8308,
+    "longitude": 156.7239,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -6134,11 +6134,11 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5628"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -6180,14 +6180,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_ringgi_cove_chs",
     "name": "Ringgi Cove CHS",
-    "description": "A community school in Western Province, offering secondary education.",
+    "description": "A community school at Ringgi Cove, on the north side of Blackett Strait, Kolombangara Island. The coordinate is the cove/port itself, not a surveyed school address.",
     "denomination": null,
     "province": "Western",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Kolombangara",
+    "town": "Ringgi Cove",
+    "latitude": -8.1166,
+    "longitude": 157.1,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -6206,11 +6206,11 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5627"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -6468,10 +6468,10 @@ SF.SCHOOLS = [
   {
     "id": "sch_kukudu_adventist_college",
     "name": "Kukudu Adventist College",
-    "description": "A community school in Western Province, offering secondary education.",
+    "description": "A Seventh-day Adventist school on Kolombangara Island, administered by the Solomon Islands Mission (SDA). Established in the early 1950s as Kukudu Vocational School to give Western Province students easier access to SDA education without travelling to Papua New Guinea; renamed Kukudu Adventist College in 2009. Offers elementary through grade 12.",
     "denomination": "SDA",
     "province": "Western",
-    "island": null,
+    "island": "Kolombangara",
     "town": null,
     "latitude": null,
     "longitude": null,
@@ -6494,24 +6494,61 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5617"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_st_johns_bosco_senior_secondary",
     "name": "St Johns Bosco Senior Secondary",
-    "description": "A government senior secondary school in Western Province, part of the national Senior Secondary Education Improvement Project.",
-    "denomination": null,
+    "description": "A Salesian (Don Bosco, Catholic) mission school at Nila, Shortland Islands — school code 508, listed as \"St Johns Nila CHS\" on MEHRD's own 2022 Western Province page and as \"St Johns Bosco Senior Secondary\" in the 2026 Year 10 Placement folder used for the rest of this dataset. Same institution, same code, most likely renamed/upgraded between those two dates rather than a collision — unlike the still-unresolved \"188\" and \"Gospel Light CHS\" code conflicts elsewhere in this file, this one has an old-source/new-source pattern consistent with a real rename, not two live sources disagreeing about the present. A Salesian kindergarten and water system in Nila were destroyed in the 2017 Solomon Islands earthquake, which independently confirms Nila as the location.",
+    "denomination": "Catholic",
     "province": "Western",
-    "island": null,
-    "town": null,
+    "island": "Shortland Islands",
+    "town": "Nila",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Church",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5618",
+      "https://salesianmissions.org/salesian-country/solomon-islands/"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_goldie_college",
+    "name": "Goldie College",
+    "description": "Goldie College National Secondary School, in Munda, New Georgia Island — its own name states the designation directly, the same naming tier as Honiara High School and King George VI NSS elsewhere in this dataset. Built 1952 as a missionary training college; named for Rev. John Francis Goldie, who founded the Western Province's Methodist mission in 1902. No source found confirming a current denomination, so none is set — a mission-era founding does not by itself establish today's governance, the same restraint applied to Sir Dudley Tuti College and Dr Henry Welchman Palmer CHS elsewhere in this dataset.",
+    "denomination": null,
+    "province": "Western",
+    "island": "New Georgia",
+    "town": "Munda",
+    "latitude": -8.327,
+    "longitude": 157.26818,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -6530,60 +6567,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Government",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5618"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5616",
+      "https://www.facebook.com/p/Goldie-College-National-Secondary-School-100063546862587/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_goldie_college",
-    "name": "Goldie College",
-    "description": "A community school in Western Province, offering secondary education.",
-    "denomination": null,
-    "province": "Western",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5616"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_kokegolo_chs",
     "name": "Kokegolo CHS",
-    "description": "A community school in Western Province, offering secondary education.",
+    "description": "A community school in Munda, New Georgia Island — an annual \"Religious Day\" celebration drawing 800+ students, parents and teachers confirms it real and currently active. Kokegolo itself was the site of a Methodist mission training college from 1913.",
     "denomination": null,
     "province": "Western",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "New Georgia",
+    "town": "Munda",
+    "latitude": -8.327,
+    "longitude": 157.26818,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -6602,11 +6604,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5615"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5615",
+      "https://theislandsun.com.sb/kokegolo-chs-celebrates-annual-religious-day/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -6648,14 +6651,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_gizo_chs",
     "name": "Gizo CHS",
-    "description": "A community school in Western Province, offering secondary education.",
+    "description": "Gizo Community High School, in Gizo, the Western Province capital on Ghizo Island — confirmed current via a 2025/2026 WorldFish/CGIAR article on a Form 5 agriculture \"Look and Learn\" workshop its students attended.",
     "denomination": null,
     "province": "Western",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Ghizo",
+    "town": "Gizo",
+    "latitude": -8.10303,
+    "longitude": 156.84186,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -6674,24 +6677,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5614"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5614",
+      "https://www.worldfishcenter.org/blog/solomon-islands-students-grow-skills-healthier-more-resilient-food-systems"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_noro_chs",
     "name": "Noro CHS",
-    "description": "A community school in Western Province, offering secondary education.",
+    "description": "Noro Community High School, in Noro on New Georgia Island — confirmed current via a 2024 article on five of its students representing Solomon Islands in Japan's JENESYS exchange program.",
     "denomination": null,
     "province": "Western",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "New Georgia",
+    "town": "Noro",
+    "latitude": -8.2167,
+    "longitude": 157.2167,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -6710,11 +6714,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5612"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5612",
+      "https://www.sibconline.com.sb/noro-chs-students-returns-after-participating-in-jenesys-program-in-japan/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
