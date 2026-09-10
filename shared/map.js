@@ -29,6 +29,55 @@ Atlas.map.SI_MAX_BOUNDS = L.latLngBounds([-13.20, 154.60], [-5.30, 167.60]);
  * zoomed-all-the-way-out view is exactly the reset view. */
 Atlas.map.FIT_PADDING = [30, 30];
 
+/* --- Base tile layer(s) ----------------------------------------------------
+ * Every SI Atlas index shares one base map, configured here and nowhere else,
+ * so changing it — or later adding a view-switcher between several — is a
+ * one-place edit instead of a find-and-replace across every index's map.js.
+ *
+ * BASE_LAYERS is a keyed catalogue rather than a single object so a future
+ * switcher has somewhere to enumerate its options from on day one; today it
+ * holds exactly one entry, and DEFAULT_BASE_LAYER says which one Atlas.map
+ * .create() uses. Adding a second base layer later means adding a second key
+ * here and nothing else — create() and the (future) switcher both already
+ * read from this catalogue rather than a hardcoded layer.
+ *
+ * Attribution text is Esri's own `copyrightText` for this service (fetched
+ * from https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/
+ * MapServer?f=json on 10 September 2026) reproduced in full per Esri's terms
+ * — the contributor list is never abbreviated or dropped. */
+Atlas.map.BASE_LAYERS = {
+  'esri-topo': {
+    label: 'Topographic',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    options: {
+      attribution: 'Tiles &copy; <a href="https://www.esri.com/">Esri</a> &mdash; ' +
+        'Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, ' +
+        'GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), ' +
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+        'and the GIS User Community',
+      maxZoom: 19,
+      noWrap: true
+    }
+  }
+};
+
+/* Which key in BASE_LAYERS is used when a controller doesn't ask for a
+ * specific one. The only thing a view-switcher would need to change. */
+Atlas.map.DEFAULT_BASE_LAYER = 'esri-topo';
+
+/**
+ * Build the Leaflet tile layer for one entry in BASE_LAYERS. Kept as its own
+ * function (rather than inlined in create()) so a future base-layer switcher
+ * can call it too when swapping layers on an existing map.
+ *
+ * @param {string} [key] - a key in Atlas.map.BASE_LAYERS; defaults to
+ *   Atlas.map.DEFAULT_BASE_LAYER.
+ */
+Atlas.map.createBaseLayer = function (key) {
+  var layer = Atlas.map.BASE_LAYERS[key || Atlas.map.DEFAULT_BASE_LAYER];
+  return L.tileLayer(layer.url, layer.options);
+};
+
 /**
  * Create a Solomon-Islands-locked Leaflet map in the given container and
  * return a small controller around it. Each call is independent — nothing
@@ -38,6 +87,8 @@ Atlas.map.FIT_PADDING = [30, 30];
  * @param {string} elementId - id of the element to render the map into.
  * @param {Object} [opts]
  * @param {number} [opts.maxZoom=17]
+ * @param {string} [opts.baseLayer] - a key in Atlas.map.BASE_LAYERS;
+ *   defaults to Atlas.map.DEFAULT_BASE_LAYER.
  */
 Atlas.map.create = function (elementId, opts) {
   opts = opts || {};
@@ -52,15 +103,11 @@ Atlas.map.create = function (elementId, opts) {
     maxZoom: opts.maxZoom || 17
   });
 
-  /* Standard OpenStreetMap raster tiles: free, no API key, no sign-up.
-   * Deliberately no `bounds:` here — clipping tiles to SI_MAX_BOUNDS leaves
+  /* Deliberately no `bounds:` here — clipping tiles to SI_MAX_BOUNDS leaves
    * grey voids whenever the viewport is taller than the box. Panning is
    * already locked by maxBounds; the tiles just need to fill the frame. */
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 19,
-    noWrap: true
-  }).addTo(map);
+  var baseLayerKey = opts.baseLayer || Atlas.map.DEFAULT_BASE_LAYER;
+  var baseLayer = Atlas.map.createBaseLayer(baseLayerKey).addTo(map);
 
   L.control.zoom({ position: 'topright' }).addTo(map);
 
@@ -83,6 +130,23 @@ Atlas.map.create = function (elementId, opts) {
 
     /** True once the map has a real size — a hidden container measures 0×0. */
     isVisible: function () { return map.getSize().x > 0; },
+
+    /** The key (in Atlas.map.BASE_LAYERS) of the currently active base layer. */
+    getBaseLayer: function () { return baseLayerKey; },
+
+    /**
+     * Swap the active base layer for a different entry in
+     * Atlas.map.BASE_LAYERS. Not wired to any UI yet — this is the one hook
+     * a future view-switcher would call, so adding that switcher later is
+     * "call this", not a restructure of create() or the tile setup. No-op if
+     * `key` is already the active layer or isn't a known one.
+     */
+    setBaseLayer: function (key) {
+      if (!key || key === baseLayerKey || !Atlas.map.BASE_LAYERS[key]) return;
+      map.removeLayer(baseLayer);
+      baseLayer = Atlas.map.createBaseLayer(key).addTo(map);
+      baseLayerKey = key;
+    },
 
     /** Reset to the whole-country view. */
     resetView: function () {
