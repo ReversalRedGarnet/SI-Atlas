@@ -13,7 +13,7 @@ This document covers Index P's own implementation.
 > 9 September 2026). They are sourced from RSIPF annual reports and media
 > releases, Solomon Islands Government news articles, and — where a record
 > says so in its own notes — non-official sources such as news outlets and
-> mapping data. **13 of the 42 records have no confirmed coordinates.** They
+> mapping data. **12 of the 42 records have no confirmed coordinates.** They
 > appear in search, in the result list and in the profile view; they are simply
 > not drawn on the map. Coordinates are never substituted with a town or island
 > centroid: the source workbook's rule is that a blank coordinate is more
@@ -173,7 +173,7 @@ still takes the gold ring.
 
 ## Records without coordinates
 
-13 of 42. They are first-class records here, not omissions:
+12 of 42. They are first-class records here, not omissions:
 
 - They appear in the result list, with a **"Map — No coordinates yet — not on
   the map"** row, and in search results like any other record.
@@ -226,7 +226,7 @@ Mostly inherited from the source workbook, and deliberately unresolved — these
 are open questions the sources do not settle, not cleanup jobs. Every one is
 recorded in the relevant record's `notes` and surfaced in its profile.
 
-- **13 of 42 records have no coordinates.** When leads arrive, only
+- **12 of 42 records have no coordinates.** When leads arrive, only
   `location.lat` / `location.lng` (and `location.precision`) need touching.
 - **Four records hold more than one phone number in the phone field itself** —
   Honiara Central, Auki, Kirakira and Taro — from sources of different dates,
@@ -275,7 +275,7 @@ recorded in the relevant record's `notes` and surfaced in its profile.
 ## Post-conversion edits
 
 `js/data/stations.js` is **no longer a pure conversion of the workbook.**
-Fourteen records carry additions or a change made after it. Twelve are
+Fifteen records carry additions or a change made after it. Thirteen are
 recorded in that record's own `dataFlag` and, where it is a fact about the
 facility, appended to `notes` behind an `UPDATE (added September 2026…)`
 marker. Two more (Kariki, Kulitanai) are plain coordinate additions using the
@@ -300,6 +300,7 @@ citations — exactly the case the parallel-list decision above exists for.
 | Taro Police Station | Same treatment as Lata: coordinate for an unlabeled Google Maps building, confirmed via informal inquiry with local residents in Taro. |
 | Kariki Police Post, Kulitanai Police Station | Coordinate added, source: `; Google Maps` appended to `source_name`. Both are listed and labeled as police sites on Google Maps (unlike Lata/Taro above), so this is a plain coordinate addition using the same citation already used for Munda, Honiara Central and others — not a correction or an ambiguous case, and **no `dataFlag`** was added for either. |
 | Kirakira Police Station | Coordinate added, notes + source: obtained via a live GPS location ping sent by an officer physically at the provincial HQ, in response to a phone call — a device-generated reading, not a verbal description or a map estimate. Flagged as notably higher-confidence than this dataset's typical unofficial sourcing (e.g. Noro/Ulawa's phone confirmations), though still not a written or official record. `verification_status` stays `verified` (reflects the station's existence, not this coordinate); `location.precision` stays at the file's blanket `'approximate'` — no `'exact'` tier was introduced for it. |
+| Atoifi Police Outpost | Coordinate added, notes + source: obtained via a live GPS location ping sent on-site by a civilian associate — a nursing staff member at the nearby Atoifi Adventist Hospital, not RSIPF personnel — who visited the outpost in person in response to a phone call to Malaita HQ. Same device-generated, higher-confidence tier as Kirakira's ping, but flagged as sourced through a non-RSIPF individual physically present at the site rather than an officer, so the two aren't conflated. Supersedes this record's earlier note that only the nearby hospital, not the outpost, had been found in mapping data. |
 
 > **If the workbook is ever re-exported, these edits must be reapplied** — a
 > fresh conversion would silently discard them. Better still, fold the facts
@@ -319,8 +320,13 @@ citations — exactly the case the parallel-list decision above exists for.
 >
 > *(Further update, September 2026: Kirakira's coordinate was added the same
 > way — folded into the source workbook first, then applied here to match.
-> The Summary sheet's live formulas now read 29 records with coordinates and
-> 13 without.)*
+> The Summary sheet's live formulas read 29 records with coordinates and 13
+> without at that point, up from 28/14.)*
+>
+> *(Further update, September 2026: Atoifi Police Outpost's coordinate was
+> added the same way — folded into the source workbook first, then applied
+> here to match. The Summary sheet's live formulas now read 30 records with
+> coordinates and 12 without.)*
 
 ### A note on `dataFlag`
 
@@ -329,7 +335,7 @@ during its own cleanup (Maka is its one use). This index widens it to mean
 *"something about this record needs a human's attention"* — a correction, a
 post-conversion edit, or an unresolved conflict between two fields. `js/panel.js`
 renders it under a neutral **"Flagged on this record"** heading for that reason,
-rather than calling everything a correction. Thirteen of the 42 records carry one.
+rather than calling everything a correction. Fourteen of the 42 records carry one.
 
 ## Out of scope
 

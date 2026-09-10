@@ -9,11 +9,11 @@
  * columns were mapped onto SI Atlas's shared entity envelope, which judgement
  * calls the mapping had to make, and every change made to a record since.
  *
- * THIS FILE IS NO LONGER A PURE CONVERSION. Fourteen records carry additions
- * or changes made after the conversion. Twelve of them are marked in their own
- * `dataFlag`; two (Kariki, Kulitanai) are plain coordinate additions using the
- * file's standard Google Maps citation -- the same pattern Munda or Honiara
- * Central already use -- so neither needed a flag.
+ * THIS FILE IS NO LONGER A PURE CONVERSION. Fifteen records carry additions
+ * or changes made after the conversion. Thirteen of them are marked in their
+ * own `dataFlag`; two (Kariki, Kulitanai) are plain coordinate additions using
+ * the file's standard Google Maps citation -- the same pattern Munda or
+ * Honiara Central already use -- so neither needed a flag.
  * Re-running a fresh conversion from the workbook would silently discard them.
  * If the workbook is ever re-exported, reapply the POST-CONVERSION EDITS list
  * below -- or fold those facts back into the workbook first and re-export.
@@ -28,7 +28,7 @@
  *   - Nothing is invented or estimated. A blank field means nothing
  *     verifiable was found -- not zero, and not unknown-but-guessable.
  *   - Coordinates are NEVER substituted with a town or island centroid.
- *     13 of 42 records have no coordinates and carry
+ *     12 of 42 records have no coordinates and carry
  *     `location.lat: null`, `location.lng: null`. They still appear in
  *     search, in the result list and in the profile view; js/map.js simply
  *     does not plot them, and the list and profile say so in words.
@@ -97,7 +97,7 @@
  *
  * KNOWN OPEN ISSUES inherited from the workbook. These are unresolved on
  * purpose -- open questions the sources do not settle, not cleanup jobs:
- *   - 13 of 42 records still have no coordinates at all.
+ *   - 12 of 42 records still have no coordinates at all.
  *   - Honiara Central, Auki, Kirakira and Taro each hold more than one phone
  *     number in the `contact.phone` field itself, from sources of different
  *     vintages. Read the record's `notes` before treating any one of them as
@@ -193,6 +193,16 @@
  *     phone confirmations above), though still not a written or official
  *     record; `location.precision` stays at this file's blanket
  *     'approximate' -- no 'exact' tier was introduced for it.
+ *   - Atoifi Police Outpost. Coordinate added, obtained via a live GPS
+ *     location ping sent on-site by a civilian associate -- a nursing staff
+ *     member at the nearby Atoifi Adventist Hospital, not RSIPF personnel --
+ *     who visited the outpost in person in response to a phone call to
+ *     Malaita HQ. Same device-generated, higher-confidence tier as Kirakira's
+ *     ping, but sourced through a non-RSIPF individual physically present at
+ *     the site rather than an officer; flagged to keep that distinction
+ *     explicit rather than conflating the two. Supersedes this record's
+ *     earlier note that only the nearby hospital, not the outpost, had been
+ *     found in mapping data.
  *
  * A NOTE ON `dataFlag`. The source workbook defines this column narrowly, as
  * a log of corrections made during its own cleanup (Maka is its one use). This
@@ -1297,13 +1307,14 @@ SP.STATION_RECORDS = [
     "name": "Atoifi Police Outpost",
     "type": "post",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -8.86802097976235,
+      "lng": 161.004627917201,
+      "precision": "approximate"
     },
     "sources": [
       "RSIPF Annual Report 2019 (Annex D)",
-      "Solomon Star News (non-official outlet)"
+      "Solomon Star News (non-official outlet)",
+      "Personal inquiry — live GPS location ping sent on-site by a civilian associate at Atoifi Police Outpost (September 2026)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -1312,7 +1323,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Existence confirmed by official RSIPF Annex D list; a private-outlet article additionally reports it is supported by/relies on nearby Atori Police Station due to staffing shortages. No coordinates found (only the nearby Atoifi Adventist Hospital was found in mapping data, not used as a proxy).",
+    "notes": "Existence confirmed by official RSIPF Annex D list; a private-outlet article additionally reports it is supported by/relies on nearby Atori Police Station due to staffing shortages. No coordinates found (only the nearby Atoifi Adventist Hospital was found in mapping data, not used as a proxy). UPDATE (September 2026): a coordinate has since been added for the outpost itself, obtained via a live GPS location ping sent on-site by a civilian associate (not RSIPF staff) — a nursing staff member at the nearby Atoifi Adventist Hospital who visited the outpost in person — in response to a phone call to Malaita HQ. This supersedes the “only the nearby Atoifi Adventist Hospital was found in mapping data, not used as a proxy” statement above, which is kept as originally recorded: this coordinate is for the outpost itself, not the hospital.",
     "province": "Malaita Province",
     "constituencyWard": "East Kwaio",
     "address": "Atoifi, East Kwaio, Malaita Island",
@@ -1321,7 +1332,7 @@ SP.STATION_RECORDS = [
       "https://www.solomonstarnews.com/atori-police-station-need-more-officers-to-support-atoifi-outpost/"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion addition (September 2026): coordinate came from a live GPS location ping sent on-site at Atoifi Police Outpost by a civilian associate — a nursing staff member at the nearby Atoifi Adventist Hospital, not RSIPF personnel, who visited the outpost in person in response to a phone call to Malaita HQ. This is device-generated, first-hand location data, higher-confidence than a map estimate or verbal description, but sourced through a non-RSIPF individual physically present at the site rather than an officer, unlike Kirakira's officer-sent ping. `verification_status` is left as 'verified', which reflects the outpost's confirmed existence per RSIPF Annual Report 2019 (Annex D), not this coordinate. `location.precision` is left at this file's blanket 'approximate' default, consistent with Kirakira. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "atori-police-station",
