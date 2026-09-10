@@ -561,11 +561,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_norman_palmer_chs",
     "name": "Norman Palmer CHS",
-    "description": "A community school in Honiara, offering secondary education.",
-    "denomination": null,
+    "description": "Bishop Norman Palmer Anglican School, an Anglican Church of Melanesia (ACOM)-owned community school in East Honiara, offering secondary education. MEHRD's own system separately shows school code 188 as \"Christ The King CHS\" — most likely a code collision or reassignment on MEHRD's side, since this school is independently confirmed alive and operating under its own name at the same time. Left unrenamed; see git history for the investigation.",
+    "denomination": "Anglican",
     "province": "Honiara",
     "island": "Guadalcanal",
-    "town": "Honiara",
+    "town": "East Honiara",
     "latitude": -9.452876,
     "longitude": 159.990873,
     "locationPrecision": "approximate",
@@ -587,11 +587,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-07",
+    "lastVerified": "2026-09-10",
     "sourceUrls": [
-      "https://www.mehrd.gov.sb/101-uncategorised/243-honiara"
+      "https://www.mehrd.gov.sb/101-uncategorised/243-honiara",
+      "https://www.solomonstarnews.com/bishop-norman-palmer-school-science-lab-reopens-after-renovation/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Honiara list",
+    "verificationStatus": "Confirmed — MEHRD Honiara list; cross-source",
     "image": null
   },
   {
@@ -1570,14 +1571,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_yandina_chs",
     "name": "Yandina CHS",
-    "description": "A community school in Central Province, offering secondary education.",
+    "description": "A community school in Yandina, Mbanika Island, Russell Islands, Central Province. The Royal Australian Navy rebuilt its classrooms in 2013 and sailors visited again in 2016.",
     "denomination": null,
     "province": "Central",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Mbanika, Russell Islands",
+    "town": "Yandina",
+    "latitude": -9.117,
+    "longitude": 159.217,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -1600,7 +1601,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5457"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -1642,8 +1643,8 @@ SF.SCHOOLS = [
   {
     "id": "sch_dala_chs",
     "name": "Dala CHS",
-    "description": "A community school in Central Province, offering secondary education.",
-    "denomination": null,
+    "description": "A Catholic community school in Central Province, full name St Joseph's Dala CHS per MEHRD's own province page.",
+    "denomination": "Catholic",
     "province": "Central",
     "island": null,
     "town": null,
@@ -1670,22 +1671,23 @@ SF.SCHOOLS = [
     "schoolType": "Community",
     "lastVerified": "2026-09-10",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5455"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5455",
+      "https://mehrd.gov.sb/101-uncategorised/240-central-province"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_siota_pss",
     "name": "Siota PSS",
-    "description": "A provincial secondary school in Central Province.",
+    "description": "Central Province's only Provincial Secondary School, at Utuhu Passage on north Nggela (Florida) Island. Founded 1893 as St Luke's, the Melanesian Mission's first boys' school.",
     "denomination": null,
     "province": "Central",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Nggela (Florida Islands)",
+    "town": "Utuhu Passage",
+    "latitude": -9.0708,
+    "longitude": 160.3253,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -1708,7 +1710,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5454"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -1786,11 +1788,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_nukufero_chs",
     "name": "Nukufero CHS",
-    "description": "A community school in Central Province, offering secondary education.",
+    "description": "A community school at Nukufero, a settlement on the west side of Pavuvu Island, Russell Islands, founded in 1956 to resettle Polynesians from Tikopia after a devastating 1952 cyclone. No coordinate found for the school itself.",
     "denomination": null,
     "province": "Central",
-    "island": null,
-    "town": null,
+    "island": "Pavuvu, Russell Islands",
+    "town": "Nukufero",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -1816,7 +1818,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5451"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -1966,14 +1968,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_wagina_chs",
     "name": "Wagina CHS",
-    "description": "A community school in Choiseul Province, offering secondary education.",
+    "description": "A community school on Wagina Island (110 km²), settled by I-Kiribati resettled from the Phoenix Islands in the 1950s across three villages (Kukutin, Arariki, Nikumaroro). The coordinate is an island-facility landmark, not a surveyed school address.",
     "denomination": null,
     "province": "Choiseul",
-    "island": "Choiseul",
+    "island": "Wagina Island",
     "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "latitude": -7.4684,
+    "longitude": 157.7387,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -1996,7 +1998,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5464"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -2146,8 +2148,8 @@ SF.SCHOOLS = [
   {
     "id": "sch_kukele_chs",
     "name": "Kukele CHS",
-    "description": "A community school in Choiseul Province, offering secondary education.",
-    "denomination": null,
+    "description": "A Seventh-day Adventist community school in Choiseul Province, full name Kukele Adventist CHS per a March 2026 news article on new school buildings funded for Choiseul's 35th Appointed Day.",
+    "denomination": "SDA",
     "province": "Choiseul",
     "island": "Choiseul",
     "town": null,
@@ -2176,14 +2178,14 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5459"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_puzivai_chs",
     "name": "Puzivai CHS",
-    "description": "A community school in Choiseul Province, offering secondary education.",
-    "denomination": null,
+    "description": "A Seventh-day Adventist community school in Choiseul Province, coastal, damaged in April 2026's Cyclone Maila. Referred to as \"Pujivai Adventist High School\" in an ADRA cyclone-response report.",
+    "denomination": "SDA",
     "province": "Choiseul",
     "island": "Choiseul",
     "town": null,
@@ -2212,7 +2214,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5458"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3442,8 +3444,8 @@ SF.SCHOOLS = [
   {
     "id": "sch_st_stephen_pamua_college",
     "name": "St Stephen Pamua College",
-    "description": "A community school in Makira Province, offering secondary education.",
-    "denomination": null,
+    "description": "An Anglican (Church of Melanesia) school on the Makira mainland, west of Kirakira. Traces to 1910/1951 as separate boys' and girls' schools before merging.",
+    "denomination": "Anglican",
     "province": "Makira",
     "island": null,
     "town": null,
@@ -3472,7 +3474,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5538"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3584,16 +3586,16 @@ SF.SCHOOLS = [
     "image": null
   },
   {
-    "id": "sch_pawa_chs",
-    "name": "Pawa CHS",
-    "description": "A community school in Makira Province, offering secondary education.",
+    "id": "sch_pawa_pss",
+    "name": "Pawa PSS",
+    "description": "A provincial secondary school at Kerepei, Ugi Island. Founded 1922 as All Hallows' School, modeled on Norfolk Island's St Barnabas School and sometimes called \"the Eton of the Pacific.\" Run by the provincial government, not a church.",
     "denomination": null,
     "province": "Makira",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Ugi Island",
+    "town": "Kerepei",
+    "latitude": -10.2783531,
+    "longitude": 161.7322254,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3611,12 +3613,13 @@ SF.SCHOOLS = [
     "feeMax": null,
     "currency": "SBD",
     "boarding": null,
-    "schoolType": "Community",
+    "schoolType": "Government",
     "lastVerified": "2026-09-10",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5535"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5535",
+      "https://mehrd.gov.sb/101-uncategorised/245-makira-ulawa-province"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3658,14 +3661,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_santa_ana_chs",
     "name": "Santa Ana CHS",
-    "description": "A community school in Makira Province, offering secondary education.",
+    "description": "A community school on Owaraha (Santa Ana) Island — small (15.7 km²), two villages, Gupuna and Nafinotoga. The coordinate is island-level, not school-specific.",
     "denomination": null,
     "province": "Makira",
-    "island": null,
+    "island": "Owaraha (Santa Ana)",
     "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "latitude": -10.8283,
+    "longitude": 162.4636,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3688,7 +3691,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5532"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3730,7 +3733,44 @@ SF.SCHOOLS = [
   {
     "id": "sch_pirupiru_chs",
     "name": "Pirupiru CHS",
-    "description": "A community school in Makira Province, offering secondary education.",
+    "description": "A community school on Ulawa Island, not the Makira mainland — 389 students enrolled as of April 2025, when new Australia/NZ-funded Science and Home Economics labs (SBD 1.3M) officially opened.",
+    "denomination": null,
+    "province": "Makira",
+    "island": "Ulawa",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5530",
+      "https://www.solomonstarnews.com/new-science-home-eco-labs-for-pirupiru-chs/"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_haura_chs",
+    "name": "Haura CHS",
+    "description": "A community school in West Makira Constituency, Makira Province. Not found in either MEHRD source used for the rest of this province's roster (both partial/older snapshots) — confirmed instead via a dated September 2026 government transport-funding article naming it alongside Tawatana CHS and Sogotiwa CHS, both already in this dataset.",
     "denomination": null,
     "province": "Makira",
     "island": null,
@@ -3758,9 +3798,9 @@ SF.SCHOOLS = [
     "schoolType": "Community",
     "lastVerified": "2026-09-10",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5530"
+      "https://solomons.gov.sb/west-makira-constituency-gets-1-5-million-transport-boost-as-china-funded-rsdp-targets-key-sectors/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — public evidence (not MEHRD-code-verified)",
     "image": null
   },
   {
@@ -5782,14 +5822,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_lata_chs",
     "name": "Lata CHS",
-    "description": "A community school in Temotu Province, offering secondary education.",
+    "description": "A community school in or near Lata, the Temotu provincial capital, on Nendö Island.",
     "denomination": null,
     "province": "Temotu",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Nendö",
+    "town": "Lata",
+    "latitude": -10.717,
+    "longitude": 165.833,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -5812,7 +5852,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5604"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
