@@ -194,8 +194,10 @@
 <!-- Leaflet -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
-<!-- Shared SI Atlas modules (Atlas.*) — schema first, because js/data builds
-     its records through Atlas.schema.createEntity() at load time. -->
+<!-- Shared SI Atlas modules (Atlas.*) — util first (the others use it), schema
+     next, because js/data builds its records through Atlas.schema.createEntity()
+     at load time. -->
+<script src="../shared/util.js"></script>
 <script src="../shared/schema.js"></script>
 <script src="../shared/map.js"></script>
 <script src="../shared/verification-badge.js"></script>

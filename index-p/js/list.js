@@ -59,10 +59,7 @@ SP.format = {
     if (isNaN(d)) return iso;
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   },
-  esc: function (s) {
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
+  esc: Atlas.util.esc
 };
 
 var listEl, countEl, subEl, chipsEl;

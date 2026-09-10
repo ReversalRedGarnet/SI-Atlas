@@ -13,6 +13,7 @@ window.SF = window.SF || {};
 SF.filterPanel = {};
 
 var root;
+var esc = Atlas.util.esc;
 
 var DISTANCE_OPTIONS = [5, 10, 25, 50, 100, 250];
 /* No school in the current dataset has confirmed fee data, so this ceiling
@@ -344,11 +345,6 @@ function distanceSection() {
     '<button type="button" class="btn btn-secondary btn-block" id="geo-request">Use my location</button>';
 
   return section('maxDistanceKm', 'How far from me', body, false);
-}
-
-function esc(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                  .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 })();
