@@ -44,10 +44,15 @@ Atlas.schema.VERIFICATION_STATUSES = ['unverified', 'verified', 'unknown'];
 Atlas.schema.DEFAULT_VERIFICATION_STATUS = 'unverified';
 
 /**
- * Base shape of one entity, shared across every index. Treat this as
- * documentation of the contract, not a class — indexes construct plain
- * objects, ideally through createEntity() below so the safe defaults are
- * never skipped by accident.
+ * Build a base entity with every field present and every unknown left
+ * honestly blank. Callers pass only what they actually know; everything
+ * else stays null/empty rather than being guessed. `verification_status`
+ * always starts at the safe default unless the caller explicitly overrides
+ * it — there is no code path in this factory that produces a 'verified'
+ * record by accident.
+ *
+ * Base shape, shared across every index (an index is free to carry extra,
+ * domain-specific fields alongside these — see the file header):
  *
  *   id                   string   stable, unique within the index
  *   name                 string
@@ -65,19 +70,6 @@ Atlas.schema.DEFAULT_VERIFICATION_STATUS = 'unverified';
  *                            website: string|null }
  *   notes                 string   free-text provenance/caveats — the place
  *                                  for "confirmed via X, Y unresolved"
- */
-Atlas.schema.BASE_FIELDS = [
-  'id', 'name', 'type', 'location', 'sources',
-  'verification_status', 'last_verified', 'contact', 'notes'
-];
-
-/**
- * Build a base entity with every field present and every unknown left
- * honestly blank. Callers pass only what they actually know; everything
- * else stays null/empty rather than being guessed. `verification_status`
- * always starts at the safe default unless the caller explicitly overrides
- * it — there is no code path in this factory that produces a 'verified'
- * record by accident.
  *
  * @param {Object} [overrides] - known fields to set; unknown ones are left
  *   at their honest defaults.
@@ -106,14 +98,4 @@ Atlas.schema.createEntity = function (overrides) {
   }
 
   return merged;
-};
-
-/** True only when a record has been explicitly, actively confirmed. */
-Atlas.schema.isVerified = function (entity) {
-  return !!entity && entity.verification_status === 'verified';
-};
-
-/** Has this record been looked at all, one way or another? */
-Atlas.schema.hasBeenChecked = function (entity) {
-  return !!entity && (entity.verification_status === 'verified' || entity.verification_status === 'unknown');
 };
