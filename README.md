@@ -71,18 +71,32 @@ see exactly how a result was produced.
 si-atlas/
 ├── README.md              this file
 ├── shared/
+│   ├── util.js              small stateless string helpers (Atlas.util.esc,
+│   │                         Atlas.util.formatDate) every other shared/index
+│   │                         file builds on — loads first
 │   ├── schema.js           the generic entity envelope every index's data conforms to
 │   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map)
 │   ├── verification-badge.js   verified/unverified/unknown badge renderer (Atlas.verificationBadge)
 │   ├── map-legend.js        collapsible map key: disclosure behaviour +
 │   │                         remembered state (Atlas.mapLegend)
+│   ├── geolocation.js       browser location + haversine distance
+│   │                         (Atlas.geo.attach(ns) wires it onto an index's
+│   │                         own namespace)
+│   ├── shell.js             wiring for the page shell every index shares:
+│   │                         toolbar, filter drawer, mobile list/map switch,
+│   │                         global Escape/Tab handling, the static info
+│   │                         modal (Atlas.shell.wire(ns, opts))
+│   ├── filter-kit.js        generic filter-drawer markup builders: a
+│   │                         collapsible section, a checkbox row, a section
+│   │                         of checkboxes, the distance select
+│   │                         (Atlas.filterKit)
 │   └── styles/
 │       ├── base.css         shared design tokens, reset, generic UI primitives
 │       └── index-shell.css  the page skeleton every index shares: masthead,
 │                             nav bar, service notice, page heading, search
-│                             toolbar, workspace column frame, mobile
-│                             list/map switch, scrim + modal, and their
-│                             responsive reflow
+│                             toolbar, workspace column frame, filter-drawer
+│                             chrome, mobile list/map switch, scrim + modal,
+│                             and their responsive reflow
 ├── index-e/                Index E — Education (see index-e/README.md)
 ├── index-p/                Index P — Policing (see index-p/README.md)
 └── index-h/                Index H — Health (stub, not yet built)
@@ -99,18 +113,32 @@ logic (Index E uses `SF`, Index P uses `SP`).
 1. Copy the shape of `index-h/` for a stub, or `index-e/` / `index-p/` for a
    working example: an `index.html` at `index-<letter>/`, its own `css/` and
    `js/`, loading `../shared/styles/base.css` then
-   `../shared/styles/index-shell.css` before its own stylesheet, and
-   `../shared/schema.js` / `../shared/map.js` /
-   `../shared/verification-badge.js` before its own scripts.
+   `../shared/styles/index-shell.css` before its own stylesheet, and the
+   shared scripts before its own — `util.js` first (everything else depends
+   on it), then `schema.js`, `map.js`, `verification-badge.js`,
+   `map-legend.js`, `geolocation.js`, `filter-kit.js`, `shell.js`.
 
    `index-shell.css` carries the whole page skeleton — masthead, nav bar,
    service notice, page heading, search toolbar, the workspace column frame,
-   the mobile list/map switch, the scrim + modal, and how all of it reflows
-   below 860px. An index's own stylesheet holds only what goes *inside* those
-   regions: its filter drawer, result rows, detail-panel sections and map
-   contents. The dividing line is region vs. contents — `.map-col` is shared,
-   `#map` and the legend are not; `.results-col` is shared, `.result` is not.
-   Do not re-declare the skeleton locally.
+   the filter-drawer chrome, the mobile list/map switch, the scrim + modal,
+   and how all of it reflows below 860px. An index's own stylesheet holds
+   only what goes *inside* those regions: its filter *vocabulary* (the
+   sections/controls for its own fields — the drawer/checkbox mechanics are
+   shared), result rows, detail-panel sections and map contents. The
+   dividing line is region vs. contents — `.map-col` is shared, `#map` and
+   the legend are not; `.results-col` is shared, `.result` is not. Do not
+   re-declare the skeleton locally.
+
+   The toolbar, filter drawer, mobile list/map switch, global Escape/Tab
+   handling and the static info modal are wired up by calling
+   `Atlas.shell.wire(ns, { info: INFO })` from the index's own `main.js` (see
+   `shared/shell.js`) — `ns` is the index's own namespace (`SF`, `SP`, ...)
+   with `state.js` and `geolocation.js` already set up on it, and `INFO` is
+   just that index's own About/Useful Info/Contact/Help content. Build the
+   filter panel's sections with `Atlas.filterKit.section()` /
+   `.checkboxSection()` / `.checkItem()` / `.distanceSection()` (see
+   `shared/filter-kit.js`) rather than hand-rolling the same `<details>` /
+   checkbox markup again.
 2. Build entity records through `Atlas.schema.createEntity()` (or at least
    in its shape) so verification status defaults safely and provenance has
    somewhere to live. `index-p/js/data/stations.js` is the reference for
