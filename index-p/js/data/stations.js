@@ -9,8 +9,8 @@
  * columns were mapped onto SI Atlas's shared entity envelope, which judgement
  * calls the mapping had to make, and every change made to a record since.
  *
- * THIS FILE IS NO LONGER A PURE CONVERSION. Fifteen records carry additions
- * or changes made after the conversion. Thirteen of them are marked in their
+ * THIS FILE IS NO LONGER A PURE CONVERSION. Sixteen records carry additions
+ * or changes made after the conversion. Fourteen of them are marked in their
  * own `dataFlag`; two (Kariki, Kulitanai) are plain coordinate additions using
  * the file's standard Google Maps citation -- the same pattern Munda or
  * Honiara Central already use -- so neither needed a flag.
@@ -28,7 +28,7 @@
  *   - Nothing is invented or estimated. A blank field means nothing
  *     verifiable was found -- not zero, and not unknown-but-guessable.
  *   - Coordinates are NEVER substituted with a town or island centroid.
- *     12 of 42 records have no coordinates and carry
+ *     11 of 42 records have no coordinates and carry
  *     `location.lat: null`, `location.lng: null`. They still appear in
  *     search, in the result list and in the profile view; js/map.js simply
  *     does not plot them, and the list and profile say so in words.
@@ -97,7 +97,7 @@
  *
  * KNOWN OPEN ISSUES inherited from the workbook. These are unresolved on
  * purpose -- open questions the sources do not settle, not cleanup jobs:
- *   - 12 of 42 records still have no coordinates at all.
+ *   - 11 of 42 records still have no coordinates at all.
  *   - Honiara Central, Auki, Kirakira and Taro each hold more than one phone
  *     number in the `contact.phone` field itself, from sources of different
  *     vintages. Read the record's `notes` before treating any one of them as
@@ -203,6 +203,13 @@
  *     explicit rather than conflating the two. Supersedes this record's
  *     earlier note that only the nearby hospital, not the outpost, had been
  *     found in mapping data.
+ *   - Atori Police Station. Coordinate added, sourced from Mindat.org, a
+ *     locality/populated-place database -- a village-level point for Atori on
+ *     Malaita Island, not a building-specific one. Flagged because this is a
+ *     different confidence tier than Kirakira/Atoifi's device-generated GPS
+ *     pings; a same-named "Atori" locality exists in Makira-Ulawa Province,
+ *     and this coordinate was confirmed to be the Malaita Island one matching
+ *     this record's province.
  *
  * A NOTE ON `dataFlag`. The source workbook defines this column narrowly, as
  * a log of corrections made during its own cleanup (Maka is its one use). This
@@ -1339,13 +1346,14 @@ SP.STATION_RECORDS = [
     "name": "Atori Police Station",
     "type": "station",
     "location": {
-      "lat": null,
-      "lng": null,
-      "precision": null
+      "lat": -8.738502326755693,
+      "lng": 160.9332124280142,
+      "precision": "approximate"
     },
     "sources": [
       "RSIPF Annual Report 2019 (Annex D)",
-      "Solomon Islands Government official news portal (multiple articles)"
+      "Solomon Islands Government official news portal (multiple articles)",
+      "Mindat.org (populated-place locality data, Malaita Island)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -1354,7 +1362,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Confirmed active by several official government news articles from 2021-2024, including one describing it supporting the Atoifi outpost due to short-staffing. No coordinates found.",
+    "notes": "Confirmed active by several official government news articles from 2021-2024, including one describing it supporting the Atoifi outpost due to short-staffing. No coordinates found. UPDATE (September 2026): a coordinate has since been added, sourced from a locality/populated-place database (Mindat.org) giving Atori's general village-level location on Malaita Island, Malaita Province — not a station-specific coordinate. A same-named “Atori” locality exists in Makira-Ulawa Province; this coordinate is specifically the Malaita Island one, matching this record's province field. Cross-checked and confirmed accurate. This supersedes the “No coordinates found” statement above, which is kept as originally recorded.",
     "province": "Malaita Province",
     "constituencyWard": "East Kwara'ae / East Malaita",
     "address": "Atori, East Malaita",
@@ -1363,7 +1371,7 @@ SP.STATION_RECORDS = [
       "https://solomons.gov.sb/rsipf-witnesses-launching-of-atori-and-fouou-by-law-in-malaita-province/"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion addition (September 2026): coordinate is a village/locality-level point from Mindat.org (populated-place data), not a building-specific one — the same caveat tier as this dataset's other locality-sourced coordinates (e.g. Yandina, Tingoa), not the personal-inquiry/GPS-ping tier used for Kirakira or Atoifi. `verification_status` is left as 'verified', which reflects the station's confirmed existence per official government sources, not this coordinate. `location.precision` is left at this file's blanket 'approximate' default. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "auki-police-station",
