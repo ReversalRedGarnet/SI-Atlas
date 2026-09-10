@@ -1,31 +1,38 @@
 /* ============================================================================
  * SI Atlas — Index E — REAL DATA (all ten provinces)
  * ----------------------------------------------------------------------------
- * This is verified, named-school data, not a demonstration dataset. Coverage
- * has two tiers, reflected in each record's `verificationStatus`:
- *   - Honiara + two Guadalcanal schools (St Joseph's Tenaru, Selwyn College)
- *     plus Isabel Province — the original pilot pass. Cross-checked against
- *     an independent source beyond MEHRD wherever one exists, so many of
- *     these carry a `town` and some a coordinate.
- *   - Every other province (Central, Choiseul, the rest of Guadalcanal,
- *     Makira, Malaita, Rennell and Bellona, Temotu, Western) — a single-pass
- *     national sweep confirming each school's real name, code and province
- *     directly against MEHRD's own Year 10 Placement 2026 roster for that
- *     school (one document per school, fetched and read directly — not
- *     estimated from a folder listing). No independent second source was
- *     sought for these at this scale, so `town`, `island` (where the
- *     province spans more than one) and coordinates are left `null` per the
- *     data policy below, rather than guessed. SF.PROVINCES lists every
- *     province this build now covers — all ten.
+ * This is verified, named-school data, not a demonstration dataset. Every
+ * province has now had the same depth-pass treatment (there is no
+ * province-by-province difference left in methodology), so coverage is
+ * split by outcome instead, reflected in each record's `verificationStatus`:
+ *   - Tier 1 — Independently verified (125 of 188 records): at least one of
+ *     `town`, `latitude`/`longitude`, or `denomination` is set to a
+ *     non-null value, meaning an independent source beyond MEHRD's own
+ *     roster confirmed that specific fact (a village/town name, a
+ *     landmark-based coordinate, or a stated religious affiliation).
+ *   - Tier 2 — MEHRD-confirmed only (63 of 188 records): name, code and
+ *     province are confirmed directly against MEHRD's own Year 10 Placement
+ *     2026 roster for that exact school (one document per school, fetched
+ *     and read directly — not estimated from a folder listing), but no
+ *     independent second source was found for `town`, coordinates or
+ *     `denomination`, so those stay `null` per the data policy below rather
+ *     than guessed. SF.PROVINCES lists every province this build now
+ *     covers — all ten.
+ *
+ * These counts are a snapshot of the data as it stands, not a fixed split by
+ * province or by when a record was added — recompute them from the live
+ * data (count where town/coordinates/denomination is non-null) rather than
+ * trusting this comment if schools.js changes.
  *
  * Sourced from public MEHRD records (province school lists, Year 10 Placement
- * 2026 rosters, Honiara/Guadalcanal F4/F6 publication) plus, for the pilot
- * tier only, independent public sources (news coverage, Wikipedia, government
- * facility maps) used to confirm a school's town/village where MEHRD's own
- * listings only confirm the province. Every record carries `sourceUrls` and
- * `verificationStatus` for provenance — kept in the data for traceability,
- * deliberately not rendered on school cards (see js/panel.js: only
- * `lastVerified` surfaces, as a plain "Verified" indicator).
+ * 2026 rosters, Honiara/Guadalcanal F4/F6 publication) plus, for Tier 1
+ * records, independent public sources (news coverage, Wikipedia, government
+ * facility maps) used to confirm a school's town/village, coordinate or
+ * denomination where MEHRD's own listings only confirm the province. Every
+ * record carries `sourceUrls` and `verificationStatus` for provenance — kept
+ * in the data for traceability, deliberately not rendered on school cards
+ * (see js/panel.js: only `lastVerified` surfaces, as a plain "Verified"
+ * indicator).
  *
  * DATA POLICY — never fabricate. A field that was not confirmed in public
  * sources is `null` (or an empty array), not a guess:
@@ -42,11 +49,11 @@
  *     `yearLevels` is `null` — the Year Group filter honestly won't match
  *     them rather than guessing a range.
  *   - `latitude` / `longitude` — `null` for the large majority of records:
- *     Mount Horeb CHS and Mercy CHS in Honiara, most of Isabel, and nearly
- *     all of the national-sweep tier (MEHRD's own sources confirm a school
- *     exists and its province, not a village-level location — a coordinate
- *     is only set where a source specifically ties the school to a named
- *     place). They still appear in search/list results; js/map.js simply
+ *     Mount Horeb CHS and Mercy CHS in Honiara, most of Isabel, and most of
+ *     Tier 2 (MEHRD's own sources confirm a school exists and its province,
+ *     not a village-level location — a coordinate is only set where a
+ *     source specifically ties the school to a named place). They still
+ *     appear in search/list results; js/map.js simply
  *     does not plot them, and the list/detail views say so instead of
  *     guessing a pin location.
  *   - `town` — for the same reason, `null` wherever no source gives a place
@@ -65,18 +72,18 @@
  *     is 'exact' yet, but the map and detail panel support that value for
  *     when a surveyed address is confirmed.
  *
- * NATIONAL-SWEEP CAVEATS:
+ * DATASET CAVEATS:
  *   - "601 Gospel Light CHS" appears, with the same code, in both MEHRD's
  *     Guadalcanal and Honiara Year 10 Placement folders, with no content
  *     difference between the two documents to say which province is
  *     authoritative. Left out of this dataset rather than guessing — same
  *     handling as the unresolved "188" Norman Palmer CHS / Christ the King
  *     CHS conflict (see index-e/README.md or git history for that one).
- *   - `schoolType` for the national-sweep tier is inferred from the school's
- *     own name suffix, a real MEHRD naming convention, not a per-school
- *     guess: "CHS" (Community High School) → Community, "PSS"/"NSS"/"Senior
- *     Secondary" → Government. "College" and "High School" have no such
- *     fixed convention, so they default to Community absent confirmation —
+ *   - `schoolType` is, by default, inferred from the school's own name
+ *     suffix, a real MEHRD naming convention, not a per-school guess: "CHS"
+ *     (Community High School) → Community, "PSS"/"NSS"/"Senior Secondary" →
+ *     Government. "College" and "High School" have no such fixed
+ *     convention, so they default to Community absent confirmation —
  *     except where independently confirmed otherwise (RC Nicholson College:
  *     Church, per news coverage of its 2023 renaming and Uniting Church
  *     ownership).
@@ -122,8 +129,9 @@ SF.SUBJECT_GROUPS = [
 ];
 
 /* Filter vocabulary — all ten provinces the dataset now covers. See the
- * header above for the two verification tiers (pilot vs. national-sweep)
- * behind these; the filter itself makes no distinction between them. */
+ * header above for the two verification tiers (Tier 1 independently
+ * verified vs. Tier 2 MEHRD-confirmed only) behind these; the filter itself
+ * makes no distinction between them. */
 SF.PROVINCES = [
   'Honiara', 'Central', 'Choiseul', 'Guadalcanal', 'Isabel', 'Makira',
   'Malaita', 'Rennell and Bellona', 'Temotu', 'Western'

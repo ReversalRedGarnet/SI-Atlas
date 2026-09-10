@@ -5,31 +5,31 @@ Solomon Islands provinces. This is the first index of **SI Atlas** — see the
 [repo-root README](../README.md) for the umbrella project and methodology.
 This document covers Index E's own implementation.
 
-> ## School data is real, but verification depth varies by province
+> ## School data is real, but verification depth varies by record
 > The 188 school records in `js/data/schools.js` are named, real institutions
-> — none invented — but they fall into two coverage tiers, both explained in
-> full at the top of that file:
-> - **Pilot tier** (Honiara, two Guadalcanal schools, and Isabel Province):
->   cross-checked against an independent source beyond MEHRD wherever one
->   exists, so many of these carry a confirmed town and some a coordinate.
-> - **National-sweep tier** (Central, Choiseul, the rest of Guadalcanal,
->   Makira, Malaita, Rennell and Bellona, Temotu, Western): every school's
->   name, code and province is confirmed directly against MEHRD's own Year 10
->   Placement 2026 roster for that exact school, but no independent second
->   source was sought at this scale — so town, island (where a province spans
->   more than one) and coordinates are `null` for nearly all of them, rather
+> — none invented. Every province has now had the same depth-pass treatment,
+> so records split by outcome rather than by which pass or province touched
+> them, both explained in full at the top of that file:
+> - **Tier 1 — Independently verified** (125 of 188 records): at least one of
+>   `town`, coordinates, or `denomination` is set to a non-null value — i.e.
+>   an independent source beyond MEHRD's own roster confirmed a specific
+>   village/town name, a landmark-based coordinate, or a stated religious
+>   affiliation for that school.
+> - **Tier 2 — MEHRD-confirmed only** (63 of 188 records): name, code and
+>   province are confirmed directly against MEHRD's own Year 10 Placement
+>   2026 roster for that exact school, but none of `town`, coordinates or
+>   `denomination` has an independent source yet, so they stay `null` rather
 >   than guessed.
 >
 > Several fields (fees, contact details, exact coordinates, subjects) are
 > unconfirmed for many schools and are recorded as `null` / empty rather than
 > guessed — see the data-policy note at the top of `js/data/schools.js`. A
-> handful of schools (Mount Horeb CHS, Mercy CHS in Honiara, and most of the
-> national-sweep tier) have no public coordinate source and so appear in
-> search/list results only, not on the map. This is a public-service
-> prototype built on real, verified data — not a demonstration of fictional
-> data — but it is not yet a complete or authoritative national directory,
-> and the national-sweep tier in particular would benefit from a second
-> verification pass per school.
+> handful of schools (Mount Horeb CHS, Mercy CHS in Honiara, and most of
+> Tier 2) have no public coordinate source and so appear in search/list
+> results only, not on the map. This is a public-service prototype built on
+> real, verified data — not a demonstration of fictional data — but it is
+> not yet a complete or authoritative national directory, and Tier 2 in
+> particular would benefit from a second verification pass per school.
 
 ---
 
