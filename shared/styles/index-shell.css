@@ -197,6 +197,83 @@ body.has-selection .detail-col { display: flex; }
 #map { position: absolute; inset: 0; }
 .map-reset { position: absolute; right: 10px; top: 84px; z-index: 500; }
 
+/* --- Filter drawer ---------------------------------------------------------
+   The drawer chrome (rail, header, footer, disclosure sections) and the
+   checkbox row it's built from are the same in every index — only the
+   filter *vocabulary* inside a section differs, which is each index's own
+   css. */
+.filters-rail {
+  position: fixed; z-index: 50; top: 0; left: 0; bottom: 0;
+  width: min(360px, 92vw);
+  background: var(--panel);
+  border-right: 2px solid var(--navy);
+  box-shadow: 2px 0 6px rgba(0,0,0,.18);
+  display: flex; flex-direction: column;
+  transform: translateX(-102%);
+  transition: transform .18s ease;
+}
+body.filters-open .filters-rail { transform: translateX(0); }
+
+.rail-head {
+  flex: none; display: flex; align-items: center; gap: .6rem;
+  padding: .5rem .8rem;
+  background: var(--navy); color: #fff;
+}
+.rail-head h2 { font-size: 1rem; color: #fff; }
+.rail-head .link-btn { margin-left: auto; color: #fff; }
+.rail-head .link-btn:hover { color: var(--gold); }
+
+.rail-body { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; }
+.rail-foot {
+  flex: none; display: flex; gap: .4rem;
+  padding: .6rem .8rem; border-top: 1px solid var(--rule); background: var(--panel-alt);
+}
+.rail-foot .btn { flex: 1 1 auto; }
+
+.fsection { border-bottom: 1px solid var(--rule); }
+.fsection > summary {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .45rem .8rem;
+  cursor: pointer; list-style: none;
+  background: var(--band);
+  font-family: var(--font-head);
+  font-size: .85rem; font-weight: 700; color: var(--navy);
+  border-bottom: 1px solid var(--rule);
+}
+.fsection > summary::-webkit-details-marker { display: none; }
+.fsection > summary:hover { background: #DDE4EC; }
+.sec-title { flex: 1 1 auto; }
+.sec-badge {
+  min-width: 19px; padding: 0 .28rem;
+  background: var(--navy); color: #fff;
+  font-size: .72rem; font-weight: 700; text-align: center;
+}
+.sec-chev { width: 13px; height: 13px; fill: none; stroke: var(--navy); stroke-width: 2; transition: transform .12s; }
+.fsection[open] > summary .sec-chev { transform: rotate(180deg); }
+.fsection-body { padding: .6rem .8rem .8rem; }
+
+.check-list { display: flex; flex-direction: column; }
+.check {
+  display: flex; align-items: center; gap: .5rem;
+  min-height: 30px; padding: .15rem .1rem;
+  cursor: pointer; font-size: .88rem; color: var(--text);
+}
+.check:hover { background: var(--panel-alt); }
+.check input { position: absolute; opacity: 0; width: 0; height: 0; }
+.check-box {
+  flex: none; width: 15px; height: 15px;
+  border: 1px solid var(--rule-strong); background: #fff; position: relative;
+}
+.check input:checked + .check-box { background: var(--navy); border-color: var(--navy); }
+.check input:checked + .check-box::after {
+  content: ''; position: absolute; left: 4.5px; top: 1px;
+  width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(42deg);
+}
+.check input:focus-visible + .check-box { outline: 3px solid var(--navy); outline-offset: 1px; }
+.check-text { flex: 1 1 auto; }
+.check-count { flex: none; font-size: .8rem; color: var(--mute); font-variant-numeric: tabular-nums; }
+.check.is-empty { color: var(--mute); }
+
 /* --- Map key (collapsible) ------------------------------------------------
    The box, where it sits, and how it collapses. What goes INSIDE it — which
    swatches, which labels — is each index's own business and lives in its
