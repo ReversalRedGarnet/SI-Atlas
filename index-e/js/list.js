@@ -166,9 +166,9 @@ function card(school, isSelected) {
 
   /* A directory row, not a card: label/value pairs, dense and scannable.
    * Everything a parent screens on before opening the full record. */
-  var place = school.island === school.province
-    ? school.town
-    : school.town + ', ' + school.island;
+  var place = !school.town
+    ? school.island
+    : (school.island === school.province ? school.town : school.town + ', ' + school.island);
 
   var rows = [
     ['Location',  esc(place)],

@@ -1,18 +1,21 @@
 /* ============================================================================
- * SI Atlas — Index E — REAL DATA (Honiara pilot)
+ * SI Atlas — Index E — REAL DATA (Honiara pilot + Isabel Province)
  * ----------------------------------------------------------------------------
  * This is verified, named-school data, not a demonstration dataset. Coverage
- * is a Honiara pilot: the main Honiara schools plus two Guadalcanal schools
- * (St Joseph's Tenaru, Selwyn College). No other province is represented yet
- * — see the Verification tab of the source workbook for methodology, and
- * SF.PROVINCES below for the two provinces this build actually covers.
+ * is a Honiara pilot (the main Honiara schools plus two Guadalcanal schools,
+ * St Joseph's Tenaru and Selwyn College) plus a first full-province pass for
+ * Isabel. Other provinces are not represented yet — see the Verification tab
+ * of the source workbook for methodology, and SF.PROVINCES below for the
+ * provinces this build actually covers.
  *
- * Sourced from public MEHRD records (Honiara and Guadalcanal school lists,
- * Year 7 placement data, F4/F6 publication) plus schools' own public sites
- * where available. Every record carries `sourceUrls` and `verificationStatus`
- * for provenance — kept in the data for traceability, deliberately not
- * rendered on school cards (see js/panel.js: only `lastVerified` surfaces,
- * as a plain "Verified" indicator).
+ * Sourced from public MEHRD records (province school lists, Year 10 Placement
+ * 2026 rosters, Honiara/Guadalcanal F4/F6 publication) plus independent public
+ * sources (news coverage, Wikipedia, government facility maps) used to confirm
+ * a school's town/village where MEHRD's own listings only confirm the province.
+ * Every record carries `sourceUrls` and `verificationStatus` for provenance —
+ * kept in the data for traceability, deliberately not rendered on school cards
+ * (see js/panel.js: only `lastVerified` surfaces, as a plain "Verified"
+ * indicator).
  *
  * DATA POLICY — never fabricate. A field that was not confirmed in public
  * sources is `null` (or an empty array), not a guess:
@@ -28,10 +31,17 @@
  *     Education Level of "Secondary" but no confirmed form-group span, so
  *     `yearLevels` is `null` — the Year Group filter honestly won't match
  *     them rather than guessing a range.
- *   - `latitude` / `longitude` — `null` for Mount Horeb CHS and Mercy CHS,
- *     the two schools with no public coordinate source. They still appear
- *     in search/list results; js/map.js simply does not plot them, and the
- *     list/detail views say so instead of guessing a pin location.
+ *   - `latitude` / `longitude` — `null` for every school with no public
+ *     coordinate source: Mount Horeb CHS and Mercy CHS in Honiara, and most
+ *     of the Isabel Province pass (MEHRD's own province lists confirm a
+ *     school exists and its province, not a village-level location — a
+ *     coordinate is only set where an independent source specifically
+ *     ties the school to a named place). They still appear in search/list
+ *     results; js/map.js simply does not plot them, and the list/detail
+ *     views say so instead of guessing a pin location.
+ *   - `town` — for the same reason, `null` rather than the province name
+ *     repeated, wherever no source gives a place more specific than the
+ *     province itself.
  *   - `locationPrecision` — 'approximate' for every located school in this
  *     pass (coordinates are memory/landmark-based, not a surveyed address);
  *     `null` when there are no coordinates at all. Nothing in this dataset
@@ -66,7 +76,7 @@ SF.SUBJECT_GROUPS = [
  * to other provinces; it is not padded with provinces that have no schools
  * in the dataset yet, so the filter never implies coverage that doesn't
  * exist. */
-SF.PROVINCES = ['Honiara', 'Guadalcanal'];
+SF.PROVINCES = ['Honiara', 'Guadalcanal', 'Isabel'];
 
 SF.DENOMINATIONS = ['SDA', 'Anglican', 'SSEC', 'Catholic', 'Other'];
 
@@ -1143,6 +1153,375 @@ SF.SCHOOLS = [
       "https://www.mehrd.gov.sb/101-uncategorised/242-guadalcanal-province"
     ],
     "verificationStatus": "Confirmed — public evidence; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_dr_henry_welchman_palmer_chs",
+    "name": "Dr Henry Welchman Palmer CHS",
+    "description": "A community school in Isabel Province, offering secondary education. Named for Henry Palmer Welchman, an Anglican missionary based on Isabel from 1890.",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5529"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Isabel Province list; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_guguha_chs",
+    "name": "Guguha CHS",
+    "description": "A community school in Guguha, Isabel Province, offering secondary education.",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": "Guguha",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
+      "https://www.cbsi.com.sb/9901-2/"
+    ],
+    "verificationStatus": "Confirmed — public evidence; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_visena_chs",
+    "name": "Visena CHS",
+    "description": "A community school in Visena, Isabel Province, offering secondary education.",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": "Visena",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
+      "https://solomons.gov.sb/portal_map/item/visena/"
+    ],
+    "verificationStatus": "Confirmed — public evidence; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_kalenga_chs",
+    "name": "Kalenga CHS",
+    "description": "A community school serving Sepi and Suva villages in Bugotu, Isabel Province, offering secondary education. Began as a primary school in the 1980s, introduced Form 1 in 2009 and Form 4 in 2018.",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": "Sepi / Suva, Bugotu",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
+      "https://theislandsun.com.sb/kalenga-chs-hosts-consultation-with-community-leaders-to-formulate-schools-development-plan/"
+    ],
+    "verificationStatus": "Confirmed — public evidence; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_jejevo_chs",
+    "name": "Jejevo CHS",
+    "description": "A community school in Jejevo, near Buala, Isabel Province, offering secondary education.",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": "Jejevo",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
+      "https://pacificnickel.com/projects/jejevo-nickel-project/"
+    ],
+    "verificationStatus": "Confirmed — public evidence; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_sir_dudley_tuti_college",
+    "name": "Sir Dudley Tuti College",
+    "description": "A school in Kamaosi Village, East Bugotu District, Isabel Province, offering secondary education (Form 1-7). Prior to 1999 the school shared the village's name; it was renamed for Dudley Tuti, a former island chief.",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": "Kamaosi Village, East Bugotu",
+    "latitude": -8.4776361,
+    "longitude": 159.8081583,
+    "locationPrecision": "approximate",
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
+      "https://en.wikipedia.org/wiki/Kamaosi"
+    ],
+    "verificationStatus": "Confirmed — public evidence; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_allardyce_pss",
+    "name": "Allardyce PSS",
+    "description": "A provincial secondary school at Allardyce, western Santa Isabel, Isabel Province.",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": "Allardyce",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
+      "https://www.solomontimes.com/news/new-girls-dormitory-boosts-education-access/13195"
+    ],
+    "verificationStatus": "Confirmed — public evidence; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_lilika_chs",
+    "name": "Lilika CHS",
+    "description": "A community school in Isabel Province, offering secondary education.",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Isabel Province list",
+    "image": null
+  },
+  {
+    "id": "sch_isabel_senior_secondary",
+    "name": "Isabel Senior Secondary",
+    "description": "A government senior secondary school in Isabel Province, part of the national Senior Secondary Education Improvement Project (one such school in each province).",
+    "denomination": null,
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5526",
+      "https://www.facebook.com/sundayisles/posts/essential-infrastructure-upgrade-ysabel-senior-secondary-school-in-solomon-islan/802581845222102/"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_hovi_adventist_chs",
+    "name": "Hovi Adventist CHS",
+    "description": "A Seventh-day Adventist community school in Gao Bugotu, Isabel Province, offering secondary education. Grew from an Adventist primary school after Grade 6 national exams were phased out in 2019.",
+    "denomination": "SDA",
+    "province": "Isabel",
+    "island": "Santa Isabel",
+    "town": "Gao Bugotu",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5525",
+      "https://theislandsun.com.sb/hovi-school-plans-to-have-form-6-by-2025/"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   }
 ];
