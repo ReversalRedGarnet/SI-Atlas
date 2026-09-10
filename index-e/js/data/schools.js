@@ -3804,11 +3804,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_talakali_chs",
     "name": "Talakali CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
-    "denomination": null,
+    "description": "A Seventh-day Adventist community high school at Talakali, on Malaita's west coast near the mouth of Langa Langa Lagoon, about 17km from Auki. Denomination and enrollment (296 students, kindergarten to grade 9) confirmed via the Seventh-day Adventist Church's own historical encyclopedia.",
+    "denomination": "SDA",
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Talakali",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -3830,24 +3830,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5594"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5594",
+      "https://encyclopedia.adventist.org/article?id=9853"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_waneagu_chs",
     "name": "Waneagu CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school at Galilee, near Atoifi, in East Kwaio — a PCDF-funded six-classroom block was completed in August 2022, clearing the way for Form 6 to be introduced in 2023. The coordinate is Atoifi, the nearest named landmark, not a surveyed school address.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Galilee",
+    "latitude": -8.872891,
+    "longitude": 161.0112714,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3866,11 +3867,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5593"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5593",
+      "https://solomons.gov.sb/mpgis-hands-over-a-pcdf-funded-six-classroom-block-to-waneagu-community-high/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3984,14 +3986,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_auki_chs",
     "name": "Auki CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school in Auki, the provincial capital of Malaita and Solomon Islands' third-largest town — its own name states the location directly, the same naming tier as Gizo CHS and Noro CHS in Western Province elsewhere in this dataset.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Auki",
+    "latitude": -8.7706074,
+    "longitude": 160.6992655,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -4010,11 +4012,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5590"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5590",
+      "https://en.wikipedia.org/wiki/Auki"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -4056,7 +4059,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_dala_north_chs",
     "name": "Dala North CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school serving the Dala North and Laugwata communities of West Kwara'ae — a three-classroom block for its roughly 400 students was funded under the Solomon Islands–Australia Community Partnerships program.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
@@ -4082,11 +4085,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5587"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5587",
+      "https://sundayisles.islesmedia.net/solomon-islands-australia-community-partnerships-delivers-two-new-classroom-buildings-to-west-kwaraae/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -4128,11 +4132,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_foondo_chs",
     "name": "Foondo CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Foondo, in the Foondo–Gwaiau area of Malaita, near Takwa.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Foondo",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4154,24 +4158,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5586"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5586",
+      "https://www.inaturalist.org/places/foondo-gwaiau"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_suu_nss",
     "name": "Su'u NSS",
-    "description": "A national secondary school in Malaita Province.",
+    "description": "A national secondary school at Su'u, a coastal hamlet in the Manawai area of Malaita's east coast.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Su'u",
+    "latitude": -9.0798706,
+    "longitude": 161.1657459,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -4190,24 +4195,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Government",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5584"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5584",
+      "https://www.openstreetmap.org/node/13563474187"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_manawai_chs",
     "name": "Manawai CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school at Manawai, in East Are'Are — hosted the East Are'Are communities' World Environment Day celebration in 2021, and received a PCDF-funded community market house.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Manawai",
+    "latitude": -9.0935283,
+    "longitude": 161.1692368,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -4226,17 +4232,19 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5583"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5583",
+      "https://theislandsun.com.sb/environment-day-marked-at-manawai/",
+      "https://www.openstreetmap.org/node/13563474037"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_foubaba_chs",
     "name": "Foubaba CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school in West Kwaio — a new school assembly hall, funded under the Australia–Solomon Islands partnership, was handed over to Principal Dudley Su'akeu for assemblies, learning activities and community gatherings.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
@@ -4262,21 +4270,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5581"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5581",
+      "https://sundayisles.islesmedia.net/foubaba-community-high-school-celebrates-new-assembly-hall-through-australia-solomon-islands-partnership/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_kakara_chs",
     "name": "Kakara CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Kakara, a village in West Malaita that has also been a research site for agroforestry studies.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Kakara",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4298,24 +4307,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5582"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5582",
+      "https://digitalcommons.usu.edu/cgi/viewcontent.cgi?article=1188&context=etd"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_rokera_pss",
     "name": "Rokera PSS",
-    "description": "A provincial secondary school in Malaita Province.",
+    "description": "A provincial secondary school at Rokera, on South Malaita Island — received computer lab equipment and laptops through the Mala-I-Tolo Initiative.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Rokera",
+    "latitude": -9.6554042,
+    "longitude": 161.4389704,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -4334,21 +4344,23 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Government",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5580"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5580",
+      "https://www.solomonstarnews.com/mala-i-tolo-supports-schools-with-computer-labs/",
+      "https://www.openstreetmap.org/node/13563514463"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_busurata_chs",
     "name": "Busurata CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school at Busurata, in the Central Kwara'ae highlands — received water tanks through the Mt Alasa'a Community Water Tank Project, and the road serving it has undergone regravelling.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Busurata",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4370,11 +4382,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5579"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5579",
+      "https://solomonislands.embassy.gov.au/honi/160616.html"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -4416,7 +4429,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_onelafa_chs",
     "name": "Onelafa CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school in East Fataleka that introduced secondary classes in 2013 — a two-storey, six-classroom building costing over $600,000, funded under the Provincial Capacity Development Fund (PCDF), was destroyed in an arson attack.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
@@ -4442,11 +4455,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5578"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5578",
+      "https://www.solomonstarnews.com/arson-attack/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -4488,14 +4502,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_masupa_chs",
     "name": "Masupa CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Masupa, on Malaita's east coast — a clinic bearing the same name serves the area.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Masupa",
+    "latitude": -9.2880135,
+    "longitude": 161.2450413,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -4514,21 +4528,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5575"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5575",
+      "https://www.openstreetmap.org/way/705014877"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_takwa_chs",
     "name": "Takwa CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Takwa, in the Foondo–Gwaiau area of Malaita — the community has taken part in a CANDO disaster-resilience preparedness programme.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Takwa",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4550,17 +4565,18 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5573"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5573",
+      "https://www.sibconline.com.sb/cando-prepares-takwa-community-for-disaster-resilience/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_aligegeo_pss",
     "name": "Aligegeo PSS",
-    "description": "A provincial secondary school in Malaita Province.",
+    "description": "A provincial secondary school with over 500 students — its dining hall burned down in August 2019 and an SBD 4 million replacement was subsequently funded; the school has also received a $10,000 donation from the Central Bank of Solomon Islands.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
@@ -4586,21 +4602,23 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Government",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5574"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5574",
+      "https://www.rsipf.gov.sb/?q=node/1227",
+      "https://www.cbsi.com.sb/cbsi-donates-10000-to-aligegeo-pss/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_tawaimare_chs",
     "name": "Tawaimare CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school at Tawaimare, a village whose women's solar-powered freezer committees became a widely cited rural-development success story.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Tawaimare",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4622,21 +4640,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5572"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5572",
+      "https://agrilinks.org/post/cool-women-malaita-solar-powered-freezers-make-money-rural-women-solomon-islands"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_kiu_chs",
     "name": "Kiu CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Kiu, in West Are'Are — traditionally remembered as the birthplace of the Maasina Rule movement.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Kiu",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4658,21 +4677,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5571"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5571",
+      "https://www.facebook.com/Aelanlifephotographyfilm/posts/kiu-west-areare-malaita-province-solomon-islands-the-birth-place-of-maasina-ruru/1296521712487777/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_manakwai_chs",
     "name": "Manakwai CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school at Manakwai, a village of roughly 540 people near Malu'u in North Malaita — received a $100,000 donation from the People's Republic of China for a fencing project.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Manakwai",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4694,11 +4714,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5569"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5569",
+      "https://sundayisles.islesmedia.net/manakwai-chs-lauds-prcs-generous-100k-support-for-fencing-project/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -4740,11 +4761,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_arabala_chs",
     "name": "Arabala CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Arabala, a village about an hour's drive from Auki — received agricultural machinery and tools from the Ministry of Agriculture and Livestock in 2021, and its wharf has since been upgraded.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Arabala",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4766,24 +4787,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5568"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5568",
+      "https://www.solomonstarnews.com/arabala-opens-upgraded-wharf/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_dala_south_chs",
     "name": "Dala South CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Dala South village, on the main road from Auki to North and East Malaita — a mapped school building confirms the location.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Dala South",
+    "latitude": -8.6023129,
+    "longitude": 160.6755799,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -4802,21 +4824,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5567"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5567",
+      "https://www.openstreetmap.org/node/12303528494"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_gwaidingale_chs",
     "name": "Gwaidingale CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school in West Kwaio — the South Seas Evangelical Mission (SSEM) began a girls' school at Gwaidingale in the late 1940s, though no source confirms the present-day school's governance. Received a new three-ton pick-up truck funded by the West Kwaio Constituency Office to help transport building materials.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Gwaidingale",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -4838,11 +4861,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5565"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5565",
+      "https://www.solomonstarnews.com/new-vehicle-for-gwaidingale-chs/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -4882,16 +4906,16 @@ SF.SCHOOLS = [
     "image": null
   },
   {
-    "id": "sch_arnon_atomea_chs",
-    "name": "Arnon Atomea CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "id": "sch_arnon_atomea_pss",
+    "name": "Arnon Atomea PSS",
+    "description": "Arnon Atomea Provincial Secondary School, at Malu'u in North Malaita — MEHRD's own Year 10 Placement roster still lists it as \"Arnon Atomea CHS,\" but the school's own site and independent coverage consistently call it a Provincial Secondary School, the same PSS naming tier as Rokera and Su'u elsewhere in this dataset. One of the first two schools in the province (with Kilusakwalo CHS) to offer a USP Foundation Arts Programme, from 2023. The coordinate is Malu'u town, the nearest named landmark, not a surveyed school address.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Malu'u",
+    "latitude": -8.3499712,
+    "longitude": 160.6286877,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -4909,25 +4933,27 @@ SF.SCHOOLS = [
     "feeMax": null,
     "currency": "SBD",
     "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "schoolType": "Government",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5564"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5564",
+      "https://sbm.sb/arnon-atomea-school-empowering-youth-in-northern-malaita/",
+      "https://theislandsun.com.sb/arnon-atomea-to-provide-usp-courses-starting-2023/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_saa_chs",
     "name": "Sa'a CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Sa'a, a historic coastal village on Small Malaita (Maramasike).",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Sa'a",
+    "latitude": -9.6917478,
+    "longitude": 161.5762353,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -4946,11 +4972,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5563"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5563",
+      "https://www.openstreetmap.org/node/2651721334"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -5028,7 +5055,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_imbo_chs",
     "name": "Imbo CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school in East Kwaio — its classroom building was renovated from three to five classrooms plus a small office and library under the Solomon Islands–Australia Community Partnerships program, and a further rehabilitation project was included in the Solomon Islands Government's 2023 Approved Development Estimates.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
@@ -5054,18 +5081,19 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5560"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5560",
+      "https://sundayisles.islesmedia.net/imbo-community-high-schools-new-chapter/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_gwaunasu_chs",
     "name": "Gwaunasu CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
-    "denomination": null,
+    "description": "Gwaunasu Adventist Community High School — denomination and enrollment (367 students, kindergarten to grade 9, seventeen teaching staff) confirmed via the Seventh-day Adventist Church's own historical encyclopedia; a Gwaunasu SDA church also serves the area.",
+    "denomination": "SDA",
     "province": "Malaita",
     "island": "Malaita",
     "town": null,
@@ -5090,11 +5118,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5559"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5559",
+      "https://encyclopedia.adventist.org/article?id=9853"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -5172,11 +5201,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_baunani_chs",
     "name": "Baunani CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school in West Kwaio, at Baunani — the first base of the Malayta Company on Malaita, and from 1911 to 1918 the site of the South Sea Evangelical Mission's training school, though no source confirms the present-day school's governance. One of five Malaita communities in the AHP Disaster READY emergency-response training project.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Baunani",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -5198,11 +5227,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5556"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5556",
+      "https://www.solomontimes.com/feature/malaita-communities-certified-in-emergency-response/597"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -5244,11 +5274,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_gwounabusu_chs",
     "name": "Gwounabusu CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school of over 500 students at Sinaragu Harbour in East Kwaio — Solomon Ports funded completion of a Form 6 classroom building and a girls' dormitory in 2019 (SBD $19,833 in materials).",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Sinaragu",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -5270,21 +5300,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5553"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5553",
+      "https://www.sipa.com.sb/port-news/posts/2019/october/solomon-ports-assists-remote-rural-school-in-malaita/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_rufoki_chs",
     "name": "Rufoki CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Rufoki, a village in northern Malaita near the Rufoki River, assessed by a UNESCO team as a candidate ecohydrology demonstration site (not selected, partly over environmental-degradation concerns).",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Rufoki",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -5306,11 +5337,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5554"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5554",
+      "https://www.unesco.org/en/articles/silolo-river-poised-become-solomon-islands-first-ecohydrology-demonstration-site"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -5352,11 +5384,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_gwaigeo_chs",
     "name": "Gwaigeo CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school at Gwaigeo, in Central Kwara'ae — its students take part in a tree-planting programme run by Auki Forestry's Reforestation Unit.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Gwaigeo",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -5378,21 +5410,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5551"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5551",
+      "https://theislandsun.com.sb/school-plant-tree-programme-to-begin-soon/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_kwarea_chs",
     "name": "Kwarea CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school at Kwarea (also called Fauabu) in West Kwara'ae, with over 900 students — one of the largest enrolments in Malaita. The Anglican Mission established a base here in 1903, though no source confirms the present-day school's governance. Closed for several weeks in 2023 after threats from landowners before reopening.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Kwarea",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -5414,11 +5447,13 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5549"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5549",
+      "https://www.solomonstarnews.com/900-students-affected-as-kwarea-school-closes-indefinitely/",
+      "https://www.solomonstarnews.com/kwarea-chs-resumed-classes/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -5496,7 +5531,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_justus_ganifiri_chs",
     "name": "Justus Ganifiri CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school named for Justus Ganifiri, who served as President of the South Sea Evangelical Church (1971) and later as its General Superintendent (1973) — no source confirms whether the school itself is SSEC-affiliated.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
@@ -5522,21 +5557,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5547"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5547",
+      "https://www.solomonencyclopaedia.net/biogs/E000301b.htm"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_laulana_chs",
     "name": "Laulana CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community high school at Laulana — its Safe Schools team, formed with Save the Children, mapped a river running along the school boundary that students use for washing, swimming and cooling off after sport. The Anglican Mission established a base at Laulana in 1904, though no source confirms the present-day school's governance.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
+    "town": "Laulana",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -5558,17 +5594,18 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5546"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5546",
+      "https://www.preventionweb.net/news/solomon-islands-students-ensure-schools-and-communities-are-safe"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_casper_kakaise_high_school",
     "name": "Casper Kakaise High School",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A secondary school named for Casper Kakaise, from Ontong Java, who studied at St Francis' College in Brisbane, became an Anglican deacon in 1946 and priest in 1951, and was an early member of the Legislative Council — no source confirms whether the school itself is Anglican-affiliated.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
@@ -5594,11 +5631,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5545"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5545",
+      "https://www.solomonencyclopaedia.net/biogs/E000515b.htm"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -5640,14 +5678,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_kilusakwalo_chs",
     "name": "Kilusakwalo CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
-    "denomination": null,
+    "description": "Kilusakwalo Community High School, owned by the South Seas Evangelical Church (SSEC) per the school's own published About page — established 1996 in Central Kwara'ae, about 50km from Auki, with over 380 students, one of the most-enrolled schools in central Malaita. One of the first two schools in the province (with Arnon Atomea PSS) to offer a USP Foundation Arts Programme, from 2023; its hall was refurbished with funding from the People's Republic of China.",
+    "denomination": "SSEC",
     "province": "Malaita",
     "island": "Malaita",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Kilusakwalo",
+    "latitude": -8.7318897,
+    "longitude": 160.7053041,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -5666,17 +5704,20 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5543"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5543",
+      "https://kilusakwalohs.schoolzineplus.com/about-us",
+      "https://theislandsun.com.sb/arnon-atomea-to-provide-usp-courses-starting-2023/",
+      "https://www.openstreetmap.org/node/7993845184"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_hunanawa_chs",
     "name": "Hunanawa CHS",
-    "description": "A community school in Malaita Province, offering secondary education.",
+    "description": "A community school in Ward 20, a coastal community along the Maramasike Passage in East Are'Are, on Small Malaita — a new classroom building gives the remote school a safe, conducive learning environment.",
     "denomination": null,
     "province": "Malaita",
     "island": "Malaita",
@@ -5702,11 +5743,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5542"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5542",
+      "https://indepthsolomons.com.sb/new-classroom-building-for-remote-malaita-school/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
