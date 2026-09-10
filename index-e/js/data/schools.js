@@ -1210,7 +1210,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_dr_henry_welchman_palmer_chs",
     "name": "Dr Henry Welchman Palmer CHS",
-    "description": "A community school in Isabel Province, offering secondary education. Named for Henry Palmer Welchman, an Anglican missionary based on Isabel from 1890.",
+    "description": "A community school named for Dr Henry Palmer Welchman (1850-1908), an English surgeon who joined the Melanesian Mission in 1888, served on Santa Isabel from 1890 to 1901, was ordained an Anglican priest in 1893, and lived permanently at the mission's station at Bugotu. A mission-era namesake's own faith does not by itself establish the present-day school's governance, so `denomination` stays unset, the same restraint applied to Goldie College and Casper Kakaise High School elsewhere in this dataset.",
     "denomination": null,
     "province": "Isabel",
     "island": "Santa Isabel",
@@ -1236,10 +1236,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5529"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5529",
+      "https://www.solomonencyclopaedia.net/biogs/E000744b.htm",
+      "https://anglicanhistory.org/oceania/wilson_welchman1935/02.html"
     ],
     "verificationStatus": "Confirmed — MEHRD Isabel Province list; cross-source",
     "image": null
@@ -1247,7 +1249,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_guguha_chs",
     "name": "Guguha CHS",
-    "description": "A community school in Guguha, Isabel Province, offering secondary education.",
+    "description": "A community school at Guguha, Santa Isabel — a small plantation site before the Second World War, and later the only location in Isabel Province with broadband internet connectivity via its distance-learning centre.",
     "denomination": null,
     "province": "Isabel",
     "island": "Santa Isabel",
@@ -1273,10 +1275,11 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
-      "https://www.cbsi.com.sb/9901-2/"
+      "https://www.cbsi.com.sb/9901-2/",
+      "https://wikieducator.org/Learning4Peace/Solomon_Islands/Leeming_Chapter_Isabel_Youth"
     ],
     "verificationStatus": "Confirmed — public evidence; cross-source",
     "image": null
@@ -1358,14 +1361,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_jejevo_chs",
     "name": "Jejevo CHS",
-    "description": "A community school in Jejevo, near Buala, Isabel Province, offering secondary education.",
+    "description": "A community school at Jejevo, part of Buala, the Isabel Province capital, alongside Buala Village itself.",
     "denomination": null,
     "province": "Isabel",
     "island": "Santa Isabel",
     "town": "Jejevo",
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "latitude": -8.1456122,
+    "longitude": 159.5945489,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -1384,10 +1387,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
-      "https://pacificnickel.com/projects/jejevo-nickel-project/"
+      "https://pacificnickel.com/projects/jejevo-nickel-project/",
+      "https://en.wikipedia.org/wiki/Buala",
+      "https://www.openstreetmap.org/way/1337636528"
     ],
     "verificationStatus": "Confirmed — public evidence; cross-source",
     "image": null
@@ -1432,7 +1437,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_allardyce_pss",
     "name": "Allardyce PSS",
-    "description": "A provincial secondary school at Allardyce, western Santa Isabel, Isabel Province.",
+    "description": "A provincial secondary school at Allardyce, Santa Isabel — also the site of one of the Ministry of Forestry and Research's provincial stations in Isabel Province.",
     "denomination": null,
     "province": "Isabel",
     "island": "Santa Isabel",
@@ -1458,10 +1463,11 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Government",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
-      "https://www.solomontimes.com/news/new-girls-dormitory-boosts-education-access/13195"
+      "https://www.solomontimes.com/news/new-girls-dormitory-boosts-education-access/13195",
+      "https://www.researchgate.net/figure/Map-of-Isabel-Province-the-Solomon-Islands-Buala-the-provincial-capital-and-Allardyce_fig2_301332428"
     ],
     "verificationStatus": "Confirmed — public evidence; cross-source",
     "image": null
@@ -1469,7 +1475,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_lilika_chs",
     "name": "Lilika CHS",
-    "description": "A community school in Isabel Province, offering secondary education.",
+    "description": "A community school in Isabel Province, active and current — received support for rainwater drinking-water supply in February 2025.",
     "denomination": null,
     "province": "Isabel",
     "island": "Santa Isabel",
@@ -1495,11 +1501,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province"
+      "https://mehrd.gov.sb/101-uncategorised/244-isabel-province",
+      "https://www.facebook.com/solomonstarnews/posts/lilika-community-high-school-chs-of-isabel-receives-support-for-rainwater-drinki/1310447480618985/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Isabel Province list",
+    "verificationStatus": "Confirmed — MEHRD Isabel Province list; cross-source",
     "image": null
   },
   {
@@ -1760,14 +1767,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_paibeta_chs",
     "name": "Paibeta CHS",
-    "description": "A community school in Central Province, offering secondary education.",
+    "description": "A community school at Paibeta, on Savo Island — one of 26 Central Province schools that received Water, Sanitation and Hygiene (WASH) facilities through an Australian-funded, UNICEF-implemented project with MEHRD and the Central Islands Provincial Government.",
     "denomination": null,
     "province": "Central",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Savo",
+    "town": "Paibeta",
+    "latitude": -9.1273056,
+    "longitude": 159.83826,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -1786,17 +1793,19 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5452"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5452",
+      "https://www.solomonstarnews.com/wash-project-implementation-roll-outs-in-central-province-schools/",
+      "https://www.openstreetmap.org/node/2528362927"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_nukufero_chs",
     "name": "Nukufero CHS",
-    "description": "A community school at Nukufero, a settlement on the west side of Pavuvu Island, Russell Islands, founded in 1956 to resettle Polynesians from Tikopia after a devastating 1952 cyclone. No coordinate found for the school itself.",
+    "description": "A community school at Nukufero, the largest Tikopian settlement in the Solomon Islands and the largest village on Pavuvu Island's north coast — founded and registered in the mid-to-late 1950s to house Tikopian families working for Levers Solomons Ltd, alongside the neighbouring settlements of Pepesala and Somata. No source pins a coordinate more precise than the west end of Pavuvu Island, so `latitude`/`longitude` stay unset rather than guessed.",
     "denomination": null,
     "province": "Central",
     "island": "Pavuvu, Russell Islands",
@@ -1822,9 +1831,10 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5451"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5451",
+      "https://thetikopian.com/2017/08/06/nukufero/"
     ],
     "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
@@ -1904,14 +1914,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_polomuhu_chs",
     "name": "Polomuhu CHS",
-    "description": "A community school in Central Province, offering secondary education.",
+    "description": "A community school on Mbungana, a small island in the Nggela (Florida) Islands group of Central Province.",
     "denomination": null,
     "province": "Central",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Mbungana",
+    "town": "Polomuhu",
+    "latitude": -9.1842305,
+    "longitude": 160.2045069,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -1930,21 +1940,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5448"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5448",
+      "https://www.openstreetmap.org/relation/18612445"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_vuranimala_chs",
     "name": "Vuranimala CHS",
-    "description": "A community school in Central Province, offering secondary education.",
+    "description": "A community school at Vuranimala, Central Province — the site of an early One Laptop per Child (OLPC) distance-learning demonstration.",
     "denomination": null,
     "province": "Central",
     "island": null,
-    "town": null,
+    "town": "Vuranimala",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -1966,11 +1977,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5447"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5447",
+      "https://wiki.laptop.org/go/OLPC_Solomon_Islands"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3460,11 +3472,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_tawatana_chs",
     "name": "Tawatana CHS",
-    "description": "A community school in Makira Province, offering secondary education.",
+    "description": "A community school at Tawatana, on Makira — the wider community has offered land to the Anglican Diocese of Hanuato'o and hosts the Tawatana Community Conservation and Development Association (TCCDA), which coordinates local biodiversity conservation work.",
     "denomination": null,
     "province": "Makira",
-    "island": null,
-    "town": null,
+    "island": "Makira",
+    "town": "Tawatana",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -3486,24 +3498,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5539"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5539",
+      "https://www.solomonstarnews.com/tawatana-community-offers-land-to-hanuatoo-diocese-of-makira/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_st_stephen_pamua_college",
     "name": "St Stephen Pamua College",
-    "description": "An Anglican (Church of Melanesia) school on the Makira mainland, west of Kirakira. Traces to 1910/1951 as separate boys' and girls' schools before merging.",
+    "description": "St Stephen's Community College, at Pamua on the north coast of Makira Island, about an hour's canoe ride from Kirakira — it comprises Pamua National Secondary School, Pamua Primary School and St Stephen's Rural Training College, on a site the Anglican Church of Melanesia has run continuously since 1910, now under the Diocese of Hanuato'o. Around 460 secondary students across six forms, plus over 100 Rural Training College students.",
     "denomination": "Anglican",
     "province": "Makira",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Makira",
+    "town": "Pamua",
+    "latitude": -10.4111116,
+    "longitude": 161.7500705,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3522,9 +3535,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5538"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5538",
+      "https://www.solomonstarnews.com/pamua-is-century-old-describes-bishop-karibongi/",
+      "https://www.leeming-consulting.com/DLCP/Makira_Ulawa.htm",
+      "https://www.openstreetmap.org/way/550184702"
     ],
     "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
@@ -3532,14 +3548,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_waimapuru_nss",
     "name": "Waimapuru NSS",
-    "description": "A national secondary school in Makira Province.",
+    "description": "Waimapuru National Secondary School, about 10km west of Kirakira on Makira Island — one of only two state-owned national secondary schools in Solomon Islands, started in 1985. Enrollment stood at 536 students as of the most recent reported year; received a tractor, grass slasher and ploughing disc from the Ministry of Agriculture and Livestock, funded by the People's Republic of China.",
     "denomination": null,
     "province": "Makira",
-    "island": null,
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "island": "Makira",
+    "town": "Waimapuru",
+    "latitude": -10.4490815,
+    "longitude": 161.8157636,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3558,17 +3574,20 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Government",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5537"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5537",
+      "https://www.wnss.sb/",
+      "https://www.solomonstarnews.com/waimapuru-nss-gets-new-tractor-to-boost-farming-training/",
+      "https://www.openstreetmap.org/way/550184711"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_ngonihau_chs",
     "name": "Ngonihau CHS",
-    "description": "A community school in Makira Province, offering secondary education.",
+    "description": "A community school in Makira Province. Note: the Seventh-day Adventist Church's own historical encyclopedia separately lists a \"Ngonihau Adventist Community High School\" on the island of Malaita — a different, same-named school, not this one; no source ties this Makira record to any denomination.",
     "denomination": null,
     "province": "Makira",
     "island": null,
@@ -3594,11 +3613,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5536"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5536",
+      "https://encyclopedia.adventist.org/article?id=9853"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3677,7 +3697,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_fm_campbell_chs",
     "name": "F.M. Campbell CHS",
-    "description": "A community school in Makira Province, offering secondary education.",
+    "description": "A community school in Makira Province, named for F.M. Campbell, a planter who settled at Waimamura in 1919 and, through the 1920s, built the largest plantation holdings on Makira, later introducing a co-operative marketing system for local copra growers. No source ties the school itself to Waimamura or to any particular village.",
     "denomination": null,
     "province": "Makira",
     "island": null,
@@ -3703,11 +3723,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5533"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5533",
+      "https://asiapacific.anu.edu.au/pambu/catalogue/index.php/makira-north-coast-2/informationobject/reports"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3749,11 +3770,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_sogotiwa_chs",
     "name": "Sogotiwa CHS",
-    "description": "A community school in Makira Province, offering secondary education.",
+    "description": "A community school at Sogotiwa, Makira Province — a beneficiary of China-funded Rural and Social Development Programme (RSDP) support, with Sogotiwa Primary School as a feeder school.",
     "denomination": null,
     "province": "Makira",
     "island": null,
-    "town": null,
+    "town": "Sogotiwa",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -3775,21 +3796,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5531"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5531",
+      "https://solomons.gov.sb/west-makira-constituency-gets-1-5-million-transport-boost-as-china-funded-rsdp-targets-key-sectors/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_pirupiru_chs",
     "name": "Pirupiru CHS",
-    "description": "A community school on Ulawa Island, not the Makira mainland — 389 students enrolled as of April 2025, when new Australia/NZ-funded Science and Home Economics labs (SBD 1.3M) officially opened.",
+    "description": "A community school at Pirupiru, Ulawa Island, with about 389 students — new Science and Home Economics laboratories, funded through the Australia/New Zealand Education Sector Support Program (ESSP) with MEHRD, were opened in April 2025.",
     "denomination": null,
     "province": "Makira",
     "island": "Ulawa",
-    "town": null,
+    "town": "Pirupiru",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -3811,10 +3833,11 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5530",
-      "https://www.solomonstarnews.com/new-science-home-eco-labs-for-pirupiru-chs/"
+      "https://www.solomonstarnews.com/new-science-home-eco-labs-for-pirupiru-chs/",
+      "https://www.sibconline.com.sb/new-science-and-home-economics-laboratories-for-pirupiru-chs-in-ulawa/"
     ],
     "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
@@ -3822,10 +3845,10 @@ SF.SCHOOLS = [
   {
     "id": "sch_haura_chs",
     "name": "Haura CHS",
-    "description": "A community school in West Makira Constituency, Makira Province. Not found in either MEHRD source used for the rest of this province's roster (both partial/older snapshots) — confirmed instead via a dated September 2026 government transport-funding article naming it alongside Tawatana CHS and Sogotiwa CHS, both already in this dataset.",
+    "description": "A community school in West Makira Constituency, on Makira Island. Not found in either MEHRD source used for the rest of this province's roster (both partial/older snapshots) — confirmed instead via a dated September 2026 government transport-funding article naming it alongside Tawatana CHS and Sogotiwa CHS, both already in this dataset.",
     "denomination": null,
     "province": "Makira",
-    "island": null,
+    "island": "Makira",
     "town": null,
     "latitude": null,
     "longitude": null,
@@ -3848,11 +3871,11 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
       "https://solomons.gov.sb/west-makira-constituency-gets-1-5-million-transport-boost-as-china-funded-rsdp-targets-key-sectors/"
     ],
-    "verificationStatus": "Confirmed — public evidence (not MEHRD-code-verified)",
+    "verificationStatus": "Confirmed — public evidence (not MEHRD-code-verified); cross-source",
     "image": null
   },
   {
@@ -5954,11 +5977,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_luesalemba_pss",
     "name": "Luesalemba PSS",
-    "description": "A provincial secondary school in Temotu Province.",
-    "denomination": null,
+    "description": "Luesalemba Provincial Secondary School, west of Lata on Santa Cruz (Nendo) and reachable only by boat — caters for up to 300 students from across Temotu Province, and is jointly managed by the Temotu Provincial Government and the Anglican Diocese of Temotu, which independently confirms `denomination`. Recent support includes a Central Bank of Solomon Islands donation, a China-funded outboard motor and boat engine for medical transport to Lata Hospital, and Starlink internet access for Forms 4 to 7.",
+    "denomination": "Anglican",
     "province": "Temotu",
-    "island": null,
-    "town": null,
+    "island": "Nendö",
+    "town": "Luesalemba",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -5980,21 +6003,24 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Government",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5603"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5603",
+      "https://www.marketscreener.com/news/latest/CBSI-supports-Luesalemba-School-32380832/",
+      "https://theislandsun.com.sb/china-boosts-luesalemba-with-boat-engine/",
+      "https://www.solomonstarnews.com/star-link-for-luesalemba-sch/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_nangu_chs",
     "name": "Nangu CHS",
-    "description": "A community school in Temotu Province, offering secondary education.",
+    "description": "A community school at Nangu, in the southeast of Santa Cruz (Nendo) Island — about a two-hour boat trip from Lata, the provincial headquarters.",
     "denomination": null,
     "province": "Temotu",
-    "island": null,
-    "town": null,
+    "island": "Nendö",
+    "town": "Nangu",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -6016,11 +6042,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5601"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5601",
+      "https://www.wvi.org/stories/solomon-islands/equipping-children-nangu-community-through-basic-hygiene-practices"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -6062,11 +6089,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_gauwa_chs",
     "name": "Gauwa CHS",
-    "description": "A community school in Temotu Province, offering secondary education.",
+    "description": "A community school at Gauwa, Temotu Province — one of eleven Malaita and Temotu schools to receive laptops through an Australia/New Zealand digital-learning initiative; Gauwa Primary School serves the same community.",
     "denomination": null,
     "province": "Temotu",
     "island": null,
-    "town": null,
+    "town": "Gauwa",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -6088,11 +6115,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5600"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5600",
+      "https://www.sibconline.com.sb/australia-and-new-zealand-deliver-165-laptops-to-eleven-schools-across-malaita-and-temotu-provinces/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -6134,7 +6162,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_bishop_patteson_high_school",
     "name": "Bishop Patteson High School",
-    "description": "A community school in Temotu Province, offering secondary education.",
+    "description": "A secondary school named for John Coleridge Patteson, the first missionary bishop of Melanesia, who was killed on Nukapu in Temotu Province in 1871. A mission-era namesake's own faith does not by itself establish the present-day school's governance, so `denomination` stays unset, the same restraint applied to Goldie College and Casper Kakaise High School elsewhere in this dataset.",
     "denomination": null,
     "province": "Temotu",
     "island": null,
@@ -6160,17 +6188,18 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5597"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5597",
+      "https://en.wikipedia.org/wiki/John_Patteson_(bishop)"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_monene_chs",
     "name": "Monene CHS",
-    "description": "A community school in Temotu Province, offering secondary education.",
+    "description": "A community school in Temotu Province, active and current — included in a Rural Schools Hybrid Solar PV Off-Grid electrification project (a 30kW solar system).",
     "denomination": null,
     "province": "Temotu",
     "island": null,
@@ -6196,11 +6225,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5598"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5598",
+      "https://classified.islesmedia.net/ad/the-ministry-of-mines-energy-invitation-tender/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
