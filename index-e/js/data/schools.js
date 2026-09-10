@@ -87,6 +87,16 @@
  *     Chapman), not "Roman Catholic" — a reminder of why that restraint
  *     matters, not a pattern to extend to similar-looking names elsewhere
  *     in this pass (e.g. "St Johns Bosco Senior Secondary", left `null`).
+ *   - Betikama Adventist College, Burnscreek CHS and Lunga CHS all sit in the
+ *     Lunga/Burns Creek area, which independent sources (the Adventist
+ *     Church's own historical encyclopedia; Wikipedia) generally describe as
+ *     a Honiara suburb rather than Guadalcanal proper — but MEHRD's own
+ *     Guadalcanal Year 10 Placement folder lists all three under Guadalcanal
+ *     province, with no matching entry found in Honiara's folder (i.e. not a
+ *     "601 Gospel Light CHS"-style code collision, just a province/locality
+ *     naming mismatch). Kept under Guadalcanal, per this file's practice of
+ *     treating MEHRD's own provincial folder placement as authoritative —
+ *     flagged here rather than silently reassigned.
  *
  * KNOWN DATA-QUALITY NOTE — Perch CHS: the source workbook has Denomination
  * "Private" and School Type "Community", which is contradictory (private and
@@ -2218,11 +2228,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_chapuria_chs",
     "name": "Chapuria CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school at Chapuru (also spelled Chapuria), a village on the northwest coast of Guadalcanal, about 37.5km by road from Honiara.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Chapuru",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2244,21 +2254,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5499"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5499",
+      "https://en.wikipedia.org/wiki/Chapuru"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_visale_chs",
     "name": "Visale CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school at Visale, a small town on the western side of Guadalcanal, home to the Sacred Heart Parish Church.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Visale",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2280,341 +2291,18 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5498"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5498",
+      "https://en.wikipedia.org/wiki/Visale"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_tenakoga_chs",
     "name": "Tenakoga CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5497"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_makaruka_chs",
-    "name": "Makaruka CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5496"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_betivatu_chs",
-    "name": "Betivatu CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5495"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_burnscreek_chs",
-    "name": "Burnscreek CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5494"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_laloato_chs",
-    "name": "Laloato CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5493"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_ruavatu_pss",
-    "name": "Ruavatu PSS",
-    "description": "A provincial secondary school in Guadalcanal Province.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Government",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5492"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_aruligo_chs",
-    "name": "Aruligo CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5490"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_tangarare_pss",
-    "name": "Tangarare PSS",
-    "description": "A provincial secondary school in Guadalcanal Province.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Government",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5489"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_avu_avu_pss",
-    "name": "Avu Avu PSS",
-    "description": "A provincial secondary school in Guadalcanal Province.",
-    "denomination": null,
-    "province": "Guadalcanal",
-    "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
-    "phone": null,
-    "email": null,
-    "website": null,
-    "educationLevels": [
-      "Secondary"
-    ],
-    "yearLevels": null,
-    "formGroups": [],
-    "streams": {
-      "form6": [],
-      "form7": []
-    },
-    "subjects": [],
-    "feeMin": null,
-    "feeMax": null,
-    "currency": "SBD",
-    "boarding": null,
-    "schoolType": "Government",
-    "lastVerified": "2026-09-10",
-    "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5485"
-    ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
-    "image": null
-  },
-  {
-    "id": "sch_betikama_adventist_college",
-    "name": "Betikama Adventist College",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "Tenakoga Adventist Community High School, about 90 minutes by road from Honiara in Northeast Guadalcanal — denomination and enrollment (482 students, kindergarten to grade 12) confirmed via the Seventh-day Adventist Church's own historical encyclopedia. Most of its secondary students come from the surrounding communities of Geza, Govu, Ghombua and Geghede; 23 students progressed to Year 13 or tertiary study in the most recent reported year.",
     "denomination": "SDA",
     "province": "Guadalcanal",
     "island": "Guadalcanal",
@@ -2640,24 +2328,363 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5486"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5497",
+      "https://encyclopedia.adventist.org/article?id=9853",
+      "https://www.solomonstarnews.com/tenakoga-is-still-rising/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_makaruka_chs",
+    "name": "Makaruka CHS",
+    "description": "A community school at Makaruka, a village on Tasi Mauri (the Weathercoast) of Guadalcanal — historically the headquarters of the Moro Movement in the Veuru Moli area.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Makaruka",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5496",
+      "https://www.solomonencyclopaedia.net/biogs/E000207b.htm"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_betivatu_chs",
+    "name": "Betivatu CHS",
+    "description": "A community high school at Malango, Central Guadalcanal, serving Form 4 to Form 6 — held its first Form 6 graduation ceremony in October 2025.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Malango",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5495",
+      "https://www.solomonstarnews.com/betivatu-chs-held-its-first-form-6-graduation/",
+      "https://tina-hydro.com/16620/empowering-the-next-generation-betivatu-students-celebrate-international-womens-day/"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_burnscreek_chs",
+    "name": "Burnscreek CHS",
+    "description": "Burns Creek Adventist Community High School — denomination and enrollment (1,183 students, kindergarten to grade 12) confirmed via the Seventh-day Adventist Church's own historical encyclopedia, which places it in Honiara. Burns Creek is generally described as a Honiara suburb on Guadalcanal island, though MEHRD's own Guadalcanal Year 10 Placement folder lists this school under Guadalcanal province rather than Honiara — kept as MEHRD has it, per this file's existing practice of treating MEHRD's own provincial folder placement as authoritative. The coordinate is a nearby primary school of the same name, not this school's own surveyed address.",
+    "denomination": "SDA",
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Burns Creek",
+    "latitude": -9.4260125,
+    "longitude": 160.024948,
+    "locationPrecision": "approximate",
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5494",
+      "https://encyclopedia.adventist.org/article?id=9853",
+      "https://en.wikipedia.org/wiki/Burns_Creek,_Honiara",
+      "https://www.openstreetmap.org/node/1958150225"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_laloato_chs",
+    "name": "Laloato CHS",
+    "description": "A community school at Laloato, in the Talise ward of South Guadalcanal — the wider community has received British High Commission seed and tools support as part of an agricultural development programme.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Laloato",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5493",
+      "https://theislandsun.com.sb/huge-kava-surge-in-south-guadalcanal/"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_ruavatu_pss",
+    "name": "Ruavatu PSS",
+    "description": "A provincial secondary school at Ruavatu, on the historic plantation coast of Tasimboko, Guadalcanal.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Ruavatu",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5492",
+      "https://www.solomonencyclopaedia.net/biogs/E000124b.htm"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_aruligo_chs",
+    "name": "Aruligo CHS",
+    "description": "A community school at Aruligo, in Northwest Guadalcanal — about 33.8km by road from Honiara, and the site of a planned regional fuel hub and a national freshwater aquaculture hatchery.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Aruligo",
+    "latitude": -9.2856304,
+    "longitude": 159.761514,
+    "locationPrecision": "approximate",
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5490",
+      "https://en.wikipedia.org/wiki/Aruliho",
+      "https://pina.com.fj/2026/08/13/solomon-islands-plans-regional-fuel-hub-in-solomon-islands/"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_tangarare_pss",
+    "name": "Tangarare PSS",
+    "description": "A provincial secondary school at Tangarare, a ward and historic mission station on Guadalcanal's Weather Coast.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Tangarare",
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5489",
+      "https://gadm.org/maps/SLB/guadalcanal/tangarare.html"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_avu_avu_pss",
+    "name": "Avu Avu PSS",
+    "description": "A provincial secondary school at Avu Avu, on Guadalcanal's Weather Coast — the local airstrip, built in 1964 originally for Flying Doctor services, gives the settlement a confirmed coordinate.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Avu Avu",
+    "latitude": -9.8677694444,
+    "longitude": 160.4100833333,
+    "locationPrecision": "approximate",
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5485",
+      "https://airportguide.com/airport/info/AVU"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_betikama_adventist_college",
+    "name": "Betikama Adventist College",
+    "description": "Betikama Adventist College, on Palm Drive in Lunga — enrollment (563 students, grades 7 to 13) confirmed via the Seventh-day Adventist Church's own historical encyclopedia, which places it in Honiara. Lunga is generally described as a Honiara suburb on Guadalcanal island, though MEHRD's own Guadalcanal Year 10 Placement folder lists this school under Guadalcanal province rather than Honiara — kept as MEHRD has it, per this file's existing practice of treating MEHRD's own provincial folder placement as authoritative. The coordinate is the Lunga area generally, not a surveyed Palm Drive address.",
+    "denomination": "SDA",
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": "Lunga",
+    "latitude": -9.4279153,
+    "longitude": 160.0296943,
+    "locationPrecision": "approximate",
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-11",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5486",
+      "https://encyclopedia.adventist.org/article?id=9853"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_nguvia_chs",
     "name": "Nguvia CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "Nguvia Community High School, on the Guadalcanal Plains near Tetere and the GPPOL 2 palm-oil estate — one of 15 schools that received hardware and building materials from the North Guadalcanal Constituency office.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Tetere",
+    "latitude": -9.4414991,
+    "longitude": 160.2193435,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -2676,21 +2703,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5484"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5484",
+      "https://pacific.scoop.co.nz/2026/01/north-guadalcanal-constituency-reinforces-commitment-to-education-with-support-for-15-schools/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_tamboko_chs",
     "name": "Tamboko CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school at Tamboko, in West Guadalcanal — one of the coastal sites where marine-pollution awareness training was extended into school curricula.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Tamboko",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2712,11 +2740,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5483"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5483",
+      "https://news.fundsforngos.org/2026/03/25/marine-pollution-training-reaches-solomon-islands-coastal-areas/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -2758,11 +2787,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_ghaobata_chs",
     "name": "Ghaobata CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community high school named for the Ghaobata clan of Tasimboko, on Guadalcanal's Tasi Mate (north) coast — the area is divided into the West Ghaobata and East Ghaobata wards of North Guadalcanal.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Ghaobata",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2784,18 +2813,19 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5481"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5481",
+      "https://gadm.org/maps/SLB/guadalcanal/westghaobata.html"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_kopiu_chs",
     "name": "Kopiu CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
-    "denomination": null,
+    "description": "Kopiu Adventist Community High School — denomination and enrollment (320 students, kindergarten to grade 11) confirmed via the Seventh-day Adventist Church's own historical encyclopedia, which places it on Guadalcanal, consistent with this record's own province.",
+    "denomination": "SDA",
     "province": "Guadalcanal",
     "island": "Guadalcanal",
     "town": null,
@@ -2820,11 +2850,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5480"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5480",
+      "https://encyclopedia.adventist.org/article?id=9853"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -2866,11 +2897,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_turarana_chs",
     "name": "Turarana CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community high school at Turarana, inland on the Guadalcanal Plains along the Chovohio River — a community of more than 2,000 people and a cultural centre for the Gaenaalu Movement. New classroom, dormitory and ablution-block infrastructure, funded by the Australian and New Zealand governments with MEHRD, was handed over in March 2024.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Turarana",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2892,21 +2923,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5478"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5478",
+      "https://solomons.gov.sb/ilia-chs-and-turarana-chs-took-ownership-new-school-infrastructures/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_lambi_chs",
     "name": "Lambi CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community high school at Lambi Bay, West Guadalcanal — a double-storey, SBD$2 million classroom complex funded by the Australian and New Zealand governments with MEHRD now serves its roughly 202 students and 17 teachers.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Lambi",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2928,21 +2960,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5477"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5477",
+      "https://www.solomonstarnews.com/new-2m-classroom-complex-for-lambi-chs/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_bolale_chs",
     "name": "Bolale CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school at Bolale, in East Central Guadalcanal near Aola — grouped with Sanalumu, Bebe and Mboeni CHS in the same part of the province.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Bolale",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2964,21 +2997,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5476"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5476",
+      "https://www.solomonstarnews.com/trachoma-dose-distribution-reaches-sanalumu-chs/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_numbu_chs",
     "name": "Numbu CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "Numbu Community High School, in Northeast Guadalcanal — earmarked by the Education Division to introduce Form 6, and the recipient of a new two-storey classroom building funded by Japan's Grant Assistance for Grass-Roots and Human Security Projects (over SBD $600,000).",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Numbu",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -3000,24 +3034,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5474"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5474",
+      "https://www.sibconline.com.sb/numbu-chs-receives-new-classroom-building-from-japan/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_lunga_chs",
     "name": "Lunga CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school at Lunga — the Lunga River/Point area is generally described as a Honiara suburb on Guadalcanal island (and the site of Henderson Field/Honiara International Airport), though MEHRD's own Guadalcanal Year 10 Placement folder lists this school under Guadalcanal province rather than Honiara — kept as MEHRD has it, per this file's existing practice of treating MEHRD's own provincial folder placement as authoritative.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Lunga",
+    "latitude": -9.4279153,
+    "longitude": 160.0296943,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3036,11 +3071,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5475"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5475",
+      "https://en.wikipedia.org/wiki/Lungga_Point"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3082,11 +3118,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_mboeni_chs",
     "name": "Mboeni CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school at Mboeni, in East Central Guadalcanal near Aola — grouped with Sanalumu, Bebe and Bolale CHS in the same part of the province.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Mboeni",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -3108,17 +3144,18 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5472"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5472",
+      "https://www.solomonstarnews.com/trachoma-dose-distribution-reaches-sanalumu-chs/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_bubunuhu_chs",
     "name": "Bubunuhu CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school in the East Central Guadalcanal Constituency (ECGC) — one of the ECGC schools to receive a Starlink satellite network connection intended to improve administrative links with the Ministry of Education.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
@@ -3144,21 +3181,22 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5471"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5471",
+      "https://www.solomonstarnews.com/ecgc-8-schools-starlink/"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_longu_kaoka_chs",
     "name": "Longu Kaoka CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school named for Longgu village and the Kaoka river/dialect area of northeastern Guadalcanal, where Longgu is one of five autonomous coastal villages sharing the Kaoka dialect.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
+    "town": "Longgu",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -3180,24 +3218,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5469"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5469",
+      "https://en.wikipedia.org/wiki/Longgu_language"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_st_mary_tanagai_chs",
     "name": "St Mary Tanagai CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "St Mary Tanagai Community High School, at Tanagai (also spelled Tanaghai) in Northwest Guadalcanal Constituency, about 6.7km by road west of downtown Honiara — hosts an annual inter-provincial cultural day where students perform traditional dances, folklore and songs.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Tanagai",
+    "latitude": -9.4260722,
+    "longitude": 159.9159978,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3216,24 +3255,27 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5470"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5470",
+      "https://www.solomonstarnews.com/st-mary-tanagai-chs-hosts-annual-cultural-show/",
+      "https://en.wikipedia.org/wiki/Tanaghai",
+      "https://www.openstreetmap.org/way/729206526"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_wanderer_bay_chs",
     "name": "Wanderer Bay CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school at Wanderer Bay, an inland area of West Guadalcanal named for a ship whose owner, Benjamin Boyd, was murdered ashore there in 1851 — more than 30 people, including children, were made homeless when houses burned down at Kakalu village, Wanderer Bay, in October 2022.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Wanderer Bay",
+    "latitude": -9.6901711,
+    "longitude": 159.7099111,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3252,11 +3294,13 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5468"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5468",
+      "https://solomons.gov.sb/seven-houses-burnt-down-full-village-homeless-in-west-guadalcanal/",
+      "https://www.openstreetmap.org/node/2685983737"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
@@ -3334,14 +3378,14 @@ SF.SCHOOLS = [
   {
     "id": "sch_babanakira_chs",
     "name": "Babanakira CHS",
-    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "description": "A community school at Babanakira, in the Kologhona area of Guadalcanal's Weather Coast — the local airstrip (ICAO: AGGD, IATA: MBU) gives the settlement a confirmed coordinate.",
     "denomination": null,
     "province": "Guadalcanal",
     "island": "Guadalcanal",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Babanakira",
+    "latitude": -9.7475004,
+    "longitude": 159.8390045,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -3360,11 +3404,12 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5465"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5465",
+      "https://www.world-airport-codes.com/solomon-islands/mbambanakira-4605.html"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
