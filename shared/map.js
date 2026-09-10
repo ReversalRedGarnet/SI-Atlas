@@ -128,7 +128,7 @@ Atlas.map.create = function (elementId, opts) {
   var attrBadge = document.createElement('span');
   attrBadge.className = 'map-attribution-badge';
   attrBadge.setAttribute('aria-hidden', 'true');
-  attrBadge.textContent = '©';
+  attrBadge.textContent = 'ⓘ';
   attrSummary.appendChild(attrBadge);
   attrDetails.appendChild(attrSummary);
   attrContainer.parentNode.insertBefore(attrDetails, attrContainer);
