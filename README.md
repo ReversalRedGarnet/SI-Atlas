@@ -5,7 +5,7 @@ services: a family of directories, each covering one domain, built the same
 way and sharing the same visual and data conventions.
 
 - **[Index E — Education](index-e/README.md)** ([live](index-e/index.html)):
-  SI Atlas — Index E, a searchable directory and map of schools — 187 records
+  SI Atlas — Index E, a searchable directory and map of schools — 188 records
   across all ten provinces, though verification depth varies (see its own
   README for the two coverage tiers).
 - **[Index P — Policing](index-p/README.md)** ([live](index-p/index.html)):

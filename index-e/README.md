@@ -6,7 +6,7 @@ Solomon Islands provinces. This is the first index of **SI Atlas** — see the
 This document covers Index E's own implementation.
 
 > ## School data is real, but verification depth varies by province
-> The 187 school records in `js/data/schools.js` are named, real institutions
+> The 188 school records in `js/data/schools.js` are named, real institutions
 > — none invented — but they fall into two coverage tiers, both explained in
 > full at the top of that file:
 > - **Pilot tier** (Honiara, two Guadalcanal schools, and Isabel Province):

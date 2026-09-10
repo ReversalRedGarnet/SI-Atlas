@@ -111,11 +111,9 @@ SF.SUBJECT_GROUPS = [
   { group: 'Confirmed offerings', subjects: ['IT'] }
 ];
 
-/* Filter vocabulary. Deliberately just the two provinces this pilot actually
- * covers — see the header above. Expanding this list is how the app grows
- * to other provinces; it is not padded with provinces that have no schools
- * in the dataset yet, so the filter never implies coverage that doesn't
- * exist. */
+/* Filter vocabulary — all ten provinces the dataset now covers. See the
+ * header above for the two verification tiers (pilot vs. national-sweep)
+ * behind these; the filter itself makes no distinction between them. */
 SF.PROVINCES = [
   'Honiara', 'Central', 'Choiseul', 'Guadalcanal', 'Isabel', 'Makira',
   'Malaita', 'Rennell and Bellona', 'Temotu', 'Western'
@@ -158,7 +156,7 @@ SF.label = function (value) {
   return SF.DISPLAY_LABELS[value] || value;
 };
 
-/* --- The verified dataset (Honiara pilot + two Guadalcanal schools) ------- */
+/* --- The verified dataset (all ten provinces; two verification tiers — see header above) --- */
 SF.SCHOOLS = [
   {
     "id": "sch_bishop_epalle_chs",
