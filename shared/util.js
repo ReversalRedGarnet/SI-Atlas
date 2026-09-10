@@ -16,3 +16,18 @@ Atlas.util.esc = function (s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                   .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 };
+
+/**
+ * "9 Sept 2026" — the one date format every index shows a reader, whether
+ * that's a verification badge's last-checked date or a record's own
+ * dateAccessed. Falls back to the raw string for anything that doesn't
+ * parse, rather than showing "Invalid Date".
+ *
+ * @param {string} iso - an ISO date ('YYYY-MM-DD'); falsy returns ''.
+ */
+Atlas.util.formatDate = function (iso) {
+  if (!iso) return '';
+  var d = new Date(iso + 'T00:00:00');
+  if (isNaN(d)) return iso;
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+};

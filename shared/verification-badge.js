@@ -30,7 +30,7 @@ Atlas.verificationBadge.classFor = function (status) {
 /** Plain-language label for the given status, with the verified date appended if given. */
 Atlas.verificationBadge.labelFor = function (status, lastVerified) {
   var label = LABELS.hasOwnProperty(status) ? LABELS[status] : LABELS.unverified;
-  if (status === 'verified' && lastVerified) label += ' ' + formatDate(lastVerified);
+  if (status === 'verified' && lastVerified) label += ' ' + Atlas.util.formatDate(lastVerified);
   return label;
 };
 
@@ -54,12 +54,6 @@ function icon(status) {
     return '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" class="badge-ico"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.2 2.2"/></svg>';
   }
   return '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" class="badge-ico"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>';
-}
-
-function formatDate(iso) {
-  var d = new Date(iso + 'T00:00:00');
-  if (isNaN(d)) return iso;
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 var esc = Atlas.util.esc;

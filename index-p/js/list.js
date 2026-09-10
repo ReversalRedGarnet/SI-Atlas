@@ -53,12 +53,7 @@ SP.format = {
     if (!phone || SP.format.hasMultiplePhones(phone)) return null;
     return 'tel:' + String(phone).replace(/[^\d+]/g, '');
   },
-  date: function (iso) {
-    if (!iso) return '';
-    var d = new Date(iso + 'T00:00:00');
-    if (isNaN(d)) return iso;
-    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-  },
+  date: Atlas.util.formatDate,
   esc: Atlas.util.esc
 };
 
