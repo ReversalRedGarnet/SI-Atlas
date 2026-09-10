@@ -234,13 +234,12 @@ recorded in the relevant record's `notes` and surfaced in its profile.
   profile shows the string verbatim and offers no `tel:` link, because a link
   would have to choose. Two further records (Henderson, Gizo) hold one number
   with an alternative described in their notes.
-- **Unresolved facility identities.** Mbiti Police Post may or may not be the
-  older RAMSI-era "Mbambanakira" post under a different spelling. Aola Police
-  Station may or may not be the same facility as the Police Maritime base of
-  the same name. Bellona Police Post is listed separately from Tingoa in RSIPF's
-  own 2019 Annex D, but a 2018 media release suggests it may not be
-  continuously staffed. Wagina's 2022 opening may have been a new build or a
-  replacement for an existing post.
+*(Four related identity/staffing questions — Mbiti vs. "Mbambanakira", Aola
+station vs. the Maritime base of the same name, Wagina's new-build-vs-
+replacement status, and whether Bellona Police Post is continuously staffed —
+were resolved by September 2026 research passes, the last (Bellona) at low
+confidence from a single non-official source; see
+[Post-conversion edits](#post-conversion-edits) below.)*
 - **Kukum's scope after its rebuild.** Kukum was destroyed in the November 2021
   unrest, rebuilt under RAPPP, and reopened in 2024 as the "Kukum Traffic
   Centre". Whether the reopened facility still carries the original general
@@ -275,7 +274,7 @@ recorded in the relevant record's `notes` and surfaced in its profile.
 ## Post-conversion edits
 
 `js/data/stations.js` is **no longer a pure conversion of the workbook.**
-Sixteen records carry additions or a change made after it. Fourteen are
+Twenty records carry additions or a change made after it. Eighteen are
 recorded in that record's own `dataFlag` and, where it is a fact about the
 facility, appended to `notes` behind an `UPDATE (added September 2026…)`
 marker. Two more (Kariki, Kulitanai) are plain coordinate additions using the
@@ -302,6 +301,10 @@ citations — exactly the case the parallel-list decision above exists for.
 | Kirakira Police Station | Coordinate added, notes + source: obtained via a live GPS location ping sent by an officer physically at the provincial HQ, in response to a phone call — a device-generated reading, not a verbal description or a map estimate. Flagged as notably higher-confidence than this dataset's typical unofficial sourcing (e.g. Noro/Ulawa's phone confirmations), though still not a written or official record. `verification_status` stays `verified` (reflects the station's existence, not this coordinate); `location.precision` stays at the file's blanket `'approximate'` — no `'exact'` tier was introduced for it. |
 | Atoifi Police Outpost | Coordinate added, notes + source: obtained via a live GPS location ping sent on-site by a civilian associate — a nursing staff member at the nearby Atoifi Adventist Hospital, not RSIPF personnel — who visited the outpost in person in response to a phone call to Malaita HQ. Same device-generated, higher-confidence tier as Kirakira's ping, but flagged as sourced through a non-RSIPF individual physically present at the site rather than an officer, so the two aren't conflated. Supersedes this record's earlier note that only the nearby hospital, not the outpost, had been found in mapping data. |
 | Atori Police Station | Coordinate added, notes + source: sourced from Mindat.org, a locality/populated-place database — a village-level point for Atori on Malaita Island, not a building-specific one. Flagged as a different confidence tier than Kirakira/Atoifi's device-generated GPS pings. A same-named "Atori" locality exists in Makira-Ulawa Province; this coordinate was confirmed to be the Malaita Island one matching this record's province. |
+| Aola Police Station | Notes + source: the Aola/Maritime-base identity question is **resolved**. Aola Police Station (East-Central Guadalcanal) and "Aola Maritime Base" (the RSIPF Marine Division's patrol-boat HQ at Point Cruz, Honiara) are confirmed by independent sources to be two unrelated facilities sharing a name — not the same site or co-located. Previously listed under Known open issues; removed from there. |
+| Mbiti Police Post | Notes + source: the Mbiti/Mbambanakira identity question is **resolved**. Mbiti is confirmed to be a distinct village from the older RAMSI-era "Mbambanakira" post, not a spelling variant — per Australian War Memorial photo archive captions and RSIPF's own 2019 Annex D, which lists Mbiti separately. Previously listed under Known open issues; removed from there. |
+| Wagina Police Station | Notes + source: the new-build-vs-replacement question is **likely resolved, at moderate confidence** (an inference, not a direct official statement, unlike Aola/Mbiti above). RSIPF's April 2021 ground-breaking coverage called it "the first of its kind" for Wagina, unlike the same period's Aola/Avu Avu coverage of rebuilding a burnt-down/torn-down station — suggesting Wagina's already-Annex-D-listed post got its first purpose-built structure in 2022. Previously listed under Known open issues; removed from there. |
+| Bellona Police Post | Notes + source: the continuously-staffed question is **likely resolved, at low confidence** — the weakest-sourced of the four identity/staffing resolutions here (private/investigative outlet, anonymous complainants; no official confirmation). A 2019 Island Sun article reports the Acting PPC for Renbel "resides in his village" on Bellona and that RSIPF officers were living near the scene of an April 2019 killing there, suggesting resident RSIPF presence rather than staffing solely from Tigoa/Rennell — not necessarily contradicting the earlier 2018 travel-in hypothesis. `verification_status` unchanged; it already reflected the post's existence, not this staffing detail. Previously listed under Known open issues; removed from there. |
 
 > **If the workbook is ever re-exported, these edits must be reapplied** — a
 > fresh conversion would silently discard them. Better still, fold the facts
@@ -331,8 +334,22 @@ citations — exactly the case the parallel-list decision above exists for.
 >
 > *(Further update, September 2026: Atori Police Station's coordinate was
 > added the same way — folded into the source workbook first, then applied
-> here to match. The Summary sheet's live formulas now read 31 records with
-> coordinates and 11 without.)*
+> here to match. The Summary sheet's live formulas read 31 records with
+> coordinates and 11 without at that point.)*
+>
+> *(Further update, September 2026: a research pass resolved three identity
+> questions — Aola station vs. the Maritime base of the same name, Mbiti vs.
+> "Mbambanakira", and Wagina's new-build-vs-replacement status — with the
+> conclusions folded into the source workbook first, then applied here to
+> match. No coordinates changed in this pass; the Summary sheet's live
+> formulas still read 31 records with coordinates and 11 without.)*
+>
+> *(Further update, September 2026: a follow-up research pass resolved the
+> fourth and last identity/staffing question — whether Bellona Police Post is
+> continuously staffed — at low confidence from a single non-official source,
+> folded into the source workbook first, then applied here to match. No
+> coordinates changed; the Summary sheet's live formulas still read 31
+> records with coordinates and 11 without.)*
 
 ### A note on `dataFlag`
 
@@ -341,7 +358,7 @@ during its own cleanup (Maka is its one use). This index widens it to mean
 *"something about this record needs a human's attention"* — a correction, a
 post-conversion edit, or an unresolved conflict between two fields. `js/panel.js`
 renders it under a neutral **"Flagged on this record"** heading for that reason,
-rather than calling everything a correction. Fifteen of the 42 records carry one.
+rather than calling everything a correction. Nineteen of the 42 records carry one.
 
 ## Out of scope
 

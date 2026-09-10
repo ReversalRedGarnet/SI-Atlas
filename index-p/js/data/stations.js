@@ -9,8 +9,8 @@
  * columns were mapped onto SI Atlas's shared entity envelope, which judgement
  * calls the mapping had to make, and every change made to a record since.
  *
- * THIS FILE IS NO LONGER A PURE CONVERSION. Sixteen records carry additions
- * or changes made after the conversion. Fourteen of them are marked in their
+ * THIS FILE IS NO LONGER A PURE CONVERSION. Twenty records carry additions
+ * or changes made after the conversion. Eighteen of them are marked in their
  * own `dataFlag`; two (Kariki, Kulitanai) are plain coordinate additions using
  * the file's standard Google Maps citation -- the same pattern Munda or
  * Honiara Central already use -- so neither needed a flag.
@@ -103,13 +103,12 @@
  *     vintages. Read the record's `notes` before treating any one of them as
  *     "the" number. Henderson and Gizo hold one number each with an
  *     alternative described in `notes` instead.
- *   - Mbiti Police Post may or may not be the same place as the older
- *     RAMSI-era "Mbambanakira" post; Aola Police Station may or may not be
- *     the same facility as the Police Maritime base of the same name; Bellona
- *     Police Post is listed separately from Tingoa but may not be
- *     continuously staffed; Wagina's 2022 opening may have been a new build
- *     or a replacement for an existing post. All four are recorded in
- *     `notes` and left open.
+ *   (Four related identity/staffing questions -- Mbiti vs. "Mbambanakira",
+ *     Aola station vs. the Maritime base of the same name, Wagina's
+ *     new-build-vs-replacement status, and whether Bellona Police Post is
+ *     continuously staffed -- were resolved by September 2026 research
+ *     passes, the last (Bellona) at low confidence from a single
+ *     non-official source; see POST-CONVERSION EDITS below.)
  *   - Kukum and Naha were reported temporarily closed after the December 2021
  *     unrest, and their current operating status has not been reconfirmed by
  *     a dated official source.
@@ -210,6 +209,41 @@
  *     pings; a same-named "Atori" locality exists in Makira-Ulawa Province,
  *     and this coordinate was confirmed to be the Malaita Island one matching
  *     this record's province.
+ *   - Aola Police Station. Identity question resolved: Aola Police Station
+ *     (East-Central Guadalcanal) and "Aola Maritime Base" (the RSIPF Marine
+ *     Division's patrol-boat HQ at Point Cruz, Honiara) are confirmed by
+ *     independent sources to be two unrelated facilities sharing a name, not
+ *     the same site or co-located -- the Maritime base's own coverage places
+ *     it consistently at Point Cruz. This was previously listed as a KNOWN
+ *     OPEN ISSUE above and is now resolved, not open.
+ *   - Mbiti Police Post. Identity question resolved: Mbiti is confirmed to
+ *     be a distinct village from the older RAMSI-era "Mbambanakira" post, not
+ *     the same place under a different spelling -- confirmed by Australian
+ *     War Memorial photo archive captions naming Mbiti village specifically,
+ *     and by RSIPF's own 2019 Annex D, which lists Mbiti separately. This was
+ *     previously listed as a KNOWN OPEN ISSUE above and is now resolved, not
+ *     open.
+ *   - Wagina Police Station. New-build-vs-replacement question likely
+ *     resolved, at moderate confidence (an inference, not a direct official
+ *     statement, unlike Aola/Mbiti above): RSIPF's April 2021 ground-breaking
+ *     coverage called it "the first of its kind" for Wagina, unlike the same
+ *     period's Aola/Avu Avu coverage, which explicitly describes rebuilding a
+ *     burnt-down/torn-down station -- suggesting Wagina's 2019-Annex-D-listed
+ *     post received its first purpose-built structure in 2022 rather than
+ *     being a new post on new ground. This was previously listed as a KNOWN
+ *     OPEN ISSUE above and is now likely resolved.
+ *   - Bellona Police Post. Continuously-staffed question likely resolved, at
+ *     low confidence -- the weakest-sourced of the four identity/staffing
+ *     resolutions in this file. A 2019 Island Sun investigative article
+ *     reports the Acting Provincial Police Commander for Renbel "resides in
+ *     his village" on Bellona and that RSIPF officers were living near the
+ *     scene of an April 2019 killing there, suggesting resident RSIPF
+ *     presence rather than staffing solely from Tigoa/Rennell. No official
+ *     source confirms this and none more recent was found; it does not
+ *     necessarily contradict the earlier 2018 hypothesis (officers traveling
+ *     in for a serious case is consistent with a resident-but-under-
+ *     resourced PPC). `verification_status` is left unchanged -- it already
+ *     reflected the post's existence per Annex D, not this staffing detail.
  *
  * A NOTE ON `dataFlag`. The source workbook defines this column narrowly, as
  * a log of corrections made during its own cleanup (Maka is its one use). This
@@ -495,7 +529,8 @@ SP.STATION_RECORDS = [
     },
     "sources": [
       "Island Sun (reprint of RSIPF press release)",
-      "RSIPF official media node"
+      "RSIPF official media node",
+      "RSIPF/SIBC coverage of Aola Maritime Base, Point Cruz (patrol boat handovers, wharf upgrades)"
     ],
     "verification_status": "unverified",
     "last_verified": null,
@@ -504,7 +539,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Not listed in the RSIPF 2019 Annual Report Annex D, but confirmed by a 2021 press release (reprinted by Island Sun, and referenced in an official RSIPF media release) describing rebuilding after a 2020 electrical fire. Aola is also referred to elsewhere as the site of a RSIPF Police Maritime base - unclear if these are the same facility or co-located separate facilities.",
+    "notes": "Not listed in the RSIPF 2019 Annual Report Annex D, but confirmed by a 2021 press release (reprinted by Island Sun, and referenced in an official RSIPF media release) describing rebuilding after a 2020 electrical fire. Aola is also referred to elsewhere as the site of a RSIPF Police Maritime base - unclear if these are the same facility or co-located separate facilities. UPDATE (September 2026): This ambiguity is resolved. Multiple independent sources confirm Aola Police Station (East-Central Guadalcanal, rebuilt 2021 after a 2020 electrical-fault fire) and “Aola Maritime Base” (the RSIPF Marine Division's patrol-boat HQ at Point Cruz, Honiara) are two unrelated facilities that happen to share a name — not the same facility or co-located. RSIPF/SIBC coverage of the Maritime base (patrol boat handovers, wharf upgrades) consistently places it at Point Cruz, Honiara, distinct from this rural Guadalcanal station. This supersedes the “unclear if these are the same facility or co-located separate facilities” statement above, which is kept as originally recorded.",
     "province": "Guadalcanal Province",
     "constituencyWard": "East-Central Guadalcanal",
     "address": "Aola, East-Central Guadalcanal",
@@ -513,7 +548,7 @@ SP.STATION_RECORDS = [
       "https://www.rsipf.gov.sb/?q=node%2F2173"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion resolution (September 2026): the Aola/Maritime-base identity question is now resolved, not open. Aola Police Station (East-Central Guadalcanal) and the RSIPF Marine Division's “Aola Maritime Base” at Point Cruz, Honiara are two unrelated facilities sharing a name only — confirmed by independent sources: the 2021 rebuild coverage (Island Sun) for this station, and RSIPF/SIBC coverage of the Maritime base's patrol-boat handovers and wharf upgrades at Point Cruz. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "avu-avu-police-station",
@@ -620,7 +655,8 @@ SP.STATION_RECORDS = [
       "precision": null
     },
     "sources": [
-      "RSIPF Annual Report 2019 (Annex D)"
+      "RSIPF Annual Report 2019 (Annex D)",
+      "Australian War Memorial photo archive (Mbiti village, GLF period)"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -629,7 +665,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Listed in RSIPF's own 2019 Annex D list; no further details found. An older (2003-04) RAMSI-era source lists a similarly-named post at 'Mbambanakira' in Guadalcanal - unclear whether this is the same location under a different spelling; not confirmed either way.",
+    "notes": "Listed in RSIPF's own 2019 Annex D list; no further details found. An older (2003-04) RAMSI-era source lists a similarly-named post at 'Mbambanakira' in Guadalcanal - unclear whether this is the same location under a different spelling; not confirmed either way. UPDATE (September 2026): This ambiguity is resolved. Mbiti is a distinct village from Mbambanakira, not the same place under a different spelling — both are independently documented: Australian War Memorial photo archive captions specifically describe “the burnt out village Police Station, Mbiti village” from the Guadalcanal Liberation Front period (Mbiti was Harold Keke's GLF stronghold during the 1999–2003 ethnic tensions), and RSIPF's own 2019 Annual Report Annex D lists Mbiti as a separate entry, not a variant spelling of Mbambanakira. This supersedes the “unclear whether this is the same location under a different spelling” statement above, which is kept as originally recorded.",
     "province": "Guadalcanal Province",
     "constituencyWard": null,
     "address": "Mbiti, Guadalcanal",
@@ -637,7 +673,7 @@ SP.STATION_RECORDS = [
       "https://www.rsipf.gov.sb/sites/default/files/RSIPF%202019%20Annual%20Report.pdf"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion resolution (September 2026): the Mbiti/Mbambanakira identity question is now resolved, not open. Mbiti and Mbambanakira are two distinct, independently documented Guadalcanal villages, not a spelling variant of the same place — confirmed by Australian War Memorial photo archive captions naming Mbiti village specifically (from the Guadalcanal Liberation Front period) and by RSIPF's own 2019 Annual Report Annex D, which lists Mbiti as a separate entry. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "tetere-police-station",
@@ -1478,7 +1514,8 @@ SP.STATION_RECORDS = [
     },
     "sources": [
       "RSIPF Annual Report 2019 (Annex D)",
-      "RSIPF official media release (opening)"
+      "RSIPF official media release (opening)",
+      "RSIPF/SIBC/Solomon Times coverage of the 2021 ground-breaking and August 2022 opening"
     ],
     "verification_status": "verified",
     "last_verified": "2026-09-09",
@@ -1487,7 +1524,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Listed in the 2019 Annex D, but a new/upgraded station building was officially opened on 5 August 2022 (constructed under the RSIPF-AFP Policing Partnership Program, RAPPP) - unclear whether this replaced an existing smaller post or was a new build on an already-designated post location.",
+    "notes": "Listed in the 2019 Annex D, but a new/upgraded station building was officially opened on 5 August 2022 (constructed under the RSIPF-AFP Policing Partnership Program, RAPPP) - unclear whether this replaced an existing smaller post or was a new build on an already-designated post location. UPDATE (September 2026): This question is likely resolved, though inferred rather than directly stated. RSIPF's own coverage of the April 2021 ground-breaking explicitly called it “the first of its kind” event for the Wagina community — unlike Aola/Avu Avu's coverage from the same period, which explicitly frames those builds as rebuilding a burnt-down/torn-down existing station. Since Wagina was already listed in the 2019 Annex D before construction began, the likeliest reading is that an existing designated post without a proper building received its first purpose-built structure (SBD $2.6 million, completed/opened August 2022 under RAPPP) — not a new post on previously undesignated ground. This is an inference from the ground-breaking language, not a direct official statement, so it is recorded as “likely” rather than confirmed; it supersedes the “unclear whether this replaced an existing smaller post or was a new build” statement above, which is kept as originally recorded.",
     "province": "Choiseul Province",
     "constituencyWard": null,
     "address": "Wagina Island, Choiseul Province",
@@ -1496,7 +1533,7 @@ SP.STATION_RECORDS = [
       "https://www.rsipf.gov.sb/sites/default/files/20220815-Media%20release-RSIPF%20Wagina%20Police%20Station%20officially%20opened-Final.pdf"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Post-conversion resolution (September 2026), moderate confidence: the new-build-vs-replacement question is likely resolved, though by inference rather than a direct official statement — unlike the fully-resolved Aola and Mbiti identity questions above. RSIPF's April 2021 ground-breaking coverage called it “the first of its kind” for Wagina, unlike Aola/Avu Avu's same-period coverage, which explicitly describes rebuilding a burnt-down/torn-down station. Since Wagina was already listed in the 2019 Annex D before construction, this likely means an existing designated post received its first purpose-built structure (opened August 2022 under RAPPP), not a new post on new ground. No source URL was supplied with this addition, so `sourceUrls` is unchanged."
   },
   {
     "id": "bellona-police-post",
@@ -1518,7 +1555,7 @@ SP.STATION_RECORDS = [
       "email": null,
       "website": null
     },
-    "notes": "Listed as a separate location from Tingoa in RSIPF's own 2019 Annex D list; however a 2018 RSIPF media release describes officers needing to travel from elsewhere to Bellona Island to investigate an incident, suggesting Bellona may not have a continuously-staffed post - this is flagged as ambiguous, not confirmed either way.",
+    "notes": "Listed as a separate location from Tingoa in RSIPF's own 2019 Annex D list; however a 2018 RSIPF media release describes officers needing to travel from elsewhere to Bellona Island to investigate an incident, suggesting Bellona may not have a continuously-staffed post - this is flagged as ambiguous, not confirmed either way. UPDATE (Sep 2026): A 2019 Island Sun investigative article (“A dead police in Renbel and a deaf HQ in Rove”, 2 Sept 2019) reports the Acting Provincial Police Commander for Renbel “resides in his village” on Bellona, and that RSIPF officers were living near the scene of an April 2019 killing on the island — indicating resident RSIPF presence on Bellona itself, not staffing solely from Tigoa/Rennell. No RSIPF or other official source confirms this, and no more recent (2020+) source was found either way. Recorded as likely-staffed at low confidence, not verified — the earlier hypothesis (from a 2018 RSIPF release about officers traveling to Bellona to investigate) isn't necessarily contradicted, since a resident-but-under-resourced PPC is consistent with Honiara sending a team for a serious case.",
     "province": "Rennell & Bellona Province",
     "constituencyWard": null,
     "address": "Bellona Island",
@@ -1526,7 +1563,7 @@ SP.STATION_RECORDS = [
       "https://www.rsipf.gov.sb/sites/default/files/RSIPF%202019%20Annual%20Report.pdf"
     ],
     "dateAccessed": "2026-09-09",
-    "dataFlag": null
+    "dataFlag": "Sourcing tier 5 (private/investigative news outlet, anonymous complainants) — no official RSIPF confirmation. Resolves the open 'is Bellona continuously staffed' question as likely yes, low confidence, per the 2019 Island Sun piece cited in notes. Source URL: https://theislandsun.com.sb/a-dead-police-in-renbel-and-a-deaf-hq-in-rove/"
   },
   {
     "id": "tingoa-police-station",
