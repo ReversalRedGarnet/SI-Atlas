@@ -342,7 +342,11 @@ body.filters-open .filters-rail { transform: translateX(0); }
    meets a touch-target size even though the badge itself doesn't grow —
    this exists specifically for touchscreens (tablets, Surface Pro) where a
    22px hit target is hard to land on. */
-.map-attribution { position: static; }
+/* Leaflet's corner containers set pointer-events: none and only re-enable it
+   on elements carrying its own .leaflet-control class, which this wrapper
+   doesn't have — without this, the inherited `none` makes the toggle below
+   unclickable. */
+.map-attribution { position: static; pointer-events: auto; }
 .map-attribution-toggle {
   display: flex; align-items: center; justify-content: center;
   width: 44px; height: 44px;
