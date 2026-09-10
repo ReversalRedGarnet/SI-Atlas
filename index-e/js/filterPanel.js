@@ -224,28 +224,23 @@ function renderSubjectChips(selected) {
   '<button type="button" class="link-btn" id="subjects-clear">Clear subjects</button>';
 }
 
-/* --- Markup builders ----------------------------------------------------- */
+/* --- Markup builders -------------------------------------------------------
+ * The generic shape (section/checkboxSection/checkItem/distanceSection) is
+ * shared/filter-kit.js (Atlas.filterKit); these are thin wrappers binding it
+ * to Index E's own value-to-label function and this file's `data-search`
+ * behaviour (see applySubjectSearch above), so every call site below is
+ * unchanged. */
 
 function section(key, title, bodyHtml, open) {
-  return '<details class="fsection" data-section="' + key + '"' + (open ? ' open' : '') + '>' +
-    '<summary><span class="sec-title">' + title + '</span>' +
-    '<span class="sec-badge" hidden>0</span>' +
-    '<svg class="sec-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></summary>' +
-    '<div class="fsection-body">' + bodyHtml + '</div></details>';
+  return Atlas.filterKit.section(key, title, bodyHtml, open);
 }
 
 function checkboxSection(key, title, values, open) {
-  var items = values.map(function (v) { return checkItem(key, v); }).join('');
-  return section(key, title, '<div class="check-list">' + items + '</div>', open);
+  return Atlas.filterKit.checkboxSection(key, title, values, open, { label: SF.label, searchable: true });
 }
 
 function checkItem(key, value, extraClass) {
-  var text = SF.label(value);
-  return '<label class="check ' + (extraClass || '') + '" data-search="' + esc((value + ' ' + text).toLowerCase()) + '">' +
-    '<input type="checkbox" data-filter="' + key + '" value="' + esc(value) + '">' +
-    '<span class="check-box" aria-hidden="true"></span>' +
-    '<span class="check-text">' + esc(text) + '</span>' +
-    '<span class="check-count">0</span></label>';
+  return Atlas.filterKit.checkItem(key, value, { label: SF.label, searchable: true, extraClass: extraClass });
 }
 
 /* School level: the non-secondary levels plus the four national-exam form
@@ -334,17 +329,7 @@ function feeSection() {
 }
 
 function distanceSection() {
-  var opts = ['<option value="">Any distance</option>'].concat(
-    DISTANCE_OPTIONS.map(function (km) { return '<option value="' + km + '">Within ' + km + ' km</option>'; })
-  ).join('');
-
-  var body =
-    '<label class="sr-only" for="distance-select">Maximum distance</label>' +
-    '<select class="select select-block" id="distance-select" data-filter="maxDistanceKm" disabled>' + opts + '</select>' +
-    '<p class="field-hint" id="geo-status"></p>' +
-    '<button type="button" class="btn btn-secondary btn-block" id="geo-request">Use my location</button>';
-
-  return section('maxDistanceKm', 'How far from me', body, false);
+  return Atlas.filterKit.distanceSection(DISTANCE_OPTIONS);
 }
 
 })();
