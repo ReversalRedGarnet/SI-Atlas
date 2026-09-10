@@ -1976,7 +1976,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_wagina_chs",
     "name": "Wagina CHS",
-    "description": "A community school on Wagina Island (110 km²), settled by I-Kiribati resettled from the Phoenix Islands in the 1950s across three villages (Kukutin, Arariki, Nikumaroro). The coordinate is an island-facility landmark, not a surveyed school address.",
+    "description": "A community school on Wagina Island, at the southeastern end of Choiseul — settled in 1963-64 by I-Kiribati people relocated from Hull (Orona) and Gardner (Nikumaroro) Islands in the Phoenix Group under the Wagina Resettlement Scheme. The island has three villages (Kukutin, Arariki and Nikumaroro, the latter two named for the settlers' home islands); no source ties the school to one specific village, so `town` stays unset. The coordinate is the island itself, not a surveyed school address.",
     "denomination": null,
     "province": "Choiseul",
     "island": "Wagina Island",
@@ -2002,9 +2002,11 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5464"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5464",
+      "https://en.wikipedia.org/wiki/Wagina_Island",
+      "https://www.solomonencyclopaedia.net/biogs/E000118b.htm"
     ],
     "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
@@ -2012,11 +2014,11 @@ SF.SCHOOLS = [
   {
     "id": "sch_sasamunga_chs",
     "name": "Sasamunga CHS",
-    "description": "A community school in Choiseul Province, offering secondary education.",
+    "description": "A community school at Sasamunga, the largest village and main coastal settlement in Choiseul Province, in South Choiseul.",
     "denomination": null,
     "province": "Choiseul",
     "island": "Choiseul",
-    "town": null,
+    "town": "Sasamunga",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2038,24 +2040,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5463"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5463",
+      "https://www.abc.net.au/pacific/programs/wantok/sasamunga-recovery/106562366"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_choiseul_bay_pss",
     "name": "Choiseul Bay PSS",
-    "description": "A provincial secondary school in Choiseul Province.",
+    "description": "A provincial secondary school at Choiseul Bay, at the northwestern tip of Choiseul Island — Solomon Ports funded SBD $105,000 in 2020 to repair and renovate the school's kitchen and dining hall.",
     "denomination": null,
     "province": "Choiseul",
     "island": "Choiseul",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Choiseul Bay",
+    "latitude": -6.6938099,
+    "longitude": 156.4107651,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -2074,21 +2077,23 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Government",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5462"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5462",
+      "https://www.sipa.com.sb/port-news/posts/2020/march/solomon-ports-help-repair-choiseul-bay-pss-dining-hall/",
+      "https://www.openstreetmap.org/node/13565825327"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_soranamola_chs",
     "name": "Soranamola CHS",
-    "description": "A community school in Choiseul Province, offering secondary education.",
+    "description": "A community school at Soranamola, Choiseul Province.",
     "denomination": null,
     "province": "Choiseul",
     "island": "Choiseul",
-    "town": null,
+    "town": "Soranamola",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -2110,24 +2115,25 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5461"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5461",
+      "https://www.accuweather.com/en/sb/soranamola/1075251/weather-forecast/1075251"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_papara_chs",
     "name": "Papara CHS",
-    "description": "A community school in Choiseul Province, offering secondary education.",
+    "description": "A community school at Papara, in the Nambusasa area of Choiseul.",
     "denomination": null,
     "province": "Choiseul",
     "island": "Choiseul",
-    "town": null,
-    "latitude": null,
-    "longitude": null,
-    "locationPrecision": null,
+    "town": "Papara",
+    "latitude": -7.1433746,
+    "longitude": 156.8591726,
+    "locationPrecision": "approximate",
     "phone": null,
     "email": null,
     "website": null,
@@ -2146,17 +2152,18 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5460"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5460",
+      "https://www.openstreetmap.org/node/13565840761"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
     "id": "sch_kukele_chs",
     "name": "Kukele CHS",
-    "description": "A Seventh-day Adventist community school in Choiseul Province, full name Kukele Adventist CHS per a March 2026 news article on new school buildings funded for Choiseul's 35th Appointed Day.",
+    "description": "A Seventh-day Adventist community school in Choiseul Province, full name Kukele Adventist CHS per a March 2026 news article on new school buildings funded for Choiseul's 35th Appointed Day. Note: the Seventh-day Adventist Church's own historical encyclopedia separately lists a \"Kukele Adventist Community High School\" in Honiara — given this record's own source is Choiseul-specific and dated, these are treated as two distinct, same-named schools rather than a location conflict for this one.",
     "denomination": "SDA",
     "province": "Choiseul",
     "island": "Choiseul",
@@ -2182,9 +2189,10 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5459"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5459",
+      "https://encyclopedia.adventist.org/article?id=9853"
     ],
     "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
@@ -2192,7 +2200,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_puzivai_chs",
     "name": "Puzivai CHS",
-    "description": "A Seventh-day Adventist community school in Choiseul Province, coastal, damaged in April 2026's Cyclone Maila. Referred to as \"Pujivai Adventist High School\" in an ADRA cyclone-response report.",
+    "description": "A Seventh-day Adventist community school in Choiseul Province, coastal, damaged in April 2026's Cyclone Maila. Referred to as \"Pujivai Adventist High School\" in an ADRA cyclone-response report; the Seventh-day Adventist Church's own historical encyclopedia independently corroborates it as \"Puzivai Adventist Community High School ... on the island of Choiseul\" (254 students, grades 1 to 11, fourteen teaching staff).",
     "denomination": "SDA",
     "province": "Choiseul",
     "island": "Choiseul",
@@ -2218,9 +2226,10 @@ SF.SCHOOLS = [
     "currency": "SBD",
     "boarding": null,
     "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5458"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5458",
+      "https://encyclopedia.adventist.org/article?id=9853"
     ],
     "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
@@ -5833,13 +5842,13 @@ SF.SCHOOLS = [
     "image": null
   },
   {
-    "id": "sch_new_place_chs",
-    "name": "New Place CHS",
-    "description": "A community school in Rennell and Bellona Province, offering secondary education.",
+    "id": "sch_new_place_pss",
+    "name": "New Place PSS",
+    "description": "New Place Provincial Secondary School (NPPSS), at Tetaungagoto in West Rennell (Ward 5) — MEHRD's own Year 10 Placement roster still lists it as \"New Place CHS,\" but Wikipedia's own article on Rennell Island and a May 2025 UNDP press release on an EU-funded Rennell and Bellona service-delivery project both independently call it a Provincial Secondary School, the same PSS naming tier as Choiseul Bay elsewhere in this dataset.",
     "denomination": null,
     "province": "Rennell and Bellona",
-    "island": null,
-    "town": null,
+    "island": "Rennell",
+    "town": "Tetaungagoto",
     "latitude": null,
     "longitude": null,
     "locationPrecision": null,
@@ -5860,12 +5869,14 @@ SF.SCHOOLS = [
     "feeMax": null,
     "currency": "SBD",
     "boarding": null,
-    "schoolType": "Community",
-    "lastVerified": "2026-09-10",
+    "schoolType": "Government",
+    "lastVerified": "2026-09-11",
     "sourceUrls": [
-      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5596"
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5596",
+      "https://en.wikipedia.org/wiki/Rennell_Island",
+      "https://www.undp.org/pacific/press-releases/renbel-steps-first-time-province-joins-eu-funded-project-improve-service-delivery"
     ],
-    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
     "image": null
   },
   {
