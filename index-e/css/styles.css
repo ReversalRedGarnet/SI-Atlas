@@ -230,7 +230,6 @@
 }
 
 .leaflet-container { font-family: var(--font-ui); background: #dbe3ee; }
-.leaflet-control-attribution { font-size: .7rem; }
 .leaflet-control-zoom a { border-radius: 0 !important; }
 .leaflet-tooltip { font-size: .8rem; border-radius: 0; border: 1px solid var(--rule-strong); color: var(--text); }
 

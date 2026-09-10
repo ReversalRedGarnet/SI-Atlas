@@ -329,6 +329,43 @@ body.filters-open .filters-rail { transform: translateX(0); }
   background: var(--green);
 }
 
+/* --- Map attribution (collapsible) -----------------------------------------
+   Same disclosure-widget language as the map key above, but collapsed to a
+   small round credit badge instead of a labelled bar, and — unlike the map
+   key — collapsed by DEFAULT on every screen size. That default comes for
+   free from native <details> having no `open` attribute; no breakpoint, no
+   remembered state. Behaviour (wrapping Leaflet's own attribution div so its
+   text always matches what Leaflet renders) is shared/map.js.
+
+   The visible badge stays 22px, but .map-attribution-toggle (the <summary>)
+   is sized to a ~44px square around it so the tappable/clickable region
+   meets a touch-target size even though the badge itself doesn't grow —
+   this exists specifically for touchscreens (tablets, Surface Pro) where a
+   22px hit target is hard to land on. */
+.map-attribution { position: static; }
+.map-attribution-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px;
+  background: transparent; border: 0; cursor: pointer; list-style: none;
+}
+.map-attribution-toggle::-webkit-details-marker { display: none; }
+.map-attribution-toggle::marker { content: ''; }
+.map-attribution-toggle:focus-visible { outline: 3px solid var(--navy); outline-offset: -2px; border-radius: 50%; }
+.map-attribution-badge {
+  display: flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  background: #fff; border: 1px solid var(--rule-strong); border-radius: 50%;
+  font-family: var(--font-head); font-weight: 700; font-size: .8rem; color: var(--navy);
+}
+.map-attribution-toggle:hover .map-attribution-badge { background: #DDE4EC; }
+
+.map-attribution-body.leaflet-control-attribution {
+  display: block; clear: both;
+  background: #fff; border: 1px solid var(--rule-strong); border-top: 0;
+  padding: .3rem .5rem; font-size: .7rem; color: var(--text);
+  max-width: min(260px, calc(100vw - 20px));
+}
+
 /* --- List / map switch (small screens) ----------------------------------- */
 .view-switch { display: none; }
 

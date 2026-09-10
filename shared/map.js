@@ -111,6 +111,30 @@ Atlas.map.create = function (elementId, opts) {
 
   L.control.zoom({ position: 'topright' }).addTo(map);
 
+  /* Leaflet's attribution control renders fully expanded by default, which
+   * crowds the map at every viewport width we've tested — phones, tablets
+   * and Surface-Pro-sized screens alike — so a width breakpoint isn't a
+   * reliable signal for when to collapse it. Instead we wrap Leaflet's own
+   * attribution div in a native <details>/<summary>, which starts closed on
+   * every load with no JS state or media query needed. We only ever move
+   * this div (never touch its innerHTML), so Leaflet's own future updates to
+   * it — e.g. from setBaseLayer() below — keep working untouched. */
+  var attrContainer = map.attributionControl.getContainer();
+  var attrDetails = document.createElement('details');
+  attrDetails.className = 'map-attribution';
+  var attrSummary = document.createElement('summary');
+  attrSummary.className = 'map-attribution-toggle';
+  attrSummary.setAttribute('aria-label', 'Map data attribution');
+  var attrBadge = document.createElement('span');
+  attrBadge.className = 'map-attribution-badge';
+  attrBadge.setAttribute('aria-hidden', 'true');
+  attrBadge.textContent = '©';
+  attrSummary.appendChild(attrBadge);
+  attrDetails.appendChild(attrSummary);
+  attrContainer.parentNode.insertBefore(attrDetails, attrContainer);
+  attrContainer.classList.add('map-attribution-body');
+  attrDetails.appendChild(attrContainer);
+
   var markerLayer = L.layerGroup().addTo(map);
   var userMarker = null;
   var pendingFit = null;
