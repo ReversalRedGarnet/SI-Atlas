@@ -33,6 +33,7 @@ SF.panel.render = function (state) {
   }
 
   var esc = SF.format.esc;
+  var placeDetail = SF.format.placeDetail(school);
   var hasCoords = school.latitude !== null && school.longitude !== null;
   var distanceKm = (state.userLocation && hasCoords)
     ? SF.geo.haversineKm(state.userLocation, { lat: school.latitude, lng: school.longitude })
@@ -81,7 +82,7 @@ SF.panel.render = function (state) {
       '<header class="detail-head">' +
         '<h2 id="detail-name">' + esc(school.name) + '</h2>' +
         '<p class="detail-place">' +
-          (school.town ? esc(school.town) + ', ' : '') + esc(school.island) + ' &middot; ' + esc(school.province) + ' Province' +
+          (placeDetail ? esc(placeDetail) + ' &middot; ' : '') + esc(school.province) + ' Province' +
           (distanceKm !== null ? '<span class="detail-distance">' + SF.geo.formatDistance(distanceKm) + ' away</span>' : '') +
         '</p>' +
         '<p class="detail-kind">' + esc(SF.format.levels(school)) +

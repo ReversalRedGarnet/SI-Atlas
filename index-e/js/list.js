@@ -68,10 +68,24 @@ SF.format = {
     if (!school.boarding) return 'Not yet confirmed';
     return school.boarding === 'Both' ? 'Day and boarding' : school.boarding + ' only';
   },
+  /* Town + island where both are known, falling back a step at a time —
+   * town alone, then island alone, then the province itself — since most
+   * of the national-sweep pass (see the file header) has no town or island
+   * confirmed beyond the province. Skips island when it just repeats the
+   * province name, since province already has its own row/line. */
   place: function (school) {
-    return school.town === school.province
-      ? school.town
-      : school.town + ', ' + school.province;
+    var island = (school.island && school.island !== school.province) ? school.island : null;
+    if (school.town) return island ? school.town + ', ' + island : school.town;
+    return island || school.province;
+  },
+  /* Same town+island compound as place(), but never falls back to the
+   * province — used by panel.js's detail-place line, which always appends
+   * its own ' · <Province> Province' after this, so an empty string (not
+   * a repeated province name) is the right "nothing more specific" case. */
+  placeDetail: function (school) {
+    var island = (school.island && school.island !== school.province) ? school.island : null;
+    if (school.town) return island ? school.town + ', ' + island : school.town;
+    return island || '';
   },
   initials: function (name) {
     var skip = { the: 1, of: 1, and: 1, '&': 1 };
@@ -166,12 +180,8 @@ function card(school, isSelected) {
 
   /* A directory row, not a card: label/value pairs, dense and scannable.
    * Everything a parent screens on before opening the full record. */
-  var place = !school.town
-    ? school.island
-    : (school.island === school.province ? school.town : school.town + ', ' + school.island);
-
   var rows = [
-    ['Location',  esc(place)],
+    ['Location',  esc(SF.format.place(school))],
     ['Province',  esc(school.province)],
     ['Level',     esc(SF.format.levels(school))],
     ['Run by',    esc(SF.format.operator(school))],

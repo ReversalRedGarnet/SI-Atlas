@@ -1,21 +1,31 @@
 /* ============================================================================
- * SI Atlas — Index E — REAL DATA (Honiara pilot + Isabel Province)
+ * SI Atlas — Index E — REAL DATA (all ten provinces)
  * ----------------------------------------------------------------------------
  * This is verified, named-school data, not a demonstration dataset. Coverage
- * is a Honiara pilot (the main Honiara schools plus two Guadalcanal schools,
- * St Joseph's Tenaru and Selwyn College) plus a first full-province pass for
- * Isabel. Other provinces are not represented yet — see the Verification tab
- * of the source workbook for methodology, and SF.PROVINCES below for the
- * provinces this build actually covers.
+ * has two tiers, reflected in each record's `verificationStatus`:
+ *   - Honiara + two Guadalcanal schools (St Joseph's Tenaru, Selwyn College)
+ *     plus Isabel Province — the original pilot pass. Cross-checked against
+ *     an independent source beyond MEHRD wherever one exists, so many of
+ *     these carry a `town` and some a coordinate.
+ *   - Every other province (Central, Choiseul, the rest of Guadalcanal,
+ *     Makira, Malaita, Rennell and Bellona, Temotu, Western) — a single-pass
+ *     national sweep confirming each school's real name, code and province
+ *     directly against MEHRD's own Year 10 Placement 2026 roster for that
+ *     school (one document per school, fetched and read directly — not
+ *     estimated from a folder listing). No independent second source was
+ *     sought for these at this scale, so `town`, `island` (where the
+ *     province spans more than one) and coordinates are left `null` per the
+ *     data policy below, rather than guessed. SF.PROVINCES lists every
+ *     province this build now covers — all ten.
  *
  * Sourced from public MEHRD records (province school lists, Year 10 Placement
- * 2026 rosters, Honiara/Guadalcanal F4/F6 publication) plus independent public
- * sources (news coverage, Wikipedia, government facility maps) used to confirm
- * a school's town/village where MEHRD's own listings only confirm the province.
- * Every record carries `sourceUrls` and `verificationStatus` for provenance —
- * kept in the data for traceability, deliberately not rendered on school cards
- * (see js/panel.js: only `lastVerified` surfaces, as a plain "Verified"
- * indicator).
+ * 2026 rosters, Honiara/Guadalcanal F4/F6 publication) plus, for the pilot
+ * tier only, independent public sources (news coverage, Wikipedia, government
+ * facility maps) used to confirm a school's town/village where MEHRD's own
+ * listings only confirm the province. Every record carries `sourceUrls` and
+ * `verificationStatus` for provenance — kept in the data for traceability,
+ * deliberately not rendered on school cards (see js/panel.js: only
+ * `lastVerified` surfaces, as a plain "Verified" indicator).
  *
  * DATA POLICY — never fabricate. A field that was not confirmed in public
  * sources is `null` (or an empty array), not a guess:
@@ -31,22 +41,52 @@
  *     Education Level of "Secondary" but no confirmed form-group span, so
  *     `yearLevels` is `null` — the Year Group filter honestly won't match
  *     them rather than guessing a range.
- *   - `latitude` / `longitude` — `null` for every school with no public
- *     coordinate source: Mount Horeb CHS and Mercy CHS in Honiara, and most
- *     of the Isabel Province pass (MEHRD's own province lists confirm a
- *     school exists and its province, not a village-level location — a
- *     coordinate is only set where an independent source specifically
- *     ties the school to a named place). They still appear in search/list
- *     results; js/map.js simply does not plot them, and the list/detail
- *     views say so instead of guessing a pin location.
- *   - `town` — for the same reason, `null` rather than the province name
- *     repeated, wherever no source gives a place more specific than the
- *     province itself.
+ *   - `latitude` / `longitude` — `null` for the large majority of records:
+ *     Mount Horeb CHS and Mercy CHS in Honiara, most of Isabel, and nearly
+ *     all of the national-sweep tier (MEHRD's own sources confirm a school
+ *     exists and its province, not a village-level location — a coordinate
+ *     is only set where a source specifically ties the school to a named
+ *     place). They still appear in search/list results; js/map.js simply
+ *     does not plot them, and the list/detail views say so instead of
+ *     guessing a pin location.
+ *   - `town` — for the same reason, `null` wherever no source gives a place
+ *     more specific than the province itself.
+ *   - `island` — `null` for any province that spans more than one island
+ *     with no per-school confirmation of which (Central, Makira, Rennell
+ *     and Bellona except Bellona CHS itself, Temotu, Western) — these are
+ *     genuinely multi-island provinces, so naming one island would be a
+ *     guess. Set only where a province is effectively single-island
+ *     (Guadalcanal, Choiseul, Malaita, Santa Isabel) or a specific source
+ *     confirms one school's island directly (Bellona CHS; RC Nicholson
+ *     College on Vella Lavella).
  *   - `locationPrecision` — 'approximate' for every located school in this
  *     pass (coordinates are memory/landmark-based, not a surveyed address);
  *     `null` when there are no coordinates at all. Nothing in this dataset
  *     is 'exact' yet, but the map and detail panel support that value for
  *     when a surveyed address is confirmed.
+ *
+ * NATIONAL-SWEEP CAVEATS:
+ *   - "601 Gospel Light CHS" appears, with the same code, in both MEHRD's
+ *     Guadalcanal and Honiara Year 10 Placement folders, with no content
+ *     difference between the two documents to say which province is
+ *     authoritative. Left out of this dataset rather than guessing — same
+ *     handling as the unresolved "188" Norman Palmer CHS / Christ the King
+ *     CHS conflict (see index-e/README.md or git history for that one).
+ *   - `schoolType` for the national-sweep tier is inferred from the school's
+ *     own name suffix, a real MEHRD naming convention, not a per-school
+ *     guess: "CHS" (Community High School) → Community, "PSS"/"NSS"/"Senior
+ *     Secondary" → Government. "College" and "High School" have no such
+ *     fixed convention, so they default to Community absent confirmation —
+ *     except where independently confirmed otherwise (RC Nicholson College:
+ *     Church, per news coverage of its 2023 renaming and Uniting Church
+ *     ownership).
+ *   - `denomination` is set only where the school's own official name states
+ *     it outright ("Adventist", "SDA") or an independent source confirms it
+ *     (RC Nicholson College) — never inferred from a name alone. "RC" in
+ *     "RC Nicholson College" turned out to be founder's initials (Reginald
+ *     Chapman), not "Roman Catholic" — a reminder of why that restraint
+ *     matters, not a pattern to extend to similar-looking names elsewhere
+ *     in this pass (e.g. "St Johns Bosco Senior Secondary", left `null`).
  *
  * KNOWN DATA-QUALITY NOTE — Perch CHS: the source workbook has Denomination
  * "Private" and School Type "Community", which is contradictory (private and
@@ -76,7 +116,10 @@ SF.SUBJECT_GROUPS = [
  * to other provinces; it is not padded with provinces that have no schools
  * in the dataset yet, so the filter never implies coverage that doesn't
  * exist. */
-SF.PROVINCES = ['Honiara', 'Guadalcanal', 'Isabel'];
+SF.PROVINCES = [
+  'Honiara', 'Central', 'Choiseul', 'Guadalcanal', 'Isabel', 'Makira',
+  'Malaita', 'Rennell and Bellona', 'Temotu', 'Western'
+];
 
 SF.DENOMINATIONS = ['SDA', 'Anglican', 'SSEC', 'Catholic', 'Other'];
 
@@ -1522,6 +1565,5370 @@ SF.SCHOOLS = [
       "https://theislandsun.com.sb/hovi-school-plans-to-have-form-6-by-2025/"
     ],
     "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026; cross-source",
+    "image": null
+  },
+  {
+    "id": "sch_yandina_chs",
+    "name": "Yandina CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5457"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_louna_chs",
+    "name": "Louna CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5456"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_dala_chs",
+    "name": "Dala CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5455"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_siota_pss",
+    "name": "Siota PSS",
+    "description": "A provincial secondary school in Central Province.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5454"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_siro_chs",
+    "name": "Siro CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5453"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_paibeta_chs",
+    "name": "Paibeta CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5452"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_nukufero_chs",
+    "name": "Nukufero CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5451"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_belaga_chs",
+    "name": "Belaga CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5450"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_mcmahon_chs",
+    "name": "McMahon CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5449"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_polomuhu_chs",
+    "name": "Polomuhu CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5448"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_vuranimala_chs",
+    "name": "Vuranimala CHS",
+    "description": "A community school in Central Province, offering secondary education.",
+    "denomination": null,
+    "province": "Central",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5447"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_wagina_chs",
+    "name": "Wagina CHS",
+    "description": "A community school in Choiseul Province, offering secondary education.",
+    "denomination": null,
+    "province": "Choiseul",
+    "island": "Choiseul",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5464"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_sasamunga_chs",
+    "name": "Sasamunga CHS",
+    "description": "A community school in Choiseul Province, offering secondary education.",
+    "denomination": null,
+    "province": "Choiseul",
+    "island": "Choiseul",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5463"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_choiseul_bay_pss",
+    "name": "Choiseul Bay PSS",
+    "description": "A provincial secondary school in Choiseul Province.",
+    "denomination": null,
+    "province": "Choiseul",
+    "island": "Choiseul",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5462"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_soranamola_chs",
+    "name": "Soranamola CHS",
+    "description": "A community school in Choiseul Province, offering secondary education.",
+    "denomination": null,
+    "province": "Choiseul",
+    "island": "Choiseul",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5461"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_papara_chs",
+    "name": "Papara CHS",
+    "description": "A community school in Choiseul Province, offering secondary education.",
+    "denomination": null,
+    "province": "Choiseul",
+    "island": "Choiseul",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5460"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kukele_chs",
+    "name": "Kukele CHS",
+    "description": "A community school in Choiseul Province, offering secondary education.",
+    "denomination": null,
+    "province": "Choiseul",
+    "island": "Choiseul",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5459"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_puzivai_chs",
+    "name": "Puzivai CHS",
+    "description": "A community school in Choiseul Province, offering secondary education.",
+    "denomination": null,
+    "province": "Choiseul",
+    "island": "Choiseul",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5458"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_chapuria_chs",
+    "name": "Chapuria CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5499"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_visale_chs",
+    "name": "Visale CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5498"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_tenakoga_chs",
+    "name": "Tenakoga CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5497"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_makaruka_chs",
+    "name": "Makaruka CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5496"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_betivatu_chs",
+    "name": "Betivatu CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5495"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_burnscreek_chs",
+    "name": "Burnscreek CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5494"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_laloato_chs",
+    "name": "Laloato CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5493"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_ruavatu_pss",
+    "name": "Ruavatu PSS",
+    "description": "A provincial secondary school in Guadalcanal Province.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5492"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_aruligo_chs",
+    "name": "Aruligo CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5490"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_tangarare_pss",
+    "name": "Tangarare PSS",
+    "description": "A provincial secondary school in Guadalcanal Province.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5489"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_avu_avu_pss",
+    "name": "Avu Avu PSS",
+    "description": "A provincial secondary school in Guadalcanal Province.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5485"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_betikama_adventist_college",
+    "name": "Betikama Adventist College",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": "SDA",
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5486"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_nguvia_chs",
+    "name": "Nguvia CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5484"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_tamboko_chs",
+    "name": "Tamboko CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5483"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_sir_jacob_vouza_memorial_chs",
+    "name": "Sir Jacob Vouza Memorial CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5482"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_ghaobata_chs",
+    "name": "Ghaobata CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5481"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kopiu_chs",
+    "name": "Kopiu CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5480"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_tolunatete_chs",
+    "name": "Tolunatete CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5479"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_turarana_chs",
+    "name": "Turarana CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5478"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_lambi_chs",
+    "name": "Lambi CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5477"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_bolale_chs",
+    "name": "Bolale CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5476"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_numbu_chs",
+    "name": "Numbu CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5474"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_lunga_chs",
+    "name": "Lunga CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5475"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_rate_chs",
+    "name": "Rate CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5473"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_mboeni_chs",
+    "name": "Mboeni CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5472"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_bubunuhu_chs",
+    "name": "Bubunuhu CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5471"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_longu_kaoka_chs",
+    "name": "Longu Kaoka CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5469"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_st_mary_tanagai_chs",
+    "name": "St Mary Tanagai CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5470"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_wanderer_bay_chs",
+    "name": "Wanderer Bay CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5468"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_potau_chs",
+    "name": "Potau CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5467"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kulu_chs",
+    "name": "Kulu CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5466"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_babanakira_chs",
+    "name": "Babanakira CHS",
+    "description": "A community school in Guadalcanal Province, offering secondary education.",
+    "denomination": null,
+    "province": "Guadalcanal",
+    "island": "Guadalcanal",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5465"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_ramah_chs",
+    "name": "Ramah CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5540"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_tawatana_chs",
+    "name": "Tawatana CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5539"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_st_stephen_pamua_college",
+    "name": "St Stephen Pamua College",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5538"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_waimapuru_nss",
+    "name": "Waimapuru NSS",
+    "description": "A national secondary school in Makira Province.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5537"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_ngonihau_chs",
+    "name": "Ngonihau CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5536"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_suena_chs",
+    "name": "Suena CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5534"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_pawa_chs",
+    "name": "Pawa CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5535"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_fm_campbell_chs",
+    "name": "F.M. Campbell CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5533"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_santa_ana_chs",
+    "name": "Santa Ana CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5532"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_sogotiwa_chs",
+    "name": "Sogotiwa CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5531"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_pirupiru_chs",
+    "name": "Pirupiru CHS",
+    "description": "A community school in Makira Province, offering secondary education.",
+    "denomination": null,
+    "province": "Makira",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5530"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_talakali_chs",
+    "name": "Talakali CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5594"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_waneagu_chs",
+    "name": "Waneagu CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5593"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_mbitaama_chs",
+    "name": "Mbita'ama CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5592"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_maoro_chs",
+    "name": "Maoro CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5591"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gwaunaoa_chs",
+    "name": "Gwaunaoa CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5589"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_auki_chs",
+    "name": "Auki CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5590"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_adaua_pss",
+    "name": "Adaua PSS",
+    "description": "A provincial secondary school in Malaita Province.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5588"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_dala_north_chs",
+    "name": "Dala North CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5587"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_naau_chs",
+    "name": "Na'au CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5585"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_foondo_chs",
+    "name": "Foondo CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5586"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_suu_nss",
+    "name": "Su'u NSS",
+    "description": "A national secondary school in Malaita Province.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5584"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_manawai_chs",
+    "name": "Manawai CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5583"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_foubaba_chs",
+    "name": "Foubaba CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5581"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kakara_chs",
+    "name": "Kakara CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5582"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_rokera_pss",
+    "name": "Rokera PSS",
+    "description": "A provincial secondary school in Malaita Province.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5580"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_busurata_chs",
+    "name": "Busurata CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5579"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_rameai_chs",
+    "name": "Rameai CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5577"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_onelafa_chs",
+    "name": "Onelafa CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5578"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_mandalua_chs",
+    "name": "Mandalua CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5576"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_masupa_chs",
+    "name": "Masupa CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5575"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_takwa_chs",
+    "name": "Takwa CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5573"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_aligegeo_pss",
+    "name": "Aligegeo PSS",
+    "description": "A provincial secondary school in Malaita Province.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5574"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_tawaimare_chs",
+    "name": "Tawaimare CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5572"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kiu_chs",
+    "name": "Kiu CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5571"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_manakwai_chs",
+    "name": "Manakwai CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5569"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_faumamanu_chs",
+    "name": "Faumamanu CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5570"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_arabala_chs",
+    "name": "Arabala CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5568"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_dala_south_chs",
+    "name": "Dala South CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5567"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gwaidingale_chs",
+    "name": "Gwaidingale CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5565"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gwounatolo_chs",
+    "name": "Gwounatolo CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5566"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_arnon_atomea_chs",
+    "name": "Arnon Atomea CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5564"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_saa_chs",
+    "name": "Sa'a CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5563"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_tawaro_chs",
+    "name": "Tawaro CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5561"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_marouipaina_chs",
+    "name": "Marouipaina CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5562"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_imbo_chs",
+    "name": "Imbo CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5560"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gwaunasu_chs",
+    "name": "Gwaunasu CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5559"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_lilifia_chs",
+    "name": "Lilifia CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5558"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_fulisango_chs",
+    "name": "Fulisango CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5557"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_baunani_chs",
+    "name": "Baunani CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5556"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_ruru_chs",
+    "name": "Ruru CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5555"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gwounabusu_chs",
+    "name": "Gwounabusu CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5553"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_rufoki_chs",
+    "name": "Rufoki CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5554"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_namoia_chs",
+    "name": "Namoia CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5552"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gwaigeo_chs",
+    "name": "Gwaigeo CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5551"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kwarea_chs",
+    "name": "Kwarea CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5549"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_ogou_chs",
+    "name": "Ogou CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5550"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kwaiafa_chs",
+    "name": "Kwaiafa CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5548"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_justus_ganifiri_chs",
+    "name": "Justus Ganifiri CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5547"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_laulana_chs",
+    "name": "Laulana CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5546"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_casper_kakaise_high_school",
+    "name": "Casper Kakaise High School",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5545"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_walo_chs",
+    "name": "Walo CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5544"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kilusakwalo_chs",
+    "name": "Kilusakwalo CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5543"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_hunanawa_chs",
+    "name": "Hunanawa CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5542"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_fourau_chs",
+    "name": "Fourau CHS",
+    "description": "A community school in Malaita Province, offering secondary education.",
+    "denomination": null,
+    "province": "Malaita",
+    "island": "Malaita",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5541"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_new_place_chs",
+    "name": "New Place CHS",
+    "description": "A community school in Rennell and Bellona Province, offering secondary education.",
+    "denomination": null,
+    "province": "Rennell and Bellona",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5596"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_bellona_chs",
+    "name": "Bellona CHS",
+    "description": "A community school on Bellona, Rennell and Bellona Province, offering secondary education.",
+    "denomination": null,
+    "province": "Rennell and Bellona",
+    "island": "Bellona",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5595"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_lata_chs",
+    "name": "Lata CHS",
+    "description": "A community school in Temotu Province, offering secondary education.",
+    "denomination": null,
+    "province": "Temotu",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5604"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_luesalemba_pss",
+    "name": "Luesalemba PSS",
+    "description": "A provincial secondary school in Temotu Province.",
+    "denomination": null,
+    "province": "Temotu",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5603"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_nangu_chs",
+    "name": "Nangu CHS",
+    "description": "A community school in Temotu Province, offering secondary education.",
+    "denomination": null,
+    "province": "Temotu",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5601"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_mona_chs",
+    "name": "Mona CHS",
+    "description": "A community school in Temotu Province, offering secondary education.",
+    "denomination": null,
+    "province": "Temotu",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5602"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gauwa_chs",
+    "name": "Gauwa CHS",
+    "description": "A community school in Temotu Province, offering secondary education.",
+    "denomination": null,
+    "province": "Temotu",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5600"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_balipaa_chs",
+    "name": "Balipa'a CHS",
+    "description": "A community school in Temotu Province, offering secondary education.",
+    "denomination": null,
+    "province": "Temotu",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5599"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_bishop_patteson_high_school",
+    "name": "Bishop Patteson High School",
+    "description": "A community school in Temotu Province, offering secondary education.",
+    "denomination": null,
+    "province": "Temotu",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5597"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_monene_chs",
+    "name": "Monene CHS",
+    "description": "A community school in Temotu Province, offering secondary education.",
+    "denomination": null,
+    "province": "Temotu",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5598"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_eleoteve_chs",
+    "name": "Eleoteve CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5628"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_buruku_chs",
+    "name": "Buruku CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5626"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_ringgi_cove_chs",
+    "name": "Ringgi Cove CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5627"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_sidoko_chs",
+    "name": "Sidoko CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5625"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_tehila_chs",
+    "name": "Tehila CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5624"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_patupaele_sda_chs",
+    "name": "Patupaele SDA CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": "SDA",
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5623"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_biulah_pss",
+    "name": "Biulah PSS",
+    "description": "A provincial secondary school in Western Province.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5622"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_rc_nicholson_college",
+    "name": "RC Nicholson College",
+    "description": "A school on Vella Lavella, Western Province, owned by the Uniting Church in Solomon Islands. Formerly Vonunu National Secondary School (NSS); renamed to RC (Reginald Chapman) Nicholson College in 2023.",
+    "denomination": "Other",
+    "province": "Western",
+    "island": "Vella Lavella",
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Church",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5621"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_rawaki_chs",
+    "name": "Rawaki CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5620"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_dekurana_chs",
+    "name": "Dekurana CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5619"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kukudu_adventist_college",
+    "name": "Kukudu Adventist College",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": "SDA",
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5617"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_st_johns_bosco_senior_secondary",
+    "name": "St Johns Bosco Senior Secondary",
+    "description": "A government senior secondary school in Western Province, part of the national Senior Secondary Education Improvement Project.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Government",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5618"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_goldie_college",
+    "name": "Goldie College",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5616"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_kokegolo_chs",
+    "name": "Kokegolo CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5615"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_jones_adventist_college",
+    "name": "Jones Adventist College",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": "SDA",
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5613"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gizo_chs",
+    "name": "Gizo CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5614"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_noro_chs",
+    "name": "Noro CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5612"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_beka_beka_chs",
+    "name": "Beka Beka CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5611"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_sibila_chs",
+    "name": "Sibila CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5609"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_lengana_chs",
+    "name": "Lengana CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5610"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_leona_chs",
+    "name": "Leona CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5608"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_buri_chs",
+    "name": "Buri CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5607"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_patukae_chs",
+    "name": "Patukae CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5605"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
+    "image": null
+  },
+  {
+    "id": "sch_gerasi_chs",
+    "name": "Gerasi CHS",
+    "description": "A community school in Western Province, offering secondary education.",
+    "denomination": null,
+    "province": "Western",
+    "island": null,
+    "town": null,
+    "latitude": null,
+    "longitude": null,
+    "locationPrecision": null,
+    "phone": null,
+    "email": null,
+    "website": null,
+    "educationLevels": [
+      "Secondary"
+    ],
+    "yearLevels": null,
+    "formGroups": [],
+    "streams": {
+      "form6": [],
+      "form7": []
+    },
+    "subjects": [],
+    "feeMin": null,
+    "feeMax": null,
+    "currency": "SBD",
+    "boarding": null,
+    "schoolType": "Community",
+    "lastVerified": "2026-09-10",
+    "sourceUrls": [
+      "https://mehrd.gov.sb/documents?view=download&format=raw&fileId=5606"
+    ],
+    "verificationStatus": "Confirmed — MEHRD Year 10 Placement 2026",
     "image": null
   }
 ];

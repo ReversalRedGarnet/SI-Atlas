@@ -1,24 +1,35 @@
 # Index E — Education (SI Atlas)
 
-A searchable directory and interactive map of schools in Honiara, plus two
-schools in Guadalcanal. This is the first index of **SI Atlas** — see the
+A searchable directory and interactive map of schools across all ten
+Solomon Islands provinces. This is the first index of **SI Atlas** — see the
 [repo-root README](../README.md) for the umbrella project and methodology.
 This document covers Index E's own implementation.
 
-> ## School data is real, but the pilot's coverage is limited
-> The 28 school records in `js/data/schools.js` are named, real institutions,
-> sourced from public MEHRD records (Honiara and Guadalcanal school lists,
-> Year 7 placement data, F4/F6 publication) and, where available, a school's
-> own published site. Coverage is a **Honiara pilot**: the main Honiara
-> schools plus St Joseph's Tenaru and Selwyn College in Guadalcanal — no other
-> province is represented yet. Several fields (fees, contact details, exact
-> coordinates, subjects) are unconfirmed for many schools and are recorded as
-> `null` / empty rather than guessed — see the data-policy note at the top of
-> `js/data/schools.js`. Two schools (Mount Horeb CHS, Mercy CHS) have no
-> public coordinate source and so appear in search/list results only, not on
-> the map. This is a public-service prototype built on real, verified data —
-> not a demonstration of fictional data — but it is not yet a complete or
-> authoritative national directory.
+> ## School data is real, but verification depth varies by province
+> The 187 school records in `js/data/schools.js` are named, real institutions
+> — none invented — but they fall into two coverage tiers, both explained in
+> full at the top of that file:
+> - **Pilot tier** (Honiara, two Guadalcanal schools, and Isabel Province):
+>   cross-checked against an independent source beyond MEHRD wherever one
+>   exists, so many of these carry a confirmed town and some a coordinate.
+> - **National-sweep tier** (Central, Choiseul, the rest of Guadalcanal,
+>   Makira, Malaita, Rennell and Bellona, Temotu, Western): every school's
+>   name, code and province is confirmed directly against MEHRD's own Year 10
+>   Placement 2026 roster for that exact school, but no independent second
+>   source was sought at this scale — so town, island (where a province spans
+>   more than one) and coordinates are `null` for nearly all of them, rather
+>   than guessed.
+>
+> Several fields (fees, contact details, exact coordinates, subjects) are
+> unconfirmed for many schools and are recorded as `null` / empty rather than
+> guessed — see the data-policy note at the top of `js/data/schools.js`. A
+> handful of schools (Mount Horeb CHS, Mercy CHS in Honiara, and most of the
+> national-sweep tier) have no public coordinate source and so appear in
+> search/list results only, not on the map. This is a public-service
+> prototype built on real, verified data — not a demonstration of fictional
+> data — but it is not yet a complete or authoritative national directory,
+> and the national-sweep tier in particular would benefit from a second
+> verification pass per school.
 
 ---
 
@@ -46,7 +57,7 @@ index.html              app shell / markup
 css/styles.css          What goes inside the regions: filter drawer, result
                          rows, detail panel, map contents. The page skeleton
                          itself comes from ../shared/styles/index-shell.css
-js/data/schools.js      Real (Honiara-pilot) dataset + filter vocabularies (province, subject taxonomy…)
+js/data/schools.js      Real, national dataset (two verification tiers — see the note above) + filter vocabularies (province, subject taxonomy…)
 js/state.js             the single app-state object, setters and subscribers
 js/filters.js           search, filtering, sorting, facet counts — pure functions
 js/geolocation.js       geolocation request + haversine distance
