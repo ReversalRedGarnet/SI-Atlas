@@ -343,6 +343,44 @@ body.filters-open .filters-rail { transform: translateX(0); }
 }
 .map-note-body span { display: flex; align-items: center; gap: .4rem; }
 
+/* --- Map pins -------------------------------------------------------------
+   The teardrop pin every index's markers and map keys use, built as inline
+   SVG by Atlas.map.pinSvg() / pinIcon() in shared/map.js. Layers, back to
+   front: focus ring (keyboard focus only), dark halo, body (fill + white
+   ring), head glyph. The halo keeps the outline at 3:1+ against the light
+   basemap; the white ring keeps it visible on dark tiles. */
+.atlas-pin { background: none; border: 0; }
+.atlas-pin svg, .pin-swatch svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.pin-halo { fill: none; stroke: var(--navy-dark); stroke-width: 4; stroke-linejoin: round; }
+.pin-body { fill: var(--navy); stroke: #fff; stroke-width: 2; stroke-linejoin: round; }
+.is-approx .pin-body { stroke-dasharray: 3.2 2.2; }          /* approximate location */
+.pin-glyph { fill: #fff; }
+.pin-glyph-ring { fill: none; stroke: #fff; stroke-width: 2.2; }
+/* Selected: gold, navy glyph, thicker ring; pinIcon() also draws it 25%
+   larger and the index puts it on top — so it differs in size and outline,
+   not colour alone. */
+.is-selected .pin-body { fill: var(--gold); stroke-width: 2.6; }
+.is-selected .pin-halo { stroke-width: 4.8; }
+.is-selected .pin-glyph { fill: var(--navy); }
+.is-selected .pin-glyph-ring { stroke: var(--navy); }
+/* Focus: a pin-shaped navy ring with a white gap, instead of the square box
+   a focused element would otherwise get. */
+.pin-focus, .pin-focus-gap { display: none; fill: none; stroke-linejoin: round; }
+.pin-focus { stroke: var(--navy); stroke-width: 12; }
+.pin-focus-gap { stroke: #fff; stroke-width: 8; }
+.leaflet-marker-icon.atlas-pin:focus { outline: none; }
+.leaflet-marker-icon.atlas-pin:focus-visible .pin-focus,
+.leaflet-marker-icon.atlas-pin:focus-visible .pin-focus-gap { display: inline; }
+/* The same pin, small, in a map key (Atlas.map.renderPinSwatches). On the
+   key's white background the white dashes would vanish, so a swatch for an
+   approximate location dashes its dark halo too. */
+.map-note .pin-swatch { display: inline-block; flex: none; width: 18px; height: 25px; margin: 0 1px 1px; }
+/* At swatch size the head glyph (Index P's type shape) would be ~6px; scale it
+   up within the head so square, diamond, dot and ring stay tell-apart-able. */
+.pin-swatch .pin-glyph, .pin-swatch .pin-glyph-ring { transform: scale(1.35); transform-origin: 13px 12.5px; }
+.pin-swatch .is-approx .pin-halo { stroke-dasharray: 5.5 4; stroke-width: 4.5; }
+.pin-swatch .is-approx .pin-body { stroke-dasharray: 5.5 4; }
+
 /* "You are here" is drawn by shared/map.js, so its swatch is shared too. */
 .map-note .k-you {
   width: 10px; height: 10px; border-radius: 50%; flex: none;

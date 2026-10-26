@@ -7,14 +7,15 @@
  * { lat, lng } points that shared module expects, and wires marker clicks back
  * to SP.select().
  *
- * One thing it does not borrow: Atlas.map.pinIcon() draws a single pin style,
- * because Index E's entities are all one kind of thing. Index P's are not —
- * facility_type has exactly four values, and the workbook collapsed the
- * original free-text type column into those four precisely so the legend could
- * have four icons. So the icon is built here, in the index that has the
- * categories, rather than by widening the shared helper for one caller. It
- * keeps the shared conventions it should: a dashed ring still means an
- * approximate coordinate, and the selected marker still takes the gold ring.
+ * Markers are the shared teardrop pin (Atlas.map.pinIcon()), the same as
+ * Index E's. What Index P adds is its four facility types — facility_type
+ * has exactly four values, collapsed by the workbook precisely so the legend
+ * could have four icons — carried by the glyph in the pin's head (TYPE_GLYPH
+ * below): a square for the national HQ, a diamond for a provincial/city HQ,
+ * a dot for a station, a ring for a post. Shape, not colour, so the types
+ * stay apart for a reader who cannot rely on colour. The shared conventions
+ * hold: a dashed outline means an approximate coordinate, and the selected
+ * pin turns gold, grows and sits on top.
  *
  * The map is a *view* of the same filtered array the list renders. It never
  * filters anything itself; it only draws what it is handed.
@@ -30,9 +31,13 @@ var atlasMap;               // the Atlas.map controller
 var markers = {};           // station id → L.marker
 var offsets = {};           // station id → [dx, dy] for exactly-stacked stations
 var lastSignature = null;   // result-set fingerprint, so we only refit on change
+var SELECTED_Z = 1000000;   // see paintSelection()
+var paintedId = null;       // the id currently drawn as the selected pin
 
 SP.map.init = function () {
   atlasMap = Atlas.map.create('map');
+  /* The key's swatches are the same pins the map draws. */
+  Atlas.map.renderPinSwatches(document.getElementById('map-note'));
 };
 
 SP.map.render = function (results, state) {
@@ -83,34 +88,34 @@ function locatedPoints(results) {
     .map(function (s) { return { lat: s.location.lat, lng: s.location.lng }; });
 }
 
+/* The head glyph for each facility type — the same four shapes as the list
+ * rows and filter swatches (.key-pin in css/styles.css) and the map key. */
+var TYPE_GLYPH = {
+  national_hq:   'square',
+  provincial_hq: 'diamond',
+  station:       'circle',
+  post:          'ring'
+};
+
 /**
- * A facility-type pin. Distinguished by shape as well as fill, so the four
- * types stay apart for a reader who cannot rely on colour: a square for the
- * national HQ, a diamond for a provincial/city HQ, a filled disc for a
- * station, a hollow disc for a post. `approximate` adds the dashed ring the
- * shared pin uses for the same purpose — an estimated coordinate must never
- * read as authoritatively as a surveyed one, and in this dataset every
- * coordinate is an estimate (see js/data/stations.js).
+ * A facility-type pin: the shared teardrop with this type's glyph in its
+ * head. The dashed outline marks an estimated coordinate — in this dataset
+ * every coordinate is one (see js/data/stations.js) — so it never reads as
+ * authoritatively as a surveyed one.
  */
 function pinIcon(station, selected) {
-  var cls = 'pin ' + SP.list.pinClass(station.type) +
-    (selected ? ' pin-selected' : '') +
-    (station.location.precision === 'approximate' ? ' pin-approx' : '');
-  var size = selected ? 26 : 22;
-  /* Same exact-coordinate fan-out as the shared pin — see
-   * Atlas.map.coincidentOffsets() in ../shared/map.js. */
-  var d = offsets[station.id] || [0, 0];
-  return L.divIcon({
-    className: '',
-    html: '<span class="' + cls + '"></span>',
-    iconSize: [size, size],
-    iconAnchor: [size / 2 - d[0], size / 2 - d[1]]
+  return Atlas.map.pinIcon({
+    glyph: TYPE_GLYPH[station.type] || 'circle',
+    selected: selected,
+    approximate: station.location.precision === 'approximate',
+    offset: offsets[station.id]   // exact-coordinate fan-out (coincidentOffsets)
   });
 }
 
 function drawMarkers(results) {
   atlasMap.markerLayer.clearLayers();
   markers = {};
+  paintedId = null;   // every pin is drawn unselected; paintSelection() follows
   offsets = Atlas.map.coincidentOffsets(results.filter(SP.filters.isLocated).map(function (s) {
     return { id: s.id, lat: s.location.lat, lng: s.location.lng };
   }));
@@ -122,6 +127,10 @@ function drawMarkers(results) {
     var label = station.name + ' — ' + SP.shortTypeLabel(station.type) +
                 (approx ? ' (approximate location)' : '');
 
+    /* Stacking: Leaflet orders markers by their on-screen y position, so a
+     * more southern pin is drawn over a more northern one and every pin's
+     * head stays clear of the pin above it; paintSelection() lifts the
+     * selected pin over all of them with zIndexOffset. */
     var marker = L.marker([station.location.lat, station.location.lng], {
       icon: pinIcon(station, false),
       title: label,
@@ -136,22 +145,35 @@ function drawMarkers(results) {
       e.originalEvent.preventDefault();
       SP.select(station.id);
     });
-    /* Leaflet inserts a string tooltip as HTML, so the label is escaped. */
-    var d = offsets[station.id] || [0, 0];
-    marker.bindTooltip(Atlas.util.esc(label), { direction: 'top', offset: [d[0], d[1] - 13], opacity: 1 });
+    /* Leaflet inserts a string tooltip as HTML, so the label is escaped.
+     * It opens from the pin's head (the icon's tooltipAnchor). */
+    marker.bindTooltip(Atlas.util.esc(label), { direction: 'top', opacity: 1 });
 
     marker.addTo(atlasMap.markerLayer);
+    /* The pin's SVG is decorative (aria-hidden); the marker itself — a
+     * focusable role="button" Leaflet creates — carries the name. */
+    marker.getElement().setAttribute('aria-label', label);
     markers[station.id] = marker;
   });
 }
 
+/* Only the pins whose selected state actually changes are redrawn — the one
+ * losing the selection and the one gaining it — rather than all of them on
+ * every render (see the same function in index-e/js/map.js). */
 function paintSelection(selectedId) {
-  Object.keys(markers).forEach(function (id) {
+  if (selectedId === paintedId) return;
+  [paintedId, selectedId].forEach(function (id) {
+    if (!id || !markers[id]) return;
     var station = SP.getStationById(id);
     if (!station) return;
-    markers[id].setIcon(pinIcon(station, id === selectedId));
-    markers[id].setZIndexOffset(id === selectedId ? 1000 : 0);
+    var on = id === selectedId;
+    markers[id].setIcon(pinIcon(station, on));
+    /* Leaflet's z-index is the marker's layer y plus this offset, and layer y
+     * runs to tens of thousands at high zoom, so the lift has to be far
+     * larger than that for the selected pin to sit on top at every zoom. */
+    markers[id].setZIndexOffset(on ? SELECTED_Z : 0);
   });
+  paintedId = selectedId;
 }
 
 })();

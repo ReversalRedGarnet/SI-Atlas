@@ -215,6 +215,8 @@
   padding-bottom: .1rem; margin-bottom: .1rem;
   border-bottom: 1px solid var(--rule-soft);
 }
+/* The dashed-outline line carries its own pin swatch beside the text. */
+.map-note-swatch-line { display: flex; align-items: flex-start; gap: .4rem; }
 .map-note-sub {
   margin-top: .25rem; padding-top: .25rem;
   border-top: 1px solid var(--rule-soft);
@@ -223,36 +225,19 @@
 #map-unmapped { display: block; }
 
 /* --- Facility-type pins ---------------------------------------------------
-   Four types, four shapes. Distinguished by shape as much as fill so the map
-   still reads for someone who cannot rely on colour:
+   The markers are the shared teardrop pin (.atlas-pin in
+   ../shared/styles/index-shell.css, built by Atlas.map.pinIcon()). The
+   facility type is the glyph in the pin's head — js/map.js TYPE_GLYPH:
 
-     national HQ    filled navy square
-     provincial HQ  filled navy diamond (a square rotated 45°)
-     station        filled navy disc
-     post           hollow disc — white with a navy ring
+     national HQ    square
+     provincial HQ  diamond (a square rotated 45°)
+     station        dot
+     post           ring
 
-   Two modifiers apply on top of any of them: .pin-selected takes the gold ring
-   (the same selected treatment shared/map.js uses), and .pin-approx dashes the
-   white border to mark an estimated coordinate. In this dataset every located
-   record is approximate — see js/data/stations.js — so every marker on the map
-   is dashed. The shared pin styling is deliberately re-stated here rather than
-   inherited, because Index P's markers are not the shared single-style pin. */
-.pin {
-  display: block; width: 100%; height: 100%;
-  background: var(--navy);
-  border: 2px solid #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,.45);
-}
-.pin-national   { border-radius: 0; }
-.pin-provincial { border-radius: 0; transform: rotate(45deg); }
-.pin-station    { border-radius: 50%; }
-.pin-post       { border-radius: 50%; background: #fff; border-color: var(--navy); }
-
-.pin-selected { border-width: 3px; box-shadow: 0 0 0 4px var(--gold), 0 1px 3px rgba(0,0,0,.45); }
-/* Approximate (locality/landmark) coordinates get a dashed ring instead of a
-   solid one, so an estimate never reads as authoritatively as a surveyed
-   address would. See js/data/stations.js for the data policy. */
-.pin-approx { border-style: dashed; }
+   Shape rather than colour, so the map still reads for someone who cannot
+   rely on colour. The dashed outline marks an estimated coordinate — every
+   located record in this dataset, see js/data/stations.js — and the selected
+   pin turns gold, grows and sits on top. */
 
 /* The same four shapes at legend/inline size, for the map key, the filter list
    and the result rows. */
@@ -266,7 +251,6 @@
 .key-pin.pin-provincial { border-radius: 0; transform: rotate(45deg); }
 .key-pin.pin-station    { border-radius: 50%; }
 .key-pin.pin-post       { border-radius: 50%; background: #fff; }
-.key-pin.pin-selected   { box-shadow: 0 0 0 2px var(--gold); }
 
 .you-are-here {
   display: block; width: 100%; height: 100%;

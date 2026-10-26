@@ -22,9 +22,13 @@ var atlasMap;               // the Atlas.map controller
 var markers = {};           // school id → L.marker
 var offsets = {};           // school id → [dx, dy] for exactly-stacked schools
 var lastSignature = null;   // result-set fingerprint, so we only refit on change
+var SELECTED_Z = 1000000;   // see paintSelection()
+var paintedId = null;       // the id currently drawn as the selected pin
 
 SF.map.init = function () {
   atlasMap = Atlas.map.create('map');
+  /* The key's swatches are the same pins the map draws. */
+  Atlas.map.renderPinSwatches(document.getElementById('map-note'));
 };
 
 SF.map.render = function (results, state) {
@@ -75,6 +79,7 @@ function locatedPoints(results) {
 function drawMarkers(results) {
   atlasMap.markerLayer.clearLayers();
   markers = {};
+  paintedId = null;   // every pin is drawn unselected; paintSelection() follows
   /* Schools given the exact same coordinate would otherwise stack, one
    * permanently hiding the other; fan them a few pixels apart. */
   offsets = Atlas.map.coincidentOffsets(results
@@ -86,8 +91,12 @@ function drawMarkers(results) {
 
     var approx = school.locationPrecision === 'approximate';
     var d = offsets[school.id] || [0, 0];
+    /* Stacking: Leaflet orders markers by their on-screen y position, so a
+     * more southern pin is drawn over a more northern one and every pin's
+     * head stays clear of the pin above it; paintSelection() lifts the
+     * selected pin over all of them with zIndexOffset. */
     var marker = L.marker([school.latitude, school.longitude], {
-      icon: Atlas.map.pinIcon(false, approx, d),
+      icon: Atlas.map.pinIcon({ approximate: approx, offset: d }),
       title: school.name + (approx ? ' (approximate location)' : ''),
       alt: school.name,
       riseOnHover: true,
@@ -101,19 +110,38 @@ function drawMarkers(results) {
       SF.select(school.id);
     });
     /* Leaflet inserts a string tooltip as HTML, so the name is escaped. */
-    marker.bindTooltip(Atlas.util.esc(school.name + (approx ? ' — approximate location' : '')), { direction: 'top', offset: [d[0], d[1] - 14], opacity: 1 });
+    /* Opens from the pin's head (the icon's tooltipAnchor). */
+    marker.bindTooltip(Atlas.util.esc(school.name + (approx ? ' — approximate location' : '')), { direction: 'top', opacity: 1 });
 
     marker.addTo(atlasMap.markerLayer);
+    /* The pin's SVG is decorative (aria-hidden); the marker itself — a
+     * focusable role="button" Leaflet creates — carries the name. */
+    marker.getElement().setAttribute('aria-label', school.name + (approx ? ' (approximate location)' : ''));
     markers[school.id] = marker;
   });
 }
 
+/* Only the pins whose selected state actually changes are redrawn — the one
+ * losing the selection and the one gaining it — rather than all of them on
+ * every render (each is an SVG icon; repainting all 65 on every keystroke
+ * made filtering measurably slower on a slow phone). */
 function paintSelection(selectedId) {
-  Object.keys(markers).forEach(function (id) {
+  if (selectedId === paintedId) return;
+  [paintedId, selectedId].forEach(function (id) {
+    if (!id || !markers[id]) return;
     var school = SF.getSchoolById(id);
-    markers[id].setIcon(Atlas.map.pinIcon(id === selectedId, school && school.locationPrecision === 'approximate', offsets[id]));
-    markers[id].setZIndexOffset(id === selectedId ? 1000 : 0);
+    var on = id === selectedId;
+    markers[id].setIcon(Atlas.map.pinIcon({
+      selected: on,
+      approximate: !!school && school.locationPrecision === 'approximate',
+      offset: offsets[id]
+    }));
+    /* Leaflet's z-index is the marker's layer y plus this offset, and layer y
+     * runs to tens of thousands at high zoom, so the lift has to be far
+     * larger than that for the selected pin to sit on top at every zoom. */
+    markers[id].setZIndexOffset(on ? SELECTED_Z : 0);
   });
+  paintedId = selectedId;
 }
 
 })();

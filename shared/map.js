@@ -270,16 +270,18 @@ Atlas.map.showUnavailable = function (elementId) {
  * schools given the same "Lunga area" point, say), so every marker in the
  * stack stays visible and clickable at every zoom instead of one sitting
  * permanently under the other. Nothing about the data changes — only where
- * each icon is drawn relative to its point, by a few pixels, in a small ring.
+ * each icon is drawn relative to its point, by a few pixels, side by side in
+ * a row. A row rather than a ring, because the markers are tall teardrop
+ * pins: stacked vertically, the lower pin would cover the upper one's head.
  * Points that merely sit close together are left alone (that is clustering,
  * a different job).
  *
  * @param {Array<{id: string, lat: number, lng: number}>} points
- * @param {number} [radiusPx=12]
+ * @param {number} [spacingPx=22] - distance between neighbouring pins' tips
  * @returns {Object} id -> [dx, dy], for stacked points only.
  */
-Atlas.map.coincidentOffsets = function (points, radiusPx) {
-  radiusPx = radiusPx || 12;
+Atlas.map.coincidentOffsets = function (points, spacingPx) {
+  spacingPx = spacingPx || 22;
   var groups = {};
   points.forEach(function (p) {
     var key = p.lat + ',' + p.lng;
@@ -289,33 +291,108 @@ Atlas.map.coincidentOffsets = function (points, radiusPx) {
   Object.keys(groups).forEach(function (key) {
     var ids = groups[key];
     if (ids.length < 2) return;
-    /* Sorted, so a record keeps its slot in the ring whatever the list's
-     * current sort order. */
+    /* Sorted, so a record keeps its slot in the row whatever the list's
+     * current sort order; centred on the shared point. */
     ids.slice().sort().forEach(function (id, i, all) {
-      var a = 2 * Math.PI * i / all.length - Math.PI / 2;
-      out[id] = [Math.round(radiusPx * Math.cos(a)), Math.round(radiusPx * Math.sin(a))];
+      out[id] = [Math.round((i - (all.length - 1) / 2) * spacingPx), 0];
     });
   });
   return out;
 };
 
-/**
- * A standard entity pin. Every entity is the same colour; the selected one
- * gets a highlighted ring, and an approximate-location entity gets a dashed
- * ring instead of a solid one, so a landmark/memory-based estimate never
- * reads as authoritatively as a surveyed coordinate would.
+/* --- Map pins ---------------------------------------------------------------
+ * Every record on every index's map is the same teardrop pin, drawn as
+ * inline SVG (no image files, no library) so it scales crisply and takes its
+ * colours from the CSS tokens (.atlas-pin in shared/styles/index-shell.css).
  *
- * @param {number[]} [offset] - [dx, dy] pixels to draw the pin away from its
- *   point, from Atlas.map.coincidentOffsets().
+ *   - Shape: a round head over a point. The POINT is the coordinate: the
+ *     icon is anchored at the bottom of the tip, so the pin stands on its
+ *     spot at every zoom.
+ *   - Outline: a white ring (contrast on dark tiles) inside a thin dark halo
+ *     (3:1+ against the light basemap). DASHED white ring = approximate
+ *     location — a landmark/memory-based estimate must never read as
+ *     authoritatively as a surveyed coordinate would.
+ *   - Head glyph: a white circle by default; an index can use the glyph to
+ *     carry a category (Index P: square / diamond / dot / ring per type).
+ *   - Selected: gold fill, navy glyph, 25% larger and a thicker ring — so it
+ *     stands out by size and outline as well as colour.
+ *   - Focus: a pin-shaped ring around the outline, shown only when the
+ *     marker has keyboard focus (CSS), instead of a square box.
+ *
+ * The geometry lives in one 26x36 viewBox; the tip's vertex sits 2 units
+ * above the bottom so that, with the halo's rounded join, the visible tip
+ * lands exactly on the bottom edge — the anchor. */
+
+Atlas.map.PIN_W = 26;
+Atlas.map.PIN_H = 36;
+Atlas.map.PIN_SELECTED_SCALE = 1.25;
+
+var PIN_PATH = 'M13 1.5C6.92 1.5 2 6.42 2 12.5c0 7.9 11 21.5 11 21.5s11-13.6 11-21.5C24 6.42 19.08 1.5 13 1.5z';
+
+var PIN_GLYPHS = {
+  circle:  '<circle class="pin-glyph" cx="13" cy="12.5" r="4.6"/>',
+  square:  '<rect class="pin-glyph" x="8.6" y="8.1" width="8.8" height="8.8"/>',
+  diamond: '<rect class="pin-glyph" x="9.2" y="8.7" width="7.6" height="7.6" transform="rotate(45 13 12.5)"/>',
+  ring:    '<circle class="pin-glyph-ring" cx="13" cy="12.5" r="3.9"/>'
+};
+
+/**
+ * The pin as an SVG string — for markers (via pinIcon) and for map-key
+ * swatches, so the key always matches the map. Decorative: aria-hidden; the
+ * marker element carries the accessible name.
+ *
+ * @param {Object} [opts]
+ * @param {boolean} [opts.selected]
+ * @param {boolean} [opts.approximate] - dashed outline
+ * @param {string}  [opts.glyph='circle'] - circle | square | diamond | ring
  */
-Atlas.map.pinIcon = function (selected, approximate, offset) {
-  var cls = 'pin' + (selected ? ' pin-selected' : '') + (approximate ? ' pin-approx' : '');
-  var half = selected ? 13 : 12;
-  var d = offset || [0, 0];
+Atlas.map.pinSvg = function (opts) {
+  opts = opts || {};
+  var cls = 'atlas-pin-svg' + (opts.selected ? ' is-selected' : '') + (opts.approximate ? ' is-approx' : '');
+  return '<svg class="' + cls + '" viewBox="0 0 26 36" aria-hidden="true" focusable="false">' +
+    '<path class="pin-focus" d="' + PIN_PATH + '"/>' +
+    '<path class="pin-focus-gap" d="' + PIN_PATH + '"/>' +
+    '<path class="pin-halo" d="' + PIN_PATH + '"/>' +
+    '<path class="pin-body" d="' + PIN_PATH + '"/>' +
+    (PIN_GLYPHS[opts.glyph] || PIN_GLYPHS.circle) +
+  '</svg>';
+};
+
+/**
+ * A Leaflet icon for one record: the pin, anchored at its tip, with the
+ * tooltip opening from the top of its head.
+ *
+ * @param {Object} [opts] - as pinSvg(), plus:
+ * @param {number[]} [opts.offset] - [dx, dy] pixels to draw the pin away from
+ *   its point, from Atlas.map.coincidentOffsets().
+ */
+Atlas.map.pinIcon = function (opts) {
+  opts = opts || {};
+  var s = opts.selected ? Atlas.map.PIN_SELECTED_SCALE : 1;
+  var w = Atlas.map.PIN_W * s, h = Atlas.map.PIN_H * s;
+  var d = opts.offset || [0, 0];
   return L.divIcon({
-    className: '',
-    html: '<span class="' + cls + '"></span>',
-    iconSize: [half * 2, half * 2],
-    iconAnchor: [half - d[0], half - d[1]]
+    className: 'atlas-pin' + (opts.selected ? ' is-selected' : ''),
+    html: Atlas.map.pinSvg(opts),
+    iconSize: [w, h],
+    iconAnchor: [w / 2 - d[0], h - d[1]],
+    /* Relative to the anchor (the tip): the top of the head. */
+    tooltipAnchor: [d[0], d[1] - h + 2]
+  });
+};
+
+/**
+ * Fill every [data-pin] element under `root` (the map key) with a small pin
+ * matching the markers. Attributes: data-pin-glyph, data-pin-selected,
+ * data-pin-approx. Pure markup — works whether or not Leaflet loaded.
+ */
+Atlas.map.renderPinSwatches = function (root) {
+  if (!root) return;
+  Array.prototype.forEach.call(root.querySelectorAll('[data-pin]'), function (el) {
+    el.innerHTML = Atlas.map.pinSvg({
+      glyph: el.getAttribute('data-pin-glyph') || 'circle',
+      selected: el.hasAttribute('data-pin-selected'),
+      approximate: el.hasAttribute('data-pin-approx')
+    });
   });
 };

@@ -196,14 +196,18 @@ function card(school, isSelected) {
 
   /* A directory row, not a card: label/value pairs, dense and scannable.
    * Everything a parent screens on before opening the full record. */
-  var rows = [
-    ['Location',  esc(SF.format.place(school))],
+  /* Location says something only when it is more specific than the province
+   * (a town, or an island that isn't the province's name). When nothing
+   * more specific is known it would just repeat the Province row ("Malaita"
+   * twice), so it is left out. Data unchanged — this is display only. */
+  var place = SF.format.place(school);
+  var rows = (place !== school.province ? [['Location', esc(place)]] : []).concat([
     ['Province',  esc(school.province)],
     ['Level',     esc(SF.format.levels(school))],
     ['Run by',    esc(SF.format.operator(school))],
     ['Attendance', esc(SF.format.boardingStatus(school))],
     ['Sources',   esc(SF.format.sourceStrength(school))]
-  ];
+  ]);
 
   /* While no school has fee data, "Fee information not yet available" on all
    * 188 cards says nothing that varies; the row returns with the data (same
@@ -212,7 +216,9 @@ function card(school, isSelected) {
   if (SF.HAS_FEE_DATA) rows.push(['Yearly fees', SF.format.feesHtml(school, ' ' + esc(school.currency))]);
 
   if (typeof school.distanceKm === 'number') {
-    rows.splice(2, 0, ['Distance', esc(SF.geo.formatDistance(school.distanceKm)) + ' away']);
+    /* Straight after the Province row, wherever that now falls. */
+    var after = rows.map(function (r) { return r[0]; }).indexOf('Province') + 1;
+    rows.splice(after, 0, ['Distance', esc(SF.geo.formatDistance(school.distanceKm)) + ' away']);
   }
 
   /* Most schools (123 of 188 today) have no public coordinate source — they

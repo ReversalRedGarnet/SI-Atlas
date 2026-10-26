@@ -98,8 +98,10 @@ SI-Atlas/
 │   │                         (Atlas.corrections)
 │   ├── schema.js           the generic entity envelope every index's data conforms to
 │   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map);
-│   │                         degrades to a "Map unavailable" note if Leaflet
-│   │                         fails to load
+│   │                         the teardrop map pin every index's markers and
+│   │                         map keys use (pinSvg / pinIcon /
+│   │                         renderPinSwatches); degrades to a "Map
+│   │                         unavailable" note if Leaflet fails to load
 │   ├── verification-badge.js   verified/unverified/unknown badge renderer (Atlas.verificationBadge)
 │   ├── map-legend.js        collapsible map key: disclosure behaviour +
 │   │                         remembered state (Atlas.mapLegend)
