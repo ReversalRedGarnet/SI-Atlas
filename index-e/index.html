@@ -48,7 +48,10 @@
 <!-- ── Masthead ─────────────────────────────────────────────────────────── -->
 <header class="masthead">
   <div class="masthead-inner">
-    <a class="masthead-id" href="./">
+    <!-- The logo and name lead back to the SI Atlas portal — the only way
+         out to the other indexes. The visible text stays the service name;
+         the sr-only suffix says where the link goes. -->
+    <a class="masthead-id" href="../index.html" title="All SI Atlas indexes">
       <span class="crest" aria-hidden="true">
         <svg viewBox="0 0 32 32" width="38" height="38">
           <rect width="32" height="32" fill="#06337C"/>
@@ -56,7 +59,7 @@
           <path d="M9 16v5c0 2 3.2 3.6 7 3.6s7-1.6 7-3.6v-5l-7 3.5z" fill="#C8A415"/>
         </svg>
       </span>
-      <span class="service-name">SI Atlas — Index E</span>
+      <span class="service-name">SI Atlas — Index E</span><span class="sr-only"> — back to all SI Atlas indexes</span>
     </a>
   </div>
 </header>
