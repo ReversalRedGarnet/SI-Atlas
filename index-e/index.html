@@ -177,9 +177,11 @@
         <svg class="map-note-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
       </button>
       <div class="map-note-body" id="map-note-body">
-        <span><i class="k-school"></i>A school</span>
-        <span><i class="k-selected"></i>The school you picked</span>
-        <span><i class="k-approx"></i>Dashed outline: approximate location</span>
+        <!-- Swatches are the map's own pins, drawn by
+             Atlas.map.renderPinSwatches() (../shared/map.js). -->
+        <span><i class="pin-swatch" data-pin aria-hidden="true"></i>A school</span>
+        <span><i class="pin-swatch" data-pin data-pin-selected aria-hidden="true"></i>The school you picked</span>
+        <span><i class="pin-swatch" data-pin data-pin-approx aria-hidden="true"></i>Dashed outline: approximate location</span>
         <span id="key-you" hidden><i class="k-you"></i>You are here</span>
       </div>
     </div>

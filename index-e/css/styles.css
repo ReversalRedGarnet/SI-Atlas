@@ -228,13 +228,9 @@
 /* The map key's box, position and collapse behaviour are shared — see
    ../shared/styles/index-shell.css and ../shared/map-legend.js. What follows
    is only Index E's own entries inside it. */
-.map-note i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-.map-note .k-school   { background: var(--navy); }
-.map-note .k-selected { background: var(--navy); box-shadow: 0 0 0 3px var(--gold); }
-/* Every located school is approximate today, so every pin is dashed; the key
-   says what the dashes mean. Drawn as a dashed navy ring, since the pin's own
-   white dashes would vanish against the key's white background. */
-.map-note .k-approx   { width: 12px; height: 12px; background: #fff; border: 2px dashed var(--navy); }
+/* Its entries are pin swatches (.pin-swatch, styled in index-shell.css) —
+   every located school is approximate today, so every pin is dashed, and
+   the key's last line says what the dashes mean. */
 
 /* The markers themselves are the shared teardrop pins — see .atlas-pin in
    ../shared/styles/index-shell.css and Atlas.map.pinIcon() in

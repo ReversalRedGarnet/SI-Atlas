@@ -371,8 +371,12 @@ body.filters-open .filters-rail { transform: translateX(0); }
 .leaflet-marker-icon.atlas-pin:focus { outline: none; }
 .leaflet-marker-icon.atlas-pin:focus-visible .pin-focus,
 .leaflet-marker-icon.atlas-pin:focus-visible .pin-focus-gap { display: inline; }
-/* The same pin, small, in a map key (Atlas.map.renderPinSwatches). */
-.map-note .pin-swatch { display: inline-block; flex: none; width: 13px; height: 18px; margin: 0 1px 1px; }
+/* The same pin, small, in a map key (Atlas.map.renderPinSwatches). On the
+   key's white background the white dashes would vanish, so a swatch for an
+   approximate location dashes its dark halo too. */
+.map-note .pin-swatch { display: inline-block; flex: none; width: 15px; height: 21px; margin: 0 1px 1px; }
+.pin-swatch .is-approx .pin-halo { stroke-dasharray: 5.5 4; stroke-width: 4.5; }
+.pin-swatch .is-approx .pin-body { stroke-dasharray: 5.5 4; }
 
 /* "You are here" is drawn by shared/map.js, so its swatch is shared too. */
 .map-note .k-you {
