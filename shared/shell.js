@@ -32,6 +32,10 @@
  *   content: `{ about: {title, body}, useful: {...}, contact: {...}, help: {...} }`,
  *   each `body` an HTML string. Content only — the modal's own behaviour
  *   (open/close, focus return, click-outside-to-close) is handled here.
+ * @param {string} [opts.indexName] - e.g. 'Index E — Education'; used in
+ *   the problem report renderFailed() offers.
+ * @param {function} [opts.describeCount] - n -> words for the result count,
+ *   announced to screen readers when it changes ("27 schools match").
  * @returns {Object} `{ refreshMapSoon, syncToolbar, syncSelectionFocus }` —
  *   the things the caller's own render() pass needs to invoke itself.
  * ==========================================================================*/
@@ -193,6 +197,38 @@ Atlas.shell.wire = function (ns, opts) {
     if (row && row.offsetParent !== null) row.focus();
   }
 
+  /* --- When a render pass throws ---------------------------------------------
+   * Better a plain message than a blank or half-drawn list: log the error,
+   * and put "Something went wrong" in the list with a way to report it (a
+   * pre-filled GitHub issue, as for corrections — shared/corrections.js). */
+  function renderFailed(err) {
+    if (window.console) console.error('SI Atlas: rendering failed —', err);
+    var list = document.getElementById('results-list');
+    if (!list) return;
+    var esc = Atlas.util.esc;
+    var tell = 'tell us';
+    if (Atlas.corrections) {
+      var body = [
+        '**Index:** ' + (opts.indexName || document.title),
+        /^https?:$/.test(location.protocol) ? '**Page:** ' + location.href : null,
+        '**Error:** ' + (err && err.message ? err.message : String(err)),
+        '',
+        '### What were you doing when it happened?',
+        ''
+      ].filter(function (line) { return line !== null; }).join('\n');
+      var href = Atlas.util.safeUrl(Atlas.corrections.issueUrl('Problem: page error in ' + (opts.indexName || 'SI Atlas'), body));
+      if (href) {
+        tell = '<a href="' + esc(href) + '" target="_blank" rel="noopener">tell us' +
+          '<span class="sr-only"> (opens GitHub in a new tab)</span></a>';
+      }
+    }
+    list.innerHTML =
+      '<div class="empty render-error" role="alert">' +
+        '<p class="empty-title">Something went wrong.</p>' +
+        '<p class="empty-body">Reload the page, or ' + tell + '.</p>' +
+      '</div>';
+  }
+
   function resetEverything() {
     document.getElementById('search-input').value = '';
     ns.resetFilters();
@@ -318,7 +354,8 @@ Atlas.shell.wire = function (ns, opts) {
   return {
     refreshMapSoon: refreshMapSoon,
     syncToolbar: syncToolbar,
-    syncSelectionFocus: syncSelectionFocus
+    syncSelectionFocus: syncSelectionFocus,
+    renderFailed: renderFailed
   };
 };
 

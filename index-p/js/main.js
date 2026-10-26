@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   shell = Atlas.shell.wire(SP, {
     info: INFO,
+    indexName: 'Index P — Policing',
     /* Read out (politely, once typing pauses) when the count changes. */
     describeCount: function (n) {
       if (n === 0) return 'No stations or posts match';
@@ -89,7 +90,17 @@ function syncStaticCounts() {
 var prevSelectedId = null;
 var prevFiltersOpen = false;
 
+/* If a pass throws, say so in the list (and log it) rather than leave it
+ * blank or half-drawn — see renderFailed() in ../shared/shell.js. */
 function render(state) {
+  try {
+    draw(state);
+  } catch (err) {
+    shell.renderFailed(err);
+  }
+}
+
+function draw(state) {
   var results = SP.filters.getResults(state);
 
   /* Invariant: whatever is selected must be part of the visible result set.
