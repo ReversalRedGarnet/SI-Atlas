@@ -163,10 +163,14 @@ SP.filters.sort = function (stations, state) {
     /* Records with no coordinates have no distance at all. They sort after
      * every located record rather than being dropped or given a stand-in
      * position — the same rule Index E applies to unpriced schools. */
+    /* Returning 1 whenever `a` was null — including when both were — was
+     * not a valid comparator, and left the unlocated records in file order;
+     * among themselves they now sort by name. */
     case 'distance':
       return out.sort(function (a, b) {
-        if (a.distanceKm === null) return 1;
-        if (b.distanceKm === null) return -1;
+        if (a.distanceKm === null || b.distanceKm === null) {
+          return (a.distanceKm === null) - (b.distanceKm === null) || byName(a, b);
+        }
         return a.distanceKm - b.distanceKm || byName(a, b);
       });
     default: // relevance — falls back to name when there is no query

@@ -166,27 +166,34 @@ SF.filters.sort = function (schools, state) {
   var out = schools.slice();
   var byName = function (a, b) { return a.name.localeCompare(b.name); };
 
+  /* Records with no value for the sort key go after every record that has
+   * one, in name order among themselves. Returning 1 whenever `a` was null —
+   * including when both were — was not a valid comparator, and left the
+   * unvalued records in raw file order. */
   switch (state.sortBy) {
     case 'name':
       return out.sort(byName);
     case 'distance':
       return out.sort(function (a, b) {
-        if (a.distanceKm === null) return 1;
-        if (b.distanceKm === null) return -1;
+        if (a.distanceKm === null || b.distanceKm === null) {
+          return (a.distanceKm === null) - (b.distanceKm === null) || byName(a, b);
+        }
         return a.distanceKm - b.distanceKm || byName(a, b);
       });
     /* Schools with no confirmed fee data sort after every priced school,
      * regardless of direction — same rule as the distance sort above. */
     case 'feeLow':
       return out.sort(function (a, b) {
-        if (a.feeMin === null) return 1;
-        if (b.feeMin === null) return -1;
+        if (a.feeMin === null || b.feeMin === null) {
+          return (a.feeMin === null) - (b.feeMin === null) || byName(a, b);
+        }
         return a.feeMin - b.feeMin || byName(a, b);
       });
     case 'feeHigh':
       return out.sort(function (a, b) {
-        if (a.feeMax === null) return 1;
-        if (b.feeMax === null) return -1;
+        if (a.feeMax === null || b.feeMax === null) {
+          return (a.feeMax === null) - (b.feeMax === null) || byName(a, b);
+        }
         return b.feeMax - a.feeMax || byName(a, b);
       });
     default: // relevance — falls back to name when there is no query
