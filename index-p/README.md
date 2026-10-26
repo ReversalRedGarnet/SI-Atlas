@@ -152,28 +152,26 @@ into these four specifically so the map legend would have four icons:
 
 | Value | Label | Marker | Count |
 | --- | --- | --- | --- |
-| `national_hq` | National headquarters | filled navy **square** | 1 |
-| `provincial_hq` | Provincial / city headquarters | filled navy **diamond** | 10 |
-| `station` | Police station | filled navy **disc** | 14 |
-| `post` | Police post or outpost | hollow **disc** (white, navy ring) | 17 |
+| `national_hq` | National headquarters | pin with a **square** in its head | 1 |
+| `provincial_hq` | Provincial / city headquarters | pin with a **diamond** in its head | 10 |
+| `station` | Police station | pin with a **dot** in its head | 14 |
+| `post` | Police post or outpost | pin with a **ring** in its head | 17 |
 
 The four *values* are the workbook's. One record's *assignment* is not:
 **Henderson** is recorded here as `provincial_hq` where the workbook has
 `station` — see [Post-conversion edits](#post-conversion-edits). It is the only
 `type` value in the dataset that differs from the source.
 
-They are distinguished by **shape** as well as fill, so the map and legend
-still read for someone who cannot rely on colour. The same four shapes appear
-in three places — the map markers, the map key, and beside each option in the
-"Kind of facility" filter — all driven by the `icon` class named once in
-`SP.FACILITY_TYPES`, so they cannot drift apart.
-
-`shared/map.js`'s `Atlas.map.pinIcon()` draws a single pin style, because Index
-E's entities are all one kind of thing. Index P's are not, so the icon is built
-in `js/map.js` — in the index that has the categories — rather than by widening
-the shared helper for one caller. It keeps the shared conventions it should:
-a dashed ring still means an approximate coordinate, and the selected marker
-still takes the gold ring.
+They are distinguished by **shape**, not colour, so the map and legend still
+read for someone who cannot rely on colour. Every marker is the shared
+teardrop pin from `../shared/map.js` (`Atlas.map.pinIcon()`, the same as Index
+E's), with the type's shape as the glyph in its head (`TYPE_GLYPH` in
+`js/map.js`). The same four shapes appear beside each option in the "Kind of
+facility" filter and in the result rows (the `icon` class named once in
+`SP.FACILITY_TYPES`), and the map key's swatches are drawn by the same pin
+builder as the markers, so they cannot drift apart. The shared conventions
+hold: a dashed outline means an approximate coordinate, and the selected pin
+turns gold, grows and is drawn on top.
 
 ## Records without coordinates
 

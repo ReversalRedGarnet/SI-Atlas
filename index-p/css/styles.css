@@ -215,6 +215,8 @@
   padding-bottom: .1rem; margin-bottom: .1rem;
   border-bottom: 1px solid var(--rule-soft);
 }
+/* The dashed-outline line carries its own pin swatch beside the text. */
+.map-note-swatch-line { display: flex; align-items: flex-start; gap: .4rem; }
 .map-note-sub {
   margin-top: .25rem; padding-top: .25rem;
   border-top: 1px solid var(--rule-soft);

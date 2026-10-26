@@ -163,7 +163,8 @@
     <p class="sr-only" id="map-summary"></p>
     <div id="map"></div>
     <!-- Collapsible map key. The entries are the facility-type vocabulary: one
-         per facility_type value, using the same pin classes the markers do.
+         per facility_type value, each the map's own pin with that type's glyph
+         in its head, drawn by Atlas.map.renderPinSwatches() (../shared/map.js).
          The disclosure behaviour (aria-expanded, the remembered state) is
          shared — see ../shared/map-legend.js. Collapsed, this shrinks to the
          toggle bar alone rather than disappearing. -->
@@ -175,12 +176,12 @@
       </button>
       <div class="map-note-body" id="map-note-body">
         <span class="map-key-title">Kind of facility</span>
-        <span><i class="key-pin pin-national" aria-hidden="true"></i>National HQ</span>
-        <span><i class="key-pin pin-provincial" aria-hidden="true"></i>Provincial / city HQ</span>
-        <span><i class="key-pin pin-station" aria-hidden="true"></i>Police station</span>
-        <span><i class="key-pin pin-post" aria-hidden="true"></i>Police post or outpost</span>
+        <span><i class="pin-swatch" data-pin data-pin-glyph="square" aria-hidden="true"></i>National HQ</span>
+        <span><i class="pin-swatch" data-pin data-pin-glyph="diamond" aria-hidden="true"></i>Provincial / city HQ</span>
+        <span><i class="pin-swatch" data-pin data-pin-glyph="circle" aria-hidden="true"></i>Police station</span>
+        <span><i class="pin-swatch" data-pin data-pin-glyph="ring" aria-hidden="true"></i>Police post or outpost</span>
         <span id="key-you" hidden><i class="k-you" aria-hidden="true"></i>You are here</span>
-        <span class="map-note-sub">Every marker is dashed: no coordinate in this dataset comes from an official surveyed source.</span>
+        <span class="map-note-sub map-note-swatch-line"><i class="pin-swatch" data-pin data-pin-approx aria-hidden="true"></i>Dashed outline: approximate location. Every pin here is dashed — no coordinate in this dataset comes from an official surveyed source.</span>
         <span class="map-note-sub" id="map-unmapped" hidden></span>
       </div>
     </div>

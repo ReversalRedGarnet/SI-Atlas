@@ -374,7 +374,10 @@ body.filters-open .filters-rail { transform: translateX(0); }
 /* The same pin, small, in a map key (Atlas.map.renderPinSwatches). On the
    key's white background the white dashes would vanish, so a swatch for an
    approximate location dashes its dark halo too. */
-.map-note .pin-swatch { display: inline-block; flex: none; width: 15px; height: 21px; margin: 0 1px 1px; }
+.map-note .pin-swatch { display: inline-block; flex: none; width: 18px; height: 25px; margin: 0 1px 1px; }
+/* At swatch size the head glyph (Index P's type shape) would be ~6px; scale it
+   up within the head so square, diamond, dot and ring stay tell-apart-able. */
+.pin-swatch .pin-glyph, .pin-swatch .pin-glyph-ring { transform: scale(1.35); transform-origin: 13px 12.5px; }
 .pin-swatch .is-approx .pin-halo { stroke-dasharray: 5.5 4; stroke-width: 4.5; }
 .pin-swatch .is-approx .pin-body { stroke-dasharray: 5.5 4; }
 
