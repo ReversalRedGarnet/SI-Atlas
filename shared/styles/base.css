@@ -110,8 +110,11 @@ svg { fill: currentColor; }
 .btn-secondary.is-active { background: var(--navy-pale); border-color: var(--navy); }
 .btn-block { width: 100%; }
 
+/* min-height keeps text-only buttons ("Clear all", "All results") at the
+   24px minimum touch target (WCAG 2.5.8) without changing how they look. */
 .link-btn {
   background: none; border: 0; padding: 0; cursor: pointer;
+  min-height: 24px;
   color: var(--link); font-size: .85rem;
   text-decoration: underline;
 }
@@ -150,7 +153,7 @@ svg { fill: currentColor; }
   border: 1px solid #C4D2E6;
 }
 .chip-static { background: var(--panel-alt); color: var(--text-mid); border-color: var(--rule); }
-.chip-removable { cursor: pointer; }
+.chip-removable { cursor: pointer; min-height: 24px; }   /* WCAG 2.5.8 target size */
 .chip-removable:hover { background: #D8E3F2; }
 .chip-removable span[aria-hidden] { font-weight: 700; }
 
