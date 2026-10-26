@@ -6,8 +6,11 @@ way and sharing the same visual and data conventions.
 
 - **[Index E — Education](index-e/README.md)** ([live](https://reversalredgarnet.github.io/SI-Atlas/index-e/)):
   SI Atlas — Index E, a searchable directory and map of schools — 188 records
-  across all ten provinces, though verification depth varies (see its own
-  README for the two coverage tiers).
+  across all ten provinces. How much is confirmed varies by record: its
+  README explains the two coverage tiers (125 with a confirmed town, location
+  or denomination; 63 confirmed against MEHRD's Year 10 Placement 2026
+  roster only), and every profile shows a "Sources" line computed from the
+  record's cited URLs, which is the measure of source strength.
 - **[Index P — Policing](index-p/README.md)** ([live](https://reversalredgarnet.github.io/SI-Atlas/index-p/)):
   SI Atlas — Index P, a searchable directory and map of RSIPF police stations,
   posts and outposts — 42 records across ten provinces, 31 of them with

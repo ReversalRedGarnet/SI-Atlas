@@ -1,23 +1,28 @@
 /* ============================================================================
  * SI Atlas — Index E — REAL DATA (all ten provinces)
  * ----------------------------------------------------------------------------
- * This is verified, named-school data, not a demonstration dataset. Every
+ * This is real, named-school data, not a demonstration dataset. Every
  * province has now had the same depth-pass treatment (there is no
  * province-by-province difference left in methodology), so coverage is
- * split by outcome instead, reflected in each record's `verificationStatus`:
- *   - Tier 1 — Independently verified (125 of 188 records): at least one of
- *     `town`, `latitude`/`longitude`, or `denomination` is set to a
- *     non-null value, meaning an independent source beyond MEHRD's own
- *     roster confirmed that specific fact (a village/town name, a
- *     landmark-based coordinate, or a stated religious affiliation).
- *   - Tier 2 — MEHRD-confirmed only (63 of 188 records): name, code and
- *     province are confirmed directly against MEHRD's own Year 10 Placement
- *     2026 roster for that exact school (one document per school, fetched
- *     and read directly — not estimated from a folder listing), but no
- *     independent second source was found for `town`, coordinates or
- *     `denomination`, so those stay `null` per the data policy below rather
- *     than guessed. SF.PROVINCES lists every province this build now
- *     covers — all ten.
+ * split by outcome instead, into two tiers defined by which fields are
+ * filled in:
+ *   - Tier 1 — has a confirmed town, location or denomination (125 of 188
+ *     records): at least one of `town`, `latitude`/`longitude`, or
+ *     `denomination` is set to a non-null value.
+ *   - Tier 2 — name, code and province confirmed against the MEHRD Year 10
+ *     Placement 2026 roster only (63 of 188 records): the school's own
+ *     roster document was fetched and read directly (not estimated from a
+ *     folder listing), and none of `town`, coordinates or `denomination` is
+ *     set, so those stay `null` per the data policy below rather than
+ *     guessed. Three Tier 2 records rest on something other than that
+ *     roster: Dr Henry Welchman Palmer CHS and Lilika CHS (MEHRD's Isabel
+ *     Province list) and Haura CHS (public evidence, not MEHRD-code-verified)
+ *     — see each record's `verificationStatus`.
+ * The tiers measure which fields are filled in, NOT how strong the sources
+ * are. That is measured by the source line on each profile and list card,
+ * computed from `sourceUrls` (SF.format.sourceStrength() in js/list.js) —
+ * and the two differ: 36 of the 125 Tier 1 records cite only mehrd.gov.sb
+ * URLs. SF.PROVINCES lists every province this build now covers — all ten.
  *
  * These counts are a snapshot of the data as it stands, not a fixed split by
  * province or by when a record was added — recompute them from the live
@@ -25,9 +30,9 @@
  * trusting this comment if schools.js changes.
  *
  * Sourced from public MEHRD records (province school lists, Year 10 Placement
- * 2026 rosters, Honiara/Guadalcanal F4/F6 publication) plus, for Tier 1
- * records, independent public sources (news coverage, Wikipedia, government
- * facility maps) used to confirm a school's town/village, coordinate or
+ * 2026 rosters, Honiara/Guadalcanal F4/F6 publication) plus, for many
+ * records, other public sources (news coverage, Wikipedia, government
+ * facility maps and others) used to give a school's town/village, coordinate or
  * denomination where MEHRD's own listings only confirm the province. Every
  * record carries `sourceUrls` and `verificationStatus` for provenance. Each
  * school's profile lists every `sourceUrls` entry, labelled MEHRD (official)
@@ -158,9 +163,9 @@ SF.SUBJECT_GROUPS = [
 ];
 
 /* Filter vocabulary — all ten provinces the dataset now covers. See the
- * header above for the two verification tiers (Tier 1 independently
- * verified vs. Tier 2 MEHRD-confirmed only) behind these; the filter itself
- * makes no distinction between them. */
+ * header above for the two coverage tiers (Tier 1: has a confirmed town,
+ * location or denomination; Tier 2: MEHRD Year 10 roster only) behind
+ * these; the filter itself makes no distinction between them. */
 SF.PROVINCES = [
   'Honiara', 'Central', 'Choiseul', 'Guadalcanal', 'Isabel', 'Makira',
   'Malaita', 'Rennell and Bellona', 'Temotu', 'Western'
@@ -203,7 +208,7 @@ SF.label = function (value) {
   return SF.DISPLAY_LABELS[value] || value;
 };
 
-/* --- The verified dataset (all ten provinces; two verification tiers — see header above) --- */
+/* --- The dataset (all ten provinces; two coverage tiers — see header above) --- */
 SF.SCHOOLS = [
   {
     "id": "sch_bishop_epalle_chs",

@@ -9,17 +9,23 @@ This document covers Index E's own implementation.
 > The 188 school records in `js/data/schools.js` are named, real institutions
 > — none invented. Every province has now had the same depth-pass treatment,
 > so records split by outcome rather than by which pass or province touched
-> them, both explained in full at the top of that file:
-> - **Tier 1 — Independently verified** (125 of 188 records): at least one of
->   `town`, coordinates, or `denomination` is set to a non-null value — i.e.
->   an independent source beyond MEHRD's own roster confirmed a specific
->   village/town name, a landmark-based coordinate, or a stated religious
->   affiliation for that school.
-> - **Tier 2 — MEHRD-confirmed only** (63 of 188 records): name, code and
->   province are confirmed directly against MEHRD's own Year 10 Placement
->   2026 roster for that exact school, but none of `town`, coordinates or
->   `denomination` has an independent source yet, so they stay `null` rather
->   than guessed.
+> them, both explained in full at the top of that file. The two tiers are
+> defined by which fields are filled in:
+> - **Tier 1 — has a confirmed town, location or denomination** (125 of 188
+>   records): at least one of `town`, coordinates, or `denomination` is set
+>   to a non-null value.
+> - **Tier 2 — name, code and province confirmed against the MEHRD Year 10
+>   Placement 2026 roster only** (63 of 188 records): none of `town`,
+>   coordinates or `denomination` is set, so they stay `null` rather than
+>   guessed. Three Tier 2 records rest on something other than that roster
+>   (two on MEHRD's Isabel Province list, one on public evidence without a
+>   MEHRD code) — see the header of `js/data/schools.js`.
+>
+> **The tiers are not a measure of source strength.** That is the "Sources"
+> line on every profile and list card, computed from each record's cited
+> URLs: "MEHRD and another public source", "MEHRD only", or "No MEHRD source
+> cited; public sources only". The two measures differ — 36 of the 125 Tier 1
+> records cite only MEHRD.
 >
 > Several fields (fees, contact details, exact coordinates, subjects) are
 > unconfirmed for many schools and are recorded as `null` / empty rather than
@@ -27,7 +33,7 @@ This document covers Index E's own implementation.
 > schools — 123 of the 188, including all of Tier 2 and 60 Tier 1 records —
 > have no public coordinate source and so appear in search/list results
 > only, not on the map. This is a public-service prototype built on
-> real, verified data — not a demonstration of fictional data — but it is
+> real, sourced data — not a demonstration of fictional data — but it is
 > not yet a complete or authoritative national directory, and Tier 2 in
 > particular would benefit from a second verification pass per school.
 
@@ -62,7 +68,7 @@ assets/                 favicon (SVG + PNG), Apple touch icon, and
 css/styles.css          What goes inside the regions: filter drawer, result
                          rows, detail panel, map contents. The page skeleton
                          itself comes from ../shared/styles/index-shell.css
-js/data/schools.js      Real, national dataset (two verification tiers — see the note above) + filter vocabularies (province, subject taxonomy…)
+js/data/schools.js      Real, national dataset (two coverage tiers — see the note above) + filter vocabularies (province, subject taxonomy…)
 js/state.js             the single app-state object, setters and subscribers
 js/filters.js           search, filtering, sorting, facet counts — pure functions
 js/geolocation.js       wires ../shared/geolocation.js (location + distance) onto SF
