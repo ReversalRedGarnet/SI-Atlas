@@ -427,18 +427,6 @@ h1, h2, h3 { letter-spacing: -.025em; }
   line-height: 1.5;
 }
 .index-card.is-pending .index-count { color: var(--mute); }
-.portal-foot {
-  display: flex;
-  align-items: center;
-  gap: .65rem;
-  margin-top: 1.5rem;
-  padding: 1rem .1rem 0;
-  border-top: 1px solid #D6E2DE;
-  color: var(--mute);
-  font-size: .8rem;
-  line-height: 1.55;
-}
-.portal-foot::before { content: ""; display: block; flex: none; width: 7px; height: 7px; background: var(--link); border-radius: 50%; }
 
 /* Health placeholder and 404 page share the same calmer surfaces. */
 .health-page {
@@ -498,7 +486,6 @@ h1, h2, h3 { letter-spacing: -.025em; }
   .index-card::before { width: 36px; height: 36px; margin-bottom: .7rem; border-radius: 10px; }
   .index-desc { margin-top: .4rem; }
   .index-count { padding-top: .75rem; }
-  .portal-foot { align-items: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
   .btn, .index-card, .search-input, .mini-search { transition: none !important; }
