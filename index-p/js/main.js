@@ -152,7 +152,7 @@ var INFO = {
           '<li><strong>Use the Filters button</strong> to narrow by kind of facility, province, verification status, whether a record has coordinates, and whether it has a phone number.</li>' +
           '<li><strong>Picking more than one option widens the results.</strong> Choosing both Western and Choiseul shows stations in either. Adding a facility type narrows them again.</li>' +
           '<li><strong>Some records are not on the map.</strong> ' + UNMAPPED_COUNT + ' of the ' + TOTAL_COUNT + ' have no confirmed coordinates, and this directory will not invent one. They are still fully searchable — filter “Map location” to “Not yet” to see exactly which.</li>' +
-          '<li><strong>Every marker is a dashed circle.</strong> That means an approximate coordinate. No coordinate in this dataset comes from an official surveyed source, so none is drawn as exact.</li>' +
+          '<li><strong>Every marker has a dashed outline.</strong> That means an approximate coordinate; the marker’s shape shows the kind of facility. No coordinate in this dataset comes from an official surveyed source, so none is drawn as exact.</li>' +
           '<li><strong>Some records list two or three phone numbers.</strong> Different sources of different dates gave different numbers and the difference has not been resolved, so all are kept. The record’s notes explain each case.</li>' +
           '<li>Tap a station in the list or on the map to see its full record, including its sources. Press <kbd>Esc</kbd> to go back.</li></ul>'
   }
