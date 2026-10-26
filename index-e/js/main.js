@@ -105,6 +105,8 @@ function render(state) {
       SF.map.focus(SF.getSchoolById(state.selectedId));
       SF.list.revealSelected(state.selectedId);
     }
+    /* The list and profile were just rebuilt, taking focus with them. */
+    shell.syncSelectionFocus(prevSelectedId, state.selectedId);
     prevSelectedId = state.selectedId;
     shell.refreshMapSoon();    // the map column just changed width
   }

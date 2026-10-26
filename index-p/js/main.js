@@ -102,6 +102,8 @@ function render(state) {
       SP.map.focus(SP.getStationById(state.selectedId));
       SP.list.revealSelected(state.selectedId);
     }
+    /* The list and profile were just rebuilt, taking focus with them. */
+    shell.syncSelectionFocus(prevSelectedId, state.selectedId);
     prevSelectedId = state.selectedId;
     shell.refreshMapSoon();    // the map column just changed width
   }

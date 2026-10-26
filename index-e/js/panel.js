@@ -80,7 +80,7 @@ SF.panel.render = function (state) {
       '</div>' +
 
       '<header class="detail-head">' +
-        '<h2 id="detail-name">' + esc(school.name) + '</h2>' +
+        '<h2 id="detail-name" tabindex="-1">' + esc(school.name) + '</h2>' +
         '<p class="detail-place">' +
           (placeDetail ? esc(placeDetail) + ' &middot; ' : '') + esc(school.province) + ' Province' +
           (distanceKm !== null ? '<span class="detail-distance">' + SF.geo.formatDistance(distanceKm) + ' away</span>' : '') +

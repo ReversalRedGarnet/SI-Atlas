@@ -71,7 +71,7 @@ SP.panel.render = function (state) {
       '</div>' +
 
       '<header class="detail-head">' +
-        '<h2 id="detail-name">' + esc(station.name) + '</h2>' +
+        '<h2 id="detail-name" tabindex="-1">' + esc(station.name) + '</h2>' +
         '<p class="detail-place">' +
           esc(SP.format.place(station)) +
           (distanceKm !== null ? '<span class="detail-distance">' + SP.geo.formatDistance(distanceKm) + ' away</span>' : '') +

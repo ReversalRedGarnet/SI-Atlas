@@ -32,8 +32,8 @@
  *   content: `{ about: {title, body}, useful: {...}, contact: {...}, help: {...} }`,
  *   each `body` an HTML string. Content only — the modal's own behaviour
  *   (open/close, focus return, click-outside-to-close) is handled here.
- * @returns {Object} `{ refreshMapSoon, syncToolbar }` — the two things the
- *   caller's own render() pass needs to invoke itself.
+ * @returns {Object} `{ refreshMapSoon, syncToolbar, syncSelectionFocus }` —
+ *   the things the caller's own render() pass needs to invoke itself.
  * ==========================================================================*/
 
 (function () {
@@ -139,6 +139,31 @@ Atlas.shell.wire = function (ns, opts) {
     locateBtn.title = locateText;
 
     document.getElementById('drawer-count').textContent = results.length;
+  }
+
+  /* --- Focus across a selection change ----------------------------------------
+   * Both the list and the profile are rebuilt with innerHTML on every render,
+   * so whatever had focus inside them (the row you pressed Enter on, the
+   * profile's Close button) is destroyed and focus falls to <body>. Call
+   * this from render() whenever the selected id changes:
+   *   - something newly selected: focus the profile heading (#detail-name,
+   *     tabindex="-1"), so keyboard and screen-reader users land on what
+   *     they just opened;
+   *   - selection cleared: if focus was lost, put it back on that record's
+   *     row (when it is still listed and visible). If focus is somewhere
+   *     real — the search box, a filter — it is left alone. */
+  function syncSelectionFocus(prevId, nextId) {
+    if (nextId) {
+      var heading = document.getElementById('detail-name');
+      if (heading) heading.focus({ preventScroll: true });
+      return;
+    }
+    if (!prevId) return;
+    var active = document.activeElement;
+    if (active && active !== document.body) return;
+    var sel = '#results-list .result[data-id="' + (window.CSS && CSS.escape ? CSS.escape(prevId) : prevId) + '"]';
+    var row = document.querySelector(sel);
+    if (row && row.offsetParent !== null) row.focus();
   }
 
   function resetEverything() {
@@ -265,7 +290,8 @@ Atlas.shell.wire = function (ns, opts) {
 
   return {
     refreshMapSoon: refreshMapSoon,
-    syncToolbar: syncToolbar
+    syncToolbar: syncToolbar,
+    syncSelectionFocus: syncSelectionFocus
   };
 };
 
