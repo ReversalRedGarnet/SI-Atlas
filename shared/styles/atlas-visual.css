@@ -73,6 +73,9 @@ h1, h2, h3 { letter-spacing: -.025em; }
   border-bottom: 3px solid var(--gold);
 }
 .masthead-inner { padding-top: .72rem; padding-bottom: .72rem; }
+/* The logo tile is the same navy as the masthead's dark end, so a thin light
+   outline keeps its edge there (and on a phone, where it sits on #0A2B3D). */
+.masthead .crest svg { border-radius: 7px; box-shadow: 0 0 0 1.5px rgba(255,255,255,.6); }
 .service-name { color: #FFFFFF; font-size: 1.3rem; letter-spacing: -.035em; }
 .gov-nav {
   background: #082B39;
