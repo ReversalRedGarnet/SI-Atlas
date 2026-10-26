@@ -206,9 +206,14 @@ function card(school, isSelected) {
     ['Level',     esc(SF.format.levels(school))],
     ['Run by',    esc(SF.format.operator(school))],
     ['Attendance', esc(SF.format.boardingStatus(school))],
-    ['Sources',   esc(SF.format.sourceStrength(school))],
-    ['Yearly fees', SF.format.feesHtml(school, ' ' + esc(school.currency))]
+    ['Sources',   esc(SF.format.sourceStrength(school))]
   ];
+
+  /* While no school has fee data, "Fee information not yet available" on all
+   * 188 cards says nothing that varies; the row returns with the data (same
+   * check as the fee filter — SF.HAS_FEE_DATA in filters.js). The profile
+   * still says it plainly. */
+  if (SF.HAS_FEE_DATA) rows.push(['Yearly fees', SF.format.feesHtml(school, ' ' + esc(school.currency))]);
 
   if (typeof school.distanceKm === 'number') {
     rows.splice(2, 0, ['Distance', esc(SF.geo.formatDistance(school.distanceKm)) + ' away']);
