@@ -9,7 +9,7 @@
   --navy-dark:  #082B39;
   --navy-mid:   #1A5663;
   --navy-pale:  #E3F1EF;
-  --link:       #087C7A;
+  --link:       #087674;   /* 4.76:1 on the band and results-head tints, 5.45:1 on white */
   --link-hover: #075E61;
   --green:      #11766C;
   --red:        #B64D42;
@@ -24,7 +24,7 @@
   --rule-strong:#8BA29C;
   --text:       #1C3036;
   --text-mid:   #4C6266;
-  --mute:       #63787A;
+  --mute:       #5B6E70;   /* 4.72:1 on the darkest tint it sits on (band), 4.93:1 on page */
   --font-ui:    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-head:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -299,7 +299,7 @@ h1, h2, h3 { letter-spacing: -.025em; }
   align-items: center;
   gap: .55rem;
   margin-bottom: 1rem;
-  color: #C9E8DE;
+  color: #E4F4EF;   /* 4.73:1 on the hero gradient's light end (#0D7774) */
   font-size: .76rem;
   font-weight: 800;
   letter-spacing: .14em;
@@ -316,7 +316,7 @@ h1, h2, h3 { letter-spacing: -.025em; }
 }
 .portal-head p {
   max-width: 68ch;
-  color: rgba(246,252,249,.84);
+  color: rgba(246,252,249,.95);   /* 4.82:1 at the gradient's light end */
   font-size: clamp(.96rem, 1.45vw, 1.08rem);
   line-height: 1.7;
 }
@@ -379,7 +379,6 @@ h1, h2, h3 { letter-spacing: -.025em; }
 }
 .index-card:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
 .index-card.is-pending { background: rgba(249,251,250,.8); border-style: dashed; color: var(--mute); box-shadow: none; }
-.index-card.is-pending::before { opacity: .72; }
 .index-name {
   display: flex;
   align-items: center;
@@ -391,7 +390,7 @@ h1, h2, h3 { letter-spacing: -.025em; }
   line-height: 1.3;
   letter-spacing: -.025em;
 }
-.index-card.is-pending .index-name { color: #607477; }
+.index-card.is-pending .index-name { color: var(--mute); }
 .status-tag {
   display: inline-flex;
   align-items: center;
@@ -404,7 +403,7 @@ h1, h2, h3 { letter-spacing: -.025em; }
   letter-spacing: .06em;
 }
 .index-card.is-live .status-tag { background: #E8F5EF; border-color: #BCE0D0; color: #166C51; }
-.index-card.is-pending .status-tag { background: #F2F5F3; color: #68797A; }
+.index-card.is-pending .status-tag { background: #F2F5F3; color: var(--mute); }
 .index-desc { margin-top: .6rem; color: var(--text-mid); font-size: .88rem; line-height: 1.6; }
 .index-count {
   margin-top: auto;
@@ -422,7 +421,7 @@ h1, h2, h3 { letter-spacing: -.025em; }
   margin-top: 1.5rem;
   padding: 1rem .1rem 0;
   border-top: 1px solid #D6E2DE;
-  color: #627779;
+  color: var(--mute);
   font-size: .8rem;
   line-height: 1.55;
 }
