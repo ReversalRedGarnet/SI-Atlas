@@ -193,6 +193,9 @@ h1, h2, h3 { letter-spacing: -.025em; }
 .filters-rail {
   border-right: 1px solid var(--rule);
   box-shadow: 10px 0 35px rgba(8,43,57,.14);
+  /* Closed, park it past its own shadow (10px + 35px blur), or the shadow
+     tints the left edge of the page. body.filters-open still wins. */
+  transform: translateX(calc(-100% - 48px));
 }
 .rail-head { background: var(--navy-dark); }
 .rail-foot { background: #F5F9F7; border-top-color: var(--rule); }
