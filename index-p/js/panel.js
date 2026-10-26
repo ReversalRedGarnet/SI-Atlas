@@ -58,7 +58,7 @@ SP.panel.render = function (state) {
   var telHref = SP.format.telHref(phone);
 
   var actionButtons = [
-    directionsUrl ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions</a>' : '',
+    directionsUrl ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions' + Atlas.util.NEW_TAB + '</a>' : '',
     telHref ? '<a class="btn btn-secondary" href="' + esc(telHref) + '">' + iconPhone() + 'Call</a>' : ''
   ].filter(Boolean).join('');
 
@@ -162,7 +162,7 @@ function locationFact(station, directionsUrl) {
     return noData('No coordinates yet — this record is not on the map');
   }
   var coords = station.location.lat.toFixed(4) + ', ' + station.location.lng.toFixed(4);
-  return '<a href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + coords + '</a>' +
+  return '<a href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + coords + Atlas.util.NEW_TAB + '</a>' +
     (station.location.precision === 'approximate'
       ? ' <span class="approx-note">(approximate — see notes)</span>'
       : '');

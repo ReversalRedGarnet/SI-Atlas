@@ -73,7 +73,7 @@ Atlas.sources.block = function (opts) {
         var href = Atlas.util.safeUrl(u);
         var label = esc(Atlas.sources.shortUrl(u));
         var link = href
-          ? '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + label + '</a>'
+          ? '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + label + Atlas.util.NEW_TAB + '</a>'
           : '<span>' + label + '</span>';
         return '<li>' + iconLink() +
           (kind

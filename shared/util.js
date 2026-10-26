@@ -17,6 +17,10 @@ Atlas.util.esc = function (s) {
                   .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 };
 
+/* Screen-reader text for any link that opens in a new tab (target="_blank"),
+ * so the change of context is announced rather than a surprise. */
+Atlas.util.NEW_TAB = '<span class="sr-only"> (opens in a new tab)</span>';
+
 /**
  * Text folded for forgiving search: lower case, accents removed ("Nendö"
  * → "nendo"), apostrophes dropped so "St Joseph's" and "St Josephs" are the

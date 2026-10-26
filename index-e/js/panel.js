@@ -58,18 +58,18 @@ SF.panel.render = function (state) {
   var showDenomination = school.denomination && school.denomination !== 'Other';
 
   var actionButtons = [
-    directionsUrl ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions</a>' : '',
+    directionsUrl ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions' + Atlas.util.NEW_TAB + '</a>' : '',
     telHref ? '<a class="btn btn-secondary" href="' + esc(telHref) + '">' + iconPhone() + 'Call</a>' : '',
-    websiteHref ? '<a class="btn btn-secondary" href="' + esc(websiteHref) + '" target="_blank" rel="noopener">' + iconGlobe() + 'Website</a>' : ''
+    websiteHref ? '<a class="btn btn-secondary" href="' + esc(websiteHref) + '" target="_blank" rel="noopener">' + iconGlobe() + 'Website' + Atlas.util.NEW_TAB + '</a>' : ''
   ].filter(Boolean).join('');
 
   var contactItems = [
     telHref ? '<li>' + iconPhone() + '<a href="' + esc(telHref) + '">' + esc(school.phone) + '</a></li>' : '',
     mailHref ? '<li>' + iconMail() + '<a href="' + esc(mailHref) + '">' + esc(school.email) + '</a></li>' : '',
-    websiteHref ? '<li>' + iconGlobe() + '<a href="' + esc(websiteHref) + '" target="_blank" rel="noopener">' + esc(school.website.replace(/^https?:\/\//, '')) + '</a></li>' : '',
+    websiteHref ? '<li>' + iconGlobe() + '<a href="' + esc(websiteHref) + '" target="_blank" rel="noopener">' + esc(school.website.replace(/^https?:\/\//, '')) + Atlas.util.NEW_TAB + '</a></li>' : '',
     directionsUrl
       ? '<li>' + iconPin() + '<a href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' +
-          school.latitude.toFixed(4) + ', ' + school.longitude.toFixed(4) + '</a>' +
+          school.latitude.toFixed(4) + ', ' + school.longitude.toFixed(4) + Atlas.util.NEW_TAB + '</a>' +
           (school.locationPrecision === 'approximate' ? ' <span class="approx-note">(approximate location)</span>' : '') +
         '</li>'
       : '<li>' + iconPin() + '<span>Map location not yet available</span></li>'
