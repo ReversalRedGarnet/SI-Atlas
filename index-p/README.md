@@ -38,8 +38,9 @@ There is no build step, no bundler and no server-side code.
   (`python -m http.server`). A local server is recommended, because browser
   geolocation only works on `https://` or `localhost`.
 
-External dependencies are loaded from CDNs at runtime: Leaflet 1.9.4 and a
-Google font (Open Sans). Nothing is installed.
+External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs), a Google
+font (Open Sans) and Esri basemap tiles (see "Design notes"). Nothing is
+installed. If Leaflet fails to load, the directory still works without a map.
 
 ## Structure
 
@@ -208,10 +209,12 @@ RSIPF service.
 **The map is locked to Solomon Islands** — shared logic, see the bounds
 constants in `../shared/map.js`.
 
-**Basemap** is standard OpenStreetMap raster tiles: free, no API key, no
-sign-up, desaturated slightly in CSS so the markers stay the loudest thing on
-screen. OSM's public tile server is fine for a prototype but has a usage
-policy; a real deployment should use a tile provider with a proper plan.
+**Basemap** is Esri's World Topographic Map (`server.arcgisonline.com`),
+shared by every index and configured once in `../shared/map.js`: no API key,
+no sign-up, with Esri's full attribution (including OpenStreetMap
+contributors) behind the ⓘ credit badge, desaturated slightly in CSS so the
+markers stay the loudest thing on screen. Check Esri's terms of use before
+treating this as a production service.
 
 ## Swapping the dataset for an API
 

@@ -47,8 +47,11 @@ There is no build step, no bundler and no server-side code.
   root (`python -m http.server`). A local server is recommended, because
   browser geolocation only works on `https://` or `localhost`.
 
-External dependencies are loaded from CDNs at runtime: Leaflet 1.9.4 and a
-Google font (Open Sans). Nothing is installed.
+External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs), a Google
+font (Open Sans) and Esri basemap tiles (see [Basemap](#basemap)). Nothing is
+installed. If Leaflet fails to load, the directory still works — search,
+filters, list and profiles — and the map column says "Map unavailable, the
+list still works."
 
 ## Structure
 
@@ -182,11 +185,15 @@ same pass.
 
 ## Basemap
 
-Standard OpenStreetMap raster tiles — free, no API key, no sign-up. The tile
-layer is desaturated slightly in CSS (`.leaflet-tile-pane`) so the school
-markers stay the loudest thing on screen. Note that OSM's public tile server is
-fine for a demo but has a usage policy; a real deployment should use a tile
-provider with a proper plan.
+Esri's World Topographic Map tiles (`server.arcgisonline.com`), configured
+once for every index in [`../shared/map.js`](../shared/map.js)
+(`Atlas.map.BASE_LAYERS`) — no API key, no sign-up. Esri's attribution, its
+full contributor list including OpenStreetMap contributors, is reproduced in
+full behind the ⓘ credit badge in the map's corner. The tile layer is
+desaturated slightly in CSS (`.leaflet-tile-pane`) so the school markers stay
+the loudest thing on screen. Check Esri's terms of use before treating this as
+a production service; switching provider is a one-entry change in
+`BASE_LAYERS`.
 
 ## Out of scope
 
