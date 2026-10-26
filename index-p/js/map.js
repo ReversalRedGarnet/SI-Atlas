@@ -31,6 +31,7 @@ var atlasMap;               // the Atlas.map controller
 var markers = {};           // station id → L.marker
 var offsets = {};           // station id → [dx, dy] for exactly-stacked stations
 var lastSignature = null;   // result-set fingerprint, so we only refit on change
+var SELECTED_Z = 1000000;   // see paintSelection()
 
 SP.map.init = function () {
   atlasMap = Atlas.map.create('map');
@@ -159,7 +160,10 @@ function paintSelection(selectedId) {
     var station = SP.getStationById(id);
     if (!station) return;
     markers[id].setIcon(pinIcon(station, id === selectedId));
-    markers[id].setZIndexOffset(id === selectedId ? 10000 : 0);
+    /* Leaflet's z-index is the marker's layer y plus this offset, and layer y
+     * runs to tens of thousands at high zoom, so the lift has to be far
+     * larger than that for the selected pin to sit on top at every zoom. */
+    markers[id].setZIndexOffset(id === selectedId ? SELECTED_Z : 0);
   });
 }
 

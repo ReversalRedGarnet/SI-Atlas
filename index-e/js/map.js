@@ -22,6 +22,7 @@ var atlasMap;               // the Atlas.map controller
 var markers = {};           // school id → L.marker
 var offsets = {};           // school id → [dx, dy] for exactly-stacked schools
 var lastSignature = null;   // result-set fingerprint, so we only refit on change
+var SELECTED_Z = 1000000;   // see paintSelection()
 
 SF.map.init = function () {
   atlasMap = Atlas.map.create('map');
@@ -126,7 +127,10 @@ function paintSelection(selectedId) {
       approximate: !!school && school.locationPrecision === 'approximate',
       offset: offsets[id]
     }));
-    markers[id].setZIndexOffset(id === selectedId ? 10000 : 0);
+    /* Leaflet's z-index is the marker's layer y plus this offset, and layer y
+     * runs to tens of thousands at high zoom, so the lift has to be far
+     * larger than that for the selected pin to sit on top at every zoom. */
+    markers[id].setZIndexOffset(id === selectedId ? SELECTED_Z : 0);
   });
 }
 
