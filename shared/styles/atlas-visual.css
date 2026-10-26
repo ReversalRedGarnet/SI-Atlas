@@ -323,7 +323,7 @@ h1, h2, h3 { letter-spacing: -.025em; }
   font-size: clamp(2.6rem, 6.6vw, 4.6rem);
   line-height: 1.02;
   font-weight: 800;
-  letter-spacing: -.065em;
+  letter-spacing: -.03em;   /* tighter and Segoe UI Black runs S-I and t-l together */
   margin-bottom: .9rem;
 }
 .portal-head p {
