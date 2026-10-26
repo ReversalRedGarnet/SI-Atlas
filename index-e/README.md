@@ -74,7 +74,9 @@ js/filters.js           search, filtering, sorting, facet counts — pure functi
 js/geolocation.js       wires ../shared/geolocation.js (location + distance) onto SF
 js/filterPanel.js       renders and syncs the filter controls
 js/list.js              result cards + shared formatting helpers
-js/map.js               adapter onto ../shared/map.js: schools → points, marker clicks → SF.select()
+js/map.js               adapter onto ../shared/map.js: schools → teardrop pins
+                         (dashed outline = approximate location; gold, larger
+                         and on top = selected), marker clicks → SF.select()
 js/panel.js             selected-school profile / mobile bottom sheet, including
                          its sources (via ../shared/sources.js)
 js/main.js              wiring: events → state → single render pass
