@@ -36,7 +36,15 @@ document.addEventListener('DOMContentLoaded', function () {
     storageKey: 'si-atlas:index-p:map-legend'
   });
 
-  shell = Atlas.shell.wire(SP, { info: INFO });
+  shell = Atlas.shell.wire(SP, {
+    info: INFO,
+    /* Read out (politely, once typing pauses) when the count changes. */
+    describeCount: function (n) {
+      if (n === 0) return 'No stations or posts match';
+      if (n === TOTAL_COUNT) return 'Showing all ' + n + ' stations and posts';
+      return n === 1 ? '1 station or post matches' : n + ' stations and posts match';
+    }
+  });
 
   /* Shareable links: read the URL hash into state now (before the first
    * render), keep it in step afterwards — see ../shared/links.js. Every

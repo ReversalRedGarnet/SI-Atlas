@@ -120,7 +120,21 @@ Atlas.shell.wire = function (ns, opts) {
     });
   }
 
+  /* Result count, said to screen readers when it changes (not on the first
+   * render, and only once typing pauses, so each keystroke isn't read out).
+   * opts.describeCount(n) supplies the index's own wording. */
+  var lastCount = null, countTimer = null;
+  function announceCount(n) {
+    if (!opts.describeCount) return;
+    if (lastCount === null) { lastCount = n; return; }
+    if (n === lastCount) return;
+    lastCount = n;
+    clearTimeout(countTimer);
+    countTimer = setTimeout(function () { Atlas.shell.announce(opts.describeCount(n)); }, 500);
+  }
+
   function syncToolbar(state, results) {
+    announceCount(results.length);
     var granted = state.geoStatus === 'granted' && !!state.userLocation;
 
     document.getElementById('search-clear').hidden = state.query === '';

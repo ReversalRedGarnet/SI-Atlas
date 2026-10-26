@@ -36,7 +36,15 @@ document.addEventListener('DOMContentLoaded', function () {
     storageKey: 'si-atlas:index-e:map-legend'
   });
 
-  shell = Atlas.shell.wire(SF, { info: INFO });
+  shell = Atlas.shell.wire(SF, {
+    info: INFO,
+    /* Read out (politely, once typing pauses) when the count changes. */
+    describeCount: function (n) {
+      if (n === 0) return 'No schools match';
+      if (n === TOTAL_COUNT) return 'Showing all ' + n + ' schools';
+      return n === 1 ? '1 school matches' : n + ' schools match';
+    }
+  });
 
   /* Shareable links: read the URL hash into state now (before the first
    * render), keep it in step afterwards — see ../shared/links.js. Every

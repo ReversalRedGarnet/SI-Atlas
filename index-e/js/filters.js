@@ -14,6 +14,11 @@ SF.filters = {};
 
 /* --- Free-text search ----------------------------------------------------- */
 
+/* Records and the reader's text are both folded by Atlas.util.searchKey()
+ * (shared/util.js): case, accents, apostrophes and punctuation don't
+ * matter, so "St Josephs" finds "St Joseph's". */
+var fold = Atlas.util.searchKey;
+
 /** The searchable text blob for a school (name, place, subjects, keywords). */
 function haystack(school) {
   if (!school._haystack) {
@@ -22,14 +27,15 @@ function haystack(school) {
       school.denomination, school.schoolType, school.boarding,
       school.educationLevels.join(' '), school.subjects.join(' '),
       school.description
-    ].join(' ').toLowerCase();
+    ].join(' ');
+    school._haystack = fold(school._haystack);
   }
   return school._haystack;
 }
 
 /** All whitespace-separated terms must appear somewhere (AND within search). */
 SF.filters.matchesQuery = function (school, query) {
-  var q = (query || '').trim().toLowerCase();
+  var q = fold(query);
   if (!q) return true;
   var hay = haystack(school);
   return q.split(/\s+/).every(function (term) { return hay.indexOf(term) !== -1; });
@@ -37,18 +43,18 @@ SF.filters.matchesQuery = function (school, query) {
 
 /** Higher is better. Used only for the "Best match" sort. */
 SF.filters.relevanceScore = function (school, query) {
-  var q = (query || '').trim().toLowerCase();
+  var q = fold(query);
   if (!q) return 0;
-  var name = school.name.toLowerCase();
+  var name = fold(school.name);
   /* `|| ''` so an unconfirmed (null) town or island doesn't become the
    * literal text "null" and score a match for it. */
-  var place = ((school.town || '') + ' ' + (school.island || '') + ' ' + school.province).toLowerCase();
+  var place = fold((school.town || '') + ' ' + (school.island || '') + ' ' + school.province);
   var score = 0;
   if (name.indexOf(q) === 0) score += 100;
   else if (name.indexOf(q) !== -1) score += 60;
   if (place.indexOf(q) !== -1) score += 30;
-  if (school.subjects.some(function (s) { return s.toLowerCase().indexOf(q) !== -1; })) score += 20;
-  if (school.description.toLowerCase().indexOf(q) !== -1) score += 5;
+  if (school.subjects.some(function (s) { return fold(s).indexOf(q) !== -1; })) score += 20;
+  if (fold(school.description).indexOf(q) !== -1) score += 5;
   return score;
 };
 

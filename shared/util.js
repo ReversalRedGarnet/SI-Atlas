@@ -18,6 +18,24 @@ Atlas.util.esc = function (s) {
 };
 
 /**
+ * Text folded for forgiving search: lower case, accents removed ("Nendö"
+ * → "nendo"), apostrophes dropped so "St Joseph's" and "St Josephs" are the
+ * same word, "&" read as "and" ("Rennell & Bellona" / "Rennell and
+ * Bellona"), and any other punctuation (hyphens, slashes, full stops)
+ * turned into a space. Applied to both the records and what the reader
+ * types, so either spelling finds the other.
+ */
+Atlas.util.searchKey = function (s) {
+  return String(s === null || s === undefined ? '' : s)
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/['‘’ʼ`´]/g, '')
+    .replace(/[^a-z0-9À-￿]+/g, ' ')
+    .trim();
+};
+
+/**
  * True when the reader has asked their system for reduced motion. The CSS
  * side is handled in index-shell.css; this is for motion started from JS
  * (smooth scrolling, Leaflet's animated pans and zooms). Read on each call,
