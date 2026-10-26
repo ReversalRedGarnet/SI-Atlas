@@ -246,16 +246,23 @@ h1, h2, h3 { letter-spacing: -.025em; }
 .modal-card h2 { color: var(--navy); }
 .scrim { background: rgba(5,30,40,.43); backdrop-filter: blur(2px); }
 
-/* Portal landing page — more like the front door to a real public-data tool. */
+/* Portal landing page — more like the front door to a real public-data tool.
+   It adapts to the screen with CSS alone: the column widens with the viewport,
+   type and spacing scale with clamp() (on vmin, so a tall monitor gets larger
+   type and a short landscape phone smaller), and when the content is shorter
+   than the screen the hero and the card grid share the spare height instead of
+   leaving a blank band under the cards. */
 .portal-page {
+  --portal-pad: clamp(.8rem, 2.4vw, 3rem);
   height: auto;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
-  padding: clamp(1rem, 3vw, 2.8rem);
+  padding: var(--portal-pad);
   background:
     radial-gradient(ellipse at 88% 8%, rgba(18,124,118,.09), transparent 29rem),
     linear-gradient(180deg, #F5F8F6 0%, #EEF4F1 100%);
@@ -273,7 +280,13 @@ h1, h2, h3 { letter-spacing: -.025em; }
   border-radius: 50%;
   box-shadow: 0 0 0 2rem rgba(12,106,106,.025), 0 0 0 4rem rgba(12,106,106,.02), 0 0 0 6rem rgba(12,106,106,.015);
 }
-.portal { position: relative; z-index: 1; width: 100%; max-width: 1120px; margin: 0 auto; }
+.portal {
+  position: relative; z-index: 1;
+  width: 100%; max-width: clamp(70rem, 82vw, 100rem);
+  margin: 0 auto;
+  flex: 1 0 auto;               /* fill the page's height... */
+  display: flex; flex-direction: column;
+}
 .portal-head {
   position: relative;
   isolation: isolate;
@@ -281,8 +294,11 @@ h1, h2, h3 { letter-spacing: -.025em; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 240px;
-  padding: clamp(2rem, 5.5vw, 4.5rem);
+  /* ...and share what is left over with the card grid. No max-height: with
+     overflow hidden, a cap shorter than the content would clip it. */
+  flex: 3 1 auto;
+  min-height: clamp(9rem, 30vh, 26rem);
+  padding: clamp(1.25rem, 4vmin + .5rem, 5.5rem) clamp(1.25rem, 5vw, 6.5rem);
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 23px;
   /* The paragraph runs the card's full width, so it crosses the rings: the
@@ -317,32 +333,38 @@ h1, h2, h3 { letter-spacing: -.025em; }
 }
 .portal-head h1 {
   color: #FFFFFF;
-  font-size: clamp(2.6rem, 6.6vw, 4.6rem);
+  font-size: clamp(2.1rem, 1rem + 7.5vmin, 8rem);
   line-height: 1.02;
   font-weight: 800;
   letter-spacing: -.03em;   /* tighter and Segoe UI Black runs S-I and t-l together */
-  margin-bottom: .9rem;
+  margin-bottom: clamp(.5rem, 1.6vmin, 1.4rem);
 }
 .portal-head p {
   max-width: none;   /* the full inner width of the card, inside its padding */
   color: #F6FCF9;
-  font-size: clamp(.96rem, 1.45vw, 1.08rem);
-  line-height: 1.7;
+  font-size: clamp(.92rem, .75rem + 1.15vmin, 1.75rem);
+  line-height: 1.6;
 }
 .portal-section-heading {
+  flex: none;
   display: flex;
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 2rem;
-  margin-bottom: .9rem;
+  margin-top: clamp(1.1rem, 3vmin, 3rem);
+  margin-bottom: clamp(.7rem, 1.6vmin, 1.5rem);
 }
-.portal-section-heading h2 { color: var(--navy); font-size: 1.2rem; letter-spacing: -.035em; }
-.portal-section-heading p { margin-top: .2rem; font-size: .88rem; color: var(--text-mid); }
+.portal-section-heading h2 { color: var(--navy); font-size: clamp(1.1rem, .75rem + 1.1vmin, 1.9rem); letter-spacing: -.035em; }
+.portal-section-heading p { margin-top: .2rem; font-size: clamp(.85rem, .74rem + .45vmin, 1.15rem); color: var(--text-mid); }
+/* As many columns as fit (3, 2 or 1 for today's three cards); a fourth or
+   fifth index just wraps. Every row is the same height, so cards in a row
+   match, and the grid takes its share of any spare page height. */
 .index-list {
+  flex: 1 1 auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  grid-auto-rows: 1fr;
+  gap: clamp(.7rem, 1.4vmin, 1.5rem);
   margin-top: 0;
 }
 .index-card {
@@ -351,8 +373,8 @@ h1, h2, h3 { letter-spacing: -.025em; }
   flex-direction: column;
   align-items: flex-start;
   min-width: 0;
-  min-height: 225px;
-  padding: 1.35rem 1.3rem 1.2rem;
+  min-height: clamp(10rem, 22vh, 20rem);
+  padding: clamp(1.1rem, 2vmin + .4rem, 2.6rem);
   overflow: hidden;
   border: 1px solid #D7E4DF;
   border-radius: 16px;
@@ -362,28 +384,32 @@ h1, h2, h3 { letter-spacing: -.025em; }
   text-decoration: none;
   transition: transform .17s ease, box-shadow .17s ease, border-color .17s ease, background-color .17s ease;
 }
-/* The letter tiles and the Index H pill are decoration: the visible text
+/* The letter tile comes from the card's own data-letter, and its colours from
+   data-tone (teal, the default; sand; blue), so a card keeps its tile however
+   the grid wraps or the cards are reordered. A card without data-letter has
+   no tile. The tiles and the Index H pill are decoration: the visible text
    beside them already says it. `/ ""` gives them empty alt text so screen
    readers skip them (the plain `content` line is for older browsers). */
 .index-card::before {
-  content: "E";
-  content: "E" / "";
+  content: attr(data-letter);
+  content: attr(data-letter) / "";
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  margin-bottom: 1.1rem;
+  width: clamp(36px, 1.6rem + 2vmin, 64px);
+  height: clamp(36px, 1.6rem + 2vmin, 64px);
+  margin-bottom: clamp(.7rem, 1.4vmin, 1.4rem);
   border: 1px solid #C9E2D8;
   border-radius: 12px;
   background: #EAF5F0;
   color: #126D63;
-  font-size: 1rem;
+  font-size: clamp(1rem, .7rem + .9vmin, 1.6rem);
   font-weight: 800;
   letter-spacing: -.04em;
 }
-.index-card:nth-child(2)::before { content: "P"; content: "P" / ""; color: #8B6330; background: #FBF2E3; border-color: #EEDDBA; }
-.index-card:nth-child(3)::before { content: "H"; content: "H" / ""; color: #456E9B; background: #EDF3FA; border-color: #D5E1F0; }
+.index-card:not([data-letter])::before { display: none; }
+.index-card[data-tone="sand"]::before { color: #8B6330; background: #FBF2E3; border-color: #EEDDBA; }
+.index-card[data-tone="blue"]::before { color: #456E9B; background: #EDF3FA; border-color: #D5E1F0; }
 .index-card.is-live:hover {
   background: #FFFFFF;
   border-color: #98C6B7;
@@ -398,8 +424,9 @@ h1, h2, h3 { letter-spacing: -.025em; }
   flex-wrap: wrap;
   gap: .55rem;
   padding-right: 0;
+  max-width: 40ch;
   color: var(--navy);
-  font-size: 1.1rem;
+  font-size: clamp(1.05rem, .8rem + .9vmin, 1.8rem);
   line-height: 1.3;
   letter-spacing: -.025em;
 }
@@ -417,12 +444,14 @@ h1, h2, h3 { letter-spacing: -.025em; }
 }
 .index-card.is-live .status-tag { background: #E8F5EF; border-color: #BCE0D0; color: #166C51; }
 .index-card.is-pending .status-tag { background: #F2F5F3; color: var(--mute); }
-.index-desc { margin-top: .6rem; color: var(--text-mid); font-size: .88rem; line-height: 1.6; }
+/* Card text keeps a readable measure however wide a card gets (one column on
+   a tablet, a third of a 100rem column on a big monitor). */
+.index-desc { max-width: 62ch; margin-top: .6rem; color: var(--text-mid); font-size: clamp(.88rem, .75rem + .55vmin, 1.25rem); line-height: 1.6; }
 .index-count {
   margin-top: auto;
   padding-top: 1.1rem;
   color: var(--link);
-  font-size: .78rem;
+  font-size: clamp(.78rem, .68rem + .4vmin, 1.05rem);
   font-weight: 750;
   line-height: 1.5;
 }
@@ -477,15 +506,20 @@ h1, h2, h3 { letter-spacing: -.025em; }
   .view-switch { border: 1px solid var(--navy); border-radius: 11px; overflow: hidden; box-shadow: 0 5px 18px rgba(8,43,57,.2); }
   .vs-btn { height: 40px; }
   .vs-btn + .vs-btn { border-left-color: rgba(255,255,255,.2); }
-  .portal-page { padding: .8rem; }
-  .portal-head { min-height: 200px; border-radius: 18px; padding: 2rem 1.5rem; }
+  .portal-head { border-radius: 18px; }
   .portal-head::before { right: -220px; }
-  .portal-section-heading { margin-top: 1.5rem; }
-  .index-list { grid-template-columns: 1fr; gap: .7rem; }
-  .index-card { min-height: 0; padding: 1.1rem; border-radius: 13px; }
-  .index-card::before { width: 36px; height: 36px; margin-bottom: .7rem; border-radius: 10px; }
+  .index-card { min-height: 0; border-radius: 13px; }
+  .index-card::before { border-radius: 10px; }
   .index-desc { margin-top: .4rem; }
   .index-count { padding-top: .75rem; }
+}
+/* Short screens (a landscape phone, a laptop at 200%+ zoom): the hero sizes to
+   its text, so the cards start on the first screen. */
+@media (max-height: 500px) {
+  .portal-head { min-height: 0; }
+  .portal-head h1 { font-size: clamp(1.9rem, 1rem + 5vmin, 3rem); }
+  .portal-head p { line-height: 1.5; }
+  .portal-section-heading { margin-top: .9rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .btn, .index-card, .search-input, .mini-search { transition: none !important; }
