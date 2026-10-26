@@ -2,7 +2,8 @@
 
 A searchable directory and interactive map of Royal Solomon Islands Police
 Force (RSIPF) stations, posts and outposts — all 42 found in public records,
-across ten provinces. This is the third index of **SI Atlas** — see the
+across ten provinces. This is the second working index of **SI Atlas**
+(Index H is still a stub) — see the
 [repo-root README](../README.md) for the umbrella project and methodology.
 This document covers Index P's own implementation.
 
@@ -215,6 +216,18 @@ no sign-up, with Esri's full attribution (including OpenStreetMap
 contributors) behind the ⓘ credit badge, desaturated slightly in CSS so the
 markers stay the loudest thing on screen. Check Esri's terms of use before
 treating this as a production service.
+
+## When the data changes
+
+The service notice, the About and Help text, and the "not shown on the map"
+note are generated from `SP.STATIONS` on every load, so they can't go stale.
+These places still quote the counts (42 records, 11 without coordinates, 31
+with) by hand and need updating with the data:
+
+- `index.html` — the `description`, `og:description` and
+  `twitter:description` meta tags (they can't be generated);
+- this README and the repo-root `README.md`;
+- the header comment of `js/data/stations.js`.
 
 ## Swapping the dataset for an API
 

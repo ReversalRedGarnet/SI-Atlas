@@ -165,6 +165,19 @@ picker with the streams picker entirely. Filters the user can no longer see
 are cleared rather than left silently applied — see `SF.normalizeFilters()`
 in `js/state.js`.
 
+## When the data changes
+
+The school count in the intro and About text, the source line and sources
+list on every profile, and whether the fee and year-group controls are
+offered (`SF.HAS_FEE_DATA` / `SF.HAS_YEAR_DATA` in `js/filters.js`) are all
+computed from `SF.SCHOOLS` on every load, so they can't go stale. The meta
+tags in `index.html` deliberately carry no numbers. These places still quote
+counts by hand (188 records, 125 / 63 per tier, 123 without coordinates) and
+need updating with the data:
+
+- this README and the repo-root `README.md`;
+- the header comment of `js/data/schools.js`.
+
 ## Swapping the dataset for an API
 
 `js/data/schools.js` is the only file that knows what the data is. Replace the
