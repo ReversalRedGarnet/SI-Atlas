@@ -18,12 +18,17 @@
 window.Atlas = window.Atlas || {};
 Atlas.map = {};
 
+/* Bounds are plain [[south, west], [north, east]] corner pairs, which every
+ * Leaflet call below accepts as-is. They deliberately do NOT touch `L` at
+ * load time: if the Leaflet CDN fails, this file must still load so the
+ * list can render without a map (see create()). */
+
 /* The country, snug: roughly half a degree of margin on every side. This is
  * what the initial view and "reset view" fit to. */
-Atlas.map.SI_VIEW_BOUNDS = L.latLngBounds([-12.20, 155.60], [-6.30, 166.60]);
+Atlas.map.SI_VIEW_BOUNDS = [[-12.20, 155.60], [-6.30, 166.60]];
 
 /* The hard pan limit, one degree wider again. Panning stops dead here. */
-Atlas.map.SI_MAX_BOUNDS = L.latLngBounds([-13.20, 154.60], [-5.30, 167.60]);
+Atlas.map.SI_MAX_BOUNDS = [[-13.20, 154.60], [-5.30, 167.60]];
 
 /* Padding used for both fitting and the min-zoom calculation, so that the
  * zoomed-all-the-way-out view is exactly the reset view. */
@@ -84,6 +89,11 @@ Atlas.map.createBaseLayer = function (key) {
  * here is module-level state — so more than one Atlas map can exist on a
  * page if an index ever needs that.
  *
+ * Returns null — and leaves a one-line note in the container — when Leaflet
+ * itself failed to load (CDN blocked, offline, timed out). Every index's
+ * map adapter already no-ops without a controller, so the list, search and
+ * profiles keep working with no map.
+ *
  * @param {string} elementId - id of the element to render the map into.
  * @param {Object} [opts]
  * @param {number} [opts.maxZoom=17]
@@ -92,6 +102,11 @@ Atlas.map.createBaseLayer = function (key) {
  */
 Atlas.map.create = function (elementId, opts) {
   opts = opts || {};
+
+  if (typeof L === 'undefined') {
+    Atlas.map.showUnavailable(elementId);
+    return null;
+  }
 
   var map = L.map(elementId, {
     zoomControl: false,
@@ -226,6 +241,20 @@ Atlas.map.create = function (elementId, opts) {
   };
 
   return controller;
+};
+
+/**
+ * Say plainly that the map could not load, inside the map's own container.
+ * The map key and "Show whole country" button describe a map that isn't
+ * there, so the column is flagged and index-shell.css hides them.
+ */
+Atlas.map.showUnavailable = function (elementId) {
+  var el = document.getElementById(elementId);
+  if (!el) return;
+  if (window.console) console.warn('SI Atlas: Leaflet did not load, so the map is unavailable. The list still works.');
+  el.innerHTML = '<p class="map-unavailable" role="status">Map unavailable, the list still works.</p>';
+  var col = el.closest('.map-col');
+  if (col) col.classList.add('is-unavailable');
 };
 
 /**

@@ -197,6 +197,17 @@ body.has-selection .detail-col { display: flex; }
 #map { position: absolute; inset: 0; }
 .map-reset { position: absolute; right: 10px; top: 84px; z-index: 500; }
 
+/* Leaflet failed to load (see Atlas.map.showUnavailable in shared/map.js):
+   one plain line instead of a blank panel, and no key or reset button for a
+   map that isn't there. */
+.map-unavailable {
+  margin: 1rem; padding: .6rem .8rem;
+  background: var(--panel); border: 1px solid var(--rule-strong);
+  font-size: .9rem; color: var(--text);
+}
+.map-col.is-unavailable .map-note,
+.map-col.is-unavailable .map-reset { display: none; }
+
 /* --- Filter drawer ---------------------------------------------------------
    The drawer chrome (rail, header, footer, disclosure sections) and the
    checkbox row it's built from are the same in every index — only the
