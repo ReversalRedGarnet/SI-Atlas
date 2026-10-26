@@ -199,6 +199,13 @@ body.has-selection .detail-col { display: flex; }
 #map { position: absolute; inset: 0; }
 .map-reset { position: absolute; right: 10px; top: 84px; z-index: 500; }
 
+/* Before the first render: the list column says it is loading (and, with
+   JavaScript off, why it never will). The first render replaces both. */
+.list-loading, .list-loading-noscript {
+  margin: 0; padding: 1.5rem 1rem;
+  font-size: .9rem; color: var(--text-mid); text-align: center;
+}
+
 /* Leaflet failed to load (see Atlas.map.showUnavailable in shared/map.js):
    one plain line instead of a blank panel, and no key or reset button for a
    map that isn't there. */

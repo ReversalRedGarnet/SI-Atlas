@@ -37,6 +37,9 @@
 <link rel="stylesheet" href="../shared/styles/base.css">
 <link rel="stylesheet" href="../shared/styles/index-shell.css">
 <link rel="stylesheet" href="css/styles.css">
+<!-- Without JavaScript the list never renders, so drop the "Loading…" line
+     and let the <noscript> message in the list say why. -->
+<noscript><style>.list-loading { display: none; }</style></noscript>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="assets/favicon.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
@@ -133,7 +136,7 @@
     </div>
     <div class="rail-body" id="filter-controls"><!-- built by js/filterPanel.js --></div>
     <div class="rail-foot">
-      <button type="button" class="btn btn-primary" id="drawer-apply">Show <span id="drawer-count">0</span> schools</button>
+      <button type="button" class="btn btn-primary" id="drawer-apply">Show <span id="drawer-count">…</span> schools</button>
       <button type="button" class="btn btn-secondary" id="drawer-clear">Clear filters</button>
     </div>
   </aside>
@@ -142,12 +145,18 @@
   <section class="results-col" id="results-col" aria-labelledby="results-heading">
     <div class="results-head">
       <h2 id="results-heading">
-        <span id="result-count" aria-live="polite">0</span> schools
+        <span id="result-count" aria-live="polite">…</span> schools
         <span class="results-sub" id="result-sub"></span>
       </h2>
       <div class="chip-row" id="active-chips"></div>
     </div>
-    <div class="results-list" id="results-list"></div>
+    <div class="results-list" id="results-list">
+      <!-- Replaced by the first render (js/list.js). Until then — a slow
+           connection still fetching the data or Leaflet — say so, rather
+           than showing "0 schools" over an empty list. -->
+      <p class="list-loading" role="status">Loading schools…</p>
+      <noscript><p class="list-loading-noscript">This directory needs JavaScript to search and list schools. Please turn it on, or use a browser that supports it.</p></noscript>
+    </div>
   </section>
 
   <!-- Selected school detail -->
