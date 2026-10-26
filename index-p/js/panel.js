@@ -46,15 +46,17 @@ SP.panel.render = function (state) {
     ? SP.geo.haversineKm(state.userLocation, { lat: lat, lng: lng })
     : null;
 
+  /* Every href built from the data goes through Atlas.util.safeUrl() —
+   * see shared/util.js. */
   var directionsUrl = located
-    ? 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng
+    ? Atlas.util.safeUrl('https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng)
     : null;
 
   var phone = SP.format.phone(station);
   var telHref = SP.format.telHref(phone);
 
   var actionButtons = [
-    located ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions</a>' : '',
+    directionsUrl ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions</a>' : '',
     telHref ? '<a class="btn btn-secondary" href="' + esc(telHref) + '">' + iconPhone() + 'Call</a>' : ''
   ].filter(Boolean).join('');
 

@@ -51,7 +51,7 @@ SP.format = {
    * the first or invents it for the rest. */
   telHref: function (phone) {
     if (!phone || SP.format.hasMultiplePhones(phone)) return null;
-    return 'tel:' + String(phone).replace(/[^\d+]/g, '');
+    return Atlas.util.safeUrl('tel:' + String(phone).replace(/[^\d+]/g, ''), ['tel:']);
   },
   date: Atlas.util.formatDate,
   esc: Atlas.util.esc

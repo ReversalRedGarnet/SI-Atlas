@@ -68,7 +68,13 @@ Atlas.sources.block = function (opts) {
     out += '<ul class="source-list source-links">' +
       urls.map(function (u) {
         var kind = opts.kindFor ? opts.kindFor(u) : '';
-        var link = '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(Atlas.sources.shortUrl(u)) + '</a>';
+        /* Only an http(s) URL becomes a link; anything else is shown as
+         * text, so a malformed or hostile value can never run as a link. */
+        var href = Atlas.util.safeUrl(u);
+        var label = esc(Atlas.sources.shortUrl(u));
+        var link = href
+          ? '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + label + '</a>'
+          : '<span>' + label + '</span>';
         return '<li>' + iconLink() +
           (kind
             ? '<span class="source-item">' + link + '<span class="source-kind">' + esc(kind) + '</span></span>'

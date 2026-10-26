@@ -39,10 +39,16 @@ SF.panel.render = function (state) {
     ? SF.geo.haversineKm(state.userLocation, { lat: school.latitude, lng: school.longitude })
     : null;
 
+  /* Every href built from the data goes through Atlas.util.safeUrl(), so
+   * only the schemes a record should link to (https/http, tel:, mailto:)
+   * can ever become a link — see shared/util.js. */
+  var safeUrl = Atlas.util.safeUrl;
   var directionsUrl = hasCoords
-    ? 'https://www.google.com/maps/dir/?api=1&destination=' + school.latitude + ',' + school.longitude
+    ? safeUrl('https://www.google.com/maps/dir/?api=1&destination=' + school.latitude + ',' + school.longitude)
     : null;
-  var telHref = school.phone ? 'tel:' + school.phone.replace(/[^\d+]/g, '') : null;
+  var telHref = school.phone ? safeUrl('tel:' + school.phone.replace(/[^\d+]/g, ''), ['tel:']) : null;
+  var mailHref = school.email ? safeUrl('mailto:' + school.email, ['mailto:']) : null;
+  var websiteHref = safeUrl(school.website);
 
   /* Denomination only earns its own line when it names something — 'Other'
    * and an unconfirmed denomination both say nothing beyond the school type
@@ -50,16 +56,16 @@ SF.panel.render = function (state) {
   var showDenomination = school.denomination && school.denomination !== 'Other';
 
   var actionButtons = [
-    hasCoords ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions</a>' : '',
+    directionsUrl ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions</a>' : '',
     telHref ? '<a class="btn btn-secondary" href="' + esc(telHref) + '">' + iconPhone() + 'Call</a>' : '',
-    school.website ? '<a class="btn btn-secondary" href="' + esc(school.website) + '" target="_blank" rel="noopener">' + iconGlobe() + 'Website</a>' : ''
+    websiteHref ? '<a class="btn btn-secondary" href="' + esc(websiteHref) + '" target="_blank" rel="noopener">' + iconGlobe() + 'Website</a>' : ''
   ].filter(Boolean).join('');
 
   var contactItems = [
     telHref ? '<li>' + iconPhone() + '<a href="' + esc(telHref) + '">' + esc(school.phone) + '</a></li>' : '',
-    school.email ? '<li>' + iconMail() + '<a href="mailto:' + esc(school.email) + '">' + esc(school.email) + '</a></li>' : '',
-    school.website ? '<li>' + iconGlobe() + '<a href="' + esc(school.website) + '" target="_blank" rel="noopener">' + esc(school.website.replace(/^https?:\/\//, '')) + '</a></li>' : '',
-    hasCoords
+    mailHref ? '<li>' + iconMail() + '<a href="' + esc(mailHref) + '">' + esc(school.email) + '</a></li>' : '',
+    websiteHref ? '<li>' + iconGlobe() + '<a href="' + esc(websiteHref) + '" target="_blank" rel="noopener">' + esc(school.website.replace(/^https?:\/\//, '')) + '</a></li>' : '',
+    directionsUrl
       ? '<li>' + iconPin() + '<a href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' +
           school.latitude.toFixed(4) + ', ' + school.longitude.toFixed(4) + '</a>' +
           (school.locationPrecision === 'approximate' ? ' <span class="approx-note">(approximate location)</span>' : '') +
@@ -99,14 +105,14 @@ SF.panel.render = function (state) {
       '<section class="detail-section">' +
         '<h3>At a glance</h3>' +
         '<dl class="facts">' +
-          fact('School level', SF.format.levels(school)) +
+          fact('School level', esc(SF.format.levels(school))) +
           yearsFact(school) +
           streamFact('Form 6 streams', school, 'form6') +
           streamFact('Form 7 streams', school, 'form7') +
-          fact('Boarding or day', SF.format.boardingStatus(school)) +
-          fact('Yearly fees', SF.format.feesHtml(school, ' ' + school.currency)) +
-          (showDenomination ? fact('Run by', SF.label(school.denomination)) : '') +
-          fact('Type of school', school.schoolType) +
+          fact('Boarding or day', esc(SF.format.boardingStatus(school))) +
+          fact('Yearly fees', SF.format.feesHtml(school, ' ' + esc(school.currency))) +
+          (showDenomination ? fact('Run by', esc(SF.label(school.denomination))) : '') +
+          fact('Type of school', esc(school.schoolType)) +
           (!hasCoords ? fact('Map', 'Map location not yet available') :
             school.locationPrecision === 'approximate' ? fact('Map', 'Approximate location') : '') +
         '</dl>' +
@@ -183,18 +189,20 @@ function sourceKind(url) {
  * note at the top of js/data/schools.js for why most secondary records
  * don't have one yet. */
 function yearsFact(school) {
-  return school.yearLevels ? fact('Year groups', SF.format.years(school)) : '';
+  return school.yearLevels ? fact('Year groups', SF.format.esc(SF.format.years(school))) : '';
 }
 
-function fact(term, value) {
-  return '<div class="fact"><dt>' + term + '</dt><dd>' + value + '</dd></div>';
+/* `valueHtml` is inserted as HTML (the fees line carries markup), so every
+ * caller escapes data-derived text before passing it in. */
+function fact(term, valueHtml) {
+  return '<div class="fact"><dt>' + term + '</dt><dd>' + valueHtml + '</dd></div>';
 }
 
 /* Only shown when the school actually offers that form. */
 function streamFact(term, school, key) {
   var list = (school.streams && school.streams[key]) || [];
   if (!list.length) return '';
-  return fact(term, list.map(SF.label).join(', '));
+  return fact(term, SF.format.esc(list.map(SF.label).join(', ')));
 }
 
 /* Small inline icons — kept here so the panel has no image dependencies. */

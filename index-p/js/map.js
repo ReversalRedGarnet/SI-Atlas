@@ -129,7 +129,8 @@ function drawMarkers(results) {
       e.originalEvent.preventDefault();
       SP.select(station.id);
     });
-    marker.bindTooltip(label, { direction: 'top', offset: [0, -13], opacity: 1 });
+    /* Leaflet inserts a string tooltip as HTML, so the label is escaped. */
+    marker.bindTooltip(Atlas.util.esc(label), { direction: 'top', offset: [0, -13], opacity: 1 });
 
     marker.addTo(atlasMap.markerLayer);
     markers[station.id] = marker;

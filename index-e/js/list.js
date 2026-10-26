@@ -186,7 +186,7 @@ function card(school, isSelected) {
     ['Level',     esc(SF.format.levels(school))],
     ['Run by',    esc(SF.format.operator(school))],
     ['Attendance', esc(SF.format.boardingStatus(school))],
-    ['Yearly fees', SF.format.feesHtml(school, ' ' + school.currency)]
+    ['Yearly fees', SF.format.feesHtml(school, ' ' + esc(school.currency))]
   ];
 
   if (typeof school.distanceKm === 'number') {

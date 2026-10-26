@@ -18,6 +18,25 @@ Atlas.util.esc = function (s) {
 };
 
 /**
+ * A URL from the data, made safe to put in an href — or null when it isn't.
+ * esc() stops a value breaking out of the attribute, but an escaped
+ * "javascript:alert(1)" is still a working link; this allows only the
+ * schemes a record should ever link to. Anything else, including a relative
+ * or scheme-less value, returns null so the caller shows plain text instead.
+ *
+ * @param {string} url
+ * @param {string[]} [schemes] - allowed schemes; defaults to https: and http:.
+ *   Pass ['tel:'] or ['mailto:'] for those links.
+ */
+Atlas.util.safeUrl = function (url, schemes) {
+  if (url === null || url === undefined) return null;
+  var s = String(url).trim();
+  var m = /^([a-z][a-z0-9+.-]*):/i.exec(s);
+  if (!m) return null;
+  return (schemes || ['https:', 'http:']).indexOf(m[1].toLowerCase() + ':') !== -1 ? s : null;
+};
+
+/**
  * "9 Sept 2026" — the one date format every index shows a reader, whether
  * that's a verification badge's last-checked date or a record's own
  * dateAccessed. Falls back to the raw string for anything that doesn't

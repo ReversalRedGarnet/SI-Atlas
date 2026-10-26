@@ -94,7 +94,8 @@ function drawMarkers(results) {
       e.originalEvent.preventDefault();
       SF.select(school.id);
     });
-    marker.bindTooltip(school.name + (approx ? ' — approximate location' : ''), { direction: 'top', offset: [0, -14], opacity: 1 });
+    /* Leaflet inserts a string tooltip as HTML, so the name is escaped. */
+    marker.bindTooltip(Atlas.util.esc(school.name + (approx ? ' — approximate location' : '')), { direction: 'top', offset: [0, -14], opacity: 1 });
 
     marker.addTo(atlasMap.markerLayer);
     markers[school.id] = marker;
