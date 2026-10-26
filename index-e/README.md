@@ -23,10 +23,10 @@ This document covers Index E's own implementation.
 >
 > Several fields (fees, contact details, exact coordinates, subjects) are
 > unconfirmed for many schools and are recorded as `null` / empty rather than
-> guessed — see the data-policy note at the top of `js/data/schools.js`. A
-> handful of schools (Mount Horeb CHS, Mercy CHS in Honiara, and most of
-> Tier 2) have no public coordinate source and so appear in search/list
-> results only, not on the map. This is a public-service prototype built on
+> guessed — see the data-policy note at the top of `js/data/schools.js`. Most
+> schools — 123 of the 188, including all of Tier 2 and 60 Tier 1 records —
+> have no public coordinate source and so appear in search/list results
+> only, not on the map. This is a public-service prototype built on
 > real, verified data — not a demonstration of fictional data — but it is
 > not yet a complete or authoritative national directory, and Tier 2 in
 > particular would benefit from a second verification pass per school.
@@ -128,8 +128,10 @@ except on the drawer and modal overlays, and `border-radius` is 0 throughout.
 `../shared/styles/base.css`: navy `#06337C` for the nav bar, section bars and
 primary buttons (11.9:1 on white); `#1257A0` for links (7.3:1); green
 `#1F6B2E` for page headings, as on both reference sites (6.6:1); red
-`#A5232B` for the prototype notice (7.3:1); gold `#C8A415` is decorative
-only — at 2.9:1 it never carries text.
+`#A5232B` for the prototype notice (6.6:1 on the notice's cream background,
+7.3:1 on white); gold `#C8A415` never carries text on a light surface — at
+2.39:1 on white it is decorative there — and is used for focus rings over the
+navy bars, where it measures 4.95:1.
 
 **The masthead deliberately does not use the national coat of arms.** It
 carries a neutral service mark instead. The real crest should only be added
