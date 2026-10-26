@@ -40,7 +40,9 @@ SF.filters.relevanceScore = function (school, query) {
   var q = (query || '').trim().toLowerCase();
   if (!q) return 0;
   var name = school.name.toLowerCase();
-  var place = (school.town + ' ' + school.island + ' ' + school.province).toLowerCase();
+  /* `|| ''` so an unconfirmed (null) town or island doesn't become the
+   * literal text "null" and score a match for it. */
+  var place = ((school.town || '') + ' ' + (school.island || '') + ' ' + school.province).toLowerCase();
   var score = 0;
   if (name.indexOf(q) === 0) score += 100;
   else if (name.indexOf(q) !== -1) score += 60;
