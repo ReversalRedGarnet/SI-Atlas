@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="SI Atlas">
   <title>SI Atlas</title>
   <!-- SI Atlas — the umbrella mark, used by the portal, Index H and the 404
-       page. A neutral map pin in the SI Atlas palette (navy #06337C, gold
-       #C8A415): not the national coat of arms and not any agency's badge.
+       page. A neutral map pin in the SI Atlas palette (navy #10394A, gold
+       #E4B05C): not the national coat of arms and not any agency's badge.
        Each working index keeps its own mark (Index E a mortarboard, Index P
        a shield). -->
-  <rect width="32" height="32" fill="#06337C"/>
+  <rect width="32" height="32" fill="#10394A"/>
   <path d="M16 4.5c-4.7 0-8.5 3.7-8.5 8.4 0 6.3 8.5 14.6 8.5 14.6s8.5-8.3 8.5-14.6c0-4.7-3.8-8.4-8.5-8.4z" fill="#ffffff"/>
-  <circle cx="16" cy="13" r="3.4" fill="#C8A415"/>
+  <circle cx="16" cy="13" r="3.4" fill="#E4B05C"/>
 </svg>

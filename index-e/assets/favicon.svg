@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="SI Atlas — Index E">
   <title>SI Atlas — Index E</title>
-  <!-- Institutional navy #06337C, matching the MEHRD / SIG reference sites -->
-  <rect width="32" height="32" fill="#06337C"/>
+  <!-- SI Atlas navy #10394A and gold #E4B05C (shared/styles/atlas-visual.css) —
+       deliberately not the MEHRD / SIG sites' navy, so the mark does not read
+       as an official one -->
+  <rect width="32" height="32" fill="#10394A"/>
   <path d="M16 7 5 12.5l11 5.5 9-4.5V21h2v-8.5z" fill="#ffffff"/>
-  <path d="M9 16v5c0 2 3.2 3.6 7 3.6s7-1.6 7-3.6v-5l-7 3.5z" fill="#C8A415"/>
+  <path d="M9 16v5c0 2 3.2 3.6 7 3.6s7-1.6 7-3.6v-5l-7 3.5z" fill="#E4B05C"/>
 </svg>
