@@ -113,6 +113,7 @@ function draw(state) {
 
   SP.list.render(results, state);
   SP.map.render(results, state);
+  shell.syncMapSummary(results.filter(SP.filters.isLocated).length, results.length, ['station or post', 'stations and posts']);
   SP.panel.render(state);
   SP.filterPanel.sync(state);
   shell.syncToolbar(state, results);

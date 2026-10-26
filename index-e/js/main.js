@@ -129,6 +129,7 @@ function draw(state) {
 
   SF.list.render(results, state);
   SF.map.render(results, state);
+  shell.syncMapSummary(results.filter(function (s) { return s.latitude !== null; }).length, results.length, ['school', 'schools']);
   SF.panel.render(state);
   SF.filterPanel.sync(state);
   shell.syncToolbar(state, results);

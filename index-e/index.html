@@ -163,7 +163,9 @@
   <section class="detail-col" id="detail-col" aria-labelledby="detail-name" aria-live="polite"></section>
 
   <!-- Map -->
-  <section class="map-col" id="map-col" aria-label="Map of schools">
+  <section class="map-col" id="map-col" aria-label="Map of schools" aria-describedby="map-summary">
+    <!-- What the map shows, in words, for screen readers (shell.syncMapSummary). -->
+    <p class="sr-only" id="map-summary"></p>
     <div id="map"></div>
     <!-- Collapsible map key. The disclosure behaviour (aria-expanded, the
          remembered state) is shared — see ../shared/map-legend.js. Collapsed,

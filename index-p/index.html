@@ -158,7 +158,9 @@
   <section class="detail-col" id="detail-col" aria-labelledby="detail-name" aria-live="polite"></section>
 
   <!-- Map -->
-  <section class="map-col" id="map-col" aria-label="Map of police stations">
+  <section class="map-col" id="map-col" aria-label="Map of police stations" aria-describedby="map-summary">
+    <!-- What the map shows, in words, for screen readers (shell.syncMapSummary). -->
+    <p class="sr-only" id="map-summary"></p>
     <div id="map"></div>
     <!-- Collapsible map key. The entries are the facility-type vocabulary: one
          per facility_type value, using the same pin classes the markers do.

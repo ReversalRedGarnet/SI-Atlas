@@ -197,6 +197,41 @@ Atlas.shell.wire = function (ns, opts) {
     if (btn && btn.offsetParent !== null) btn.focus();
   }
 
+  /* --- The map, in words -----------------------------------------------------
+   * A screen-reader summary of what the map shows, kept in #map-summary
+   * (visually hidden, referenced by the map region's aria-describedby, so it
+   * is read when the map is reached — not a live region, so it never
+   * interrupts). Updated on every render.
+   *
+   * @param {number} shown - results with a location, i.e. drawn as markers
+   * @param {number} total - all current results
+   * @param {string[]} nouns - [singular, plural], e.g. ['school', 'schools'] */
+  function syncMapSummary(shown, total, nouns) {
+    var el = document.getElementById('map-summary');
+    if (!el) return;
+    var noun = function (n) { return n === 1 ? nouns[0] : nouns[1]; };
+    var text;
+    if (document.querySelector('.map-col.is-unavailable')) {
+      text = 'The map could not load. Every ' + nouns[0] + ' in these results is in the list.';
+    } else if (total === 0) {
+      text = 'The map shows no ' + nouns[1] + ': nothing matches the current search and filters.';
+    } else if (shown === 0) {
+      text = (total === 1 ? 'The ' + nouns[0] + ' in these results has' : 'None of the ' + total + ' ' + nouns[1] + ' in these results has') +
+        ' a confirmed location, so the map shows no markers; ' + (total === 1 ? 'it is' : 'they are') + ' in the list.';
+    } else if (shown === total) {
+      text = 'The map shows ' + (total === 1 ? 'the ' + nouns[0] : 'all ' + total + ' ' + nouns[1]) + ' in these results.' +
+        ' Each marker can be reached with the Tab key and opens the same profile as the list.';
+    } else {
+      text = 'The map shows ' + shown + ' of the ' + total + ' ' + noun(total) + ' in these results' +
+        (total > shown
+          ? '; the other ' + (total - shown) + ' ' + (total - shown === 1 ? 'has' : 'have') +
+            ' no confirmed location and ' + (total - shown === 1 ? 'is' : 'are') + ' in the list only.'
+          : '.') +
+        (shown ? ' Each marker can be reached with the Tab key and opens the same profile as the list.' : '');
+    }
+    el.textContent = text;
+  }
+
   /* --- When a render pass throws ---------------------------------------------
    * Better a plain message than a blank or half-drawn list: log the error,
    * and put "Something went wrong" in the list with a way to report it (a
@@ -355,6 +390,7 @@ Atlas.shell.wire = function (ns, opts) {
     refreshMapSoon: refreshMapSoon,
     syncToolbar: syncToolbar,
     syncSelectionFocus: syncSelectionFocus,
+    syncMapSummary: syncMapSummary,
     renderFailed: renderFailed
   };
 };
