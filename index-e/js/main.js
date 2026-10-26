@@ -38,8 +38,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
   shell = Atlas.shell.wire(SF, { info: INFO });
 
+  /* Shareable links: read the URL hash into state now (before the first
+   * render), keep it in step afterwards — see ../shared/links.js. Every
+   * value is checked against the vocabularies below; a filter the page
+   * doesn't offer (fees, year group, while the data can't answer them)
+   * is simply not accepted from a link. */
+  var numbers = {};
+  if (SF.HAS_YEAR_DATA) numbers.yearLevel = { min: 1, max: 13 };
+  if (SF.HAS_FEE_DATA) numbers.feeMax = { min: 0, max: 1000000 };
+  var links = Atlas.links.wire(SF, {
+    idParam: 'school',
+    isRecord: function (id) { return !!SF.getSchoolById(id); },
+    arrays: {
+      provinces: SF.PROVINCES,
+      denominations: SF.DENOMINATIONS,
+      levels: SF.SCHOOL_LEVEL_OPTIONS.map(function (o) { return o.value; }),
+      form6Streams: SF.FORM6_STREAMS,
+      form7Streams: SF.FORM7_STREAMS,
+      subjects: [].concat.apply([], SF.SUBJECT_GROUPS.map(function (g) { return g.subjects; }))
+    },
+    choices: { boarding: ['Day', 'Boarding'] },
+    numbers: numbers
+  });
+
   SF.subscribe(render);
+  SF.subscribe(links.write);   // after render(), which may drop a filtered-out selection
   render(SF.state);
+  links.write(SF.state);
 });
 
 /* --- Whole-dataset counts (fixed for the page's lifetime, unlike the

@@ -42,6 +42,19 @@
 window.Atlas = window.Atlas || {};
 Atlas.shell = {};
 
+/**
+ * Say something to screen-reader users without moving focus, through the
+ * page's one polite live region (#live-status, visually hidden, present in
+ * the page from the start so announcements are picked up reliably). Cleared
+ * first, so saying the same thing twice ("Link copied") is announced twice.
+ */
+Atlas.shell.announce = function (text) {
+  var el = document.getElementById('live-status');
+  if (!el) return;
+  el.textContent = '';
+  setTimeout(function () { el.textContent = text; }, 60);
+};
+
 Atlas.shell.wire = function (ns, opts) {
   opts = opts || {};
   var INFO = opts.info || {};

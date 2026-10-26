@@ -117,6 +117,7 @@
 .back-btn { display: inline-flex; align-items: center; gap: .25rem; }
 .back-btn svg { fill: none; stroke: currentColor; stroke-width: 2; }
 .detail-bar .text-close { margin-left: auto; }
+.detail-bar .copy-link + .text-close { margin-left: 0; }
 
 .detail-head { padding: .8rem .9rem .1rem; }
 .detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; width: fit-content; max-width: 100%; }

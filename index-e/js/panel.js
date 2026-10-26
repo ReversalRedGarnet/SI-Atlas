@@ -19,6 +19,8 @@ SF.panel.init = function () {
 
   el.addEventListener('click', function (e) {
     if (e.target.closest('[data-close-panel]')) SF.clearSelection();
+    var copy = e.target.closest('[data-copy-link]');
+    if (copy && SF.state.selectedId) Atlas.links.copyFromButton(copy, Atlas.links.recordUrl('school', SF.state.selectedId));
   });
 };
 
@@ -82,6 +84,8 @@ SF.panel.render = function (state) {
         '<button type="button" class="link-btn back-btn" data-close-panel>' +
           '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg> All results' +
         '</button>' +
+        /* A link straight to this profile (#school=<id>) — see ../shared/links.js. */
+        '<button type="button" class="text-close copy-link" data-copy-link>' + Atlas.links.COPY_LABEL + '</button>' +
         '<button type="button" class="text-close" data-close-panel>Close <span aria-hidden="true">&times;</span></button>' +
       '</div>' +
 
@@ -146,7 +150,7 @@ SF.panel.render = function (state) {
           ? '<p>Last checked <strong class="verified">' + esc(SF.format.date(school.lastVerified)) + '</strong>.</p>'
           : '<p>No date was recorded for when this record was last checked.</p>') +
         '<p class="fineprint">Fields not yet confirmed are shown as such rather than guessed.</p>' +
-        Atlas.corrections.block({ indexName: 'Index E — Education', name: school.name, id: school.id, pageUrl: pageUrl() }) +
+        Atlas.corrections.block({ indexName: 'Index E — Education', name: school.name, id: school.id, pageUrl: pageUrl(school.id) }) +
       '</footer>' +
     '</div>';
 };
@@ -163,10 +167,10 @@ function verificationStatusFor(school) {
   return school.verificationStatus ? 'verified' : 'unverified';
 }
 
-/* This page's own address, for a correction report to link back to — only
- * when it is a real web address (not file://). */
-function pageUrl() {
-  return /^https?:$/.test(location.protocol) ? location.origin + location.pathname : '';
+/* A link straight to this school's profile, for a correction report to
+ * point back to — only on a real web address (not file://). */
+function pageUrl(id) {
+  return /^https?:$/.test(location.protocol) ? Atlas.links.recordUrl('school', id) : '';
 }
 
 /* The label under each source link. The line summarising all of a record's

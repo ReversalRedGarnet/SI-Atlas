@@ -38,8 +38,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
   shell = Atlas.shell.wire(SP, { info: INFO });
 
+  /* Shareable links: read the URL hash into state now (before the first
+   * render), keep it in step afterwards — see ../shared/links.js. Every
+   * value is checked against the vocabularies below. */
+  var links = Atlas.links.wire(SP, {
+    idParam: 'station',
+    isRecord: function (id) { return !!SP.getStationById(id); },
+    arrays: {
+      types: SP.FACILITY_TYPES.map(function (t) { return t.value; }),
+      provinces: SP.PROVINCES,
+      verification: SP.VERIFICATION_FILTER_OPTIONS
+    },
+    choices: { mapped: ['yes', 'no'] },
+    flags: ['hasPhone']
+  });
+
   SP.subscribe(render);
+  SP.subscribe(links.write);   // after render(), which may drop a filtered-out selection
   render(SP.state);
+  links.write(SP.state);
 });
 
 /* --- Whole-dataset counts (fixed for the page's lifetime, unlike the

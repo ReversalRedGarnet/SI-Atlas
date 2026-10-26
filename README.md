@@ -89,6 +89,10 @@ SI-Atlas/
 │   ├── sources.js           renders a record's sources the same way in every
 │   │                         index: citations as text, URLs as links showing
 │   │                         their host (Atlas.sources)
+│   ├── links.js             shareable links: the open record, search, filters
+│   │                         and sort live in the URL hash (#school=…), are
+│   │                         validated and restored on load, and "Copy link"
+│   │                         on every profile (Atlas.links)
 │   ├── corrections.js       the "Report a correction" link on every profile:
 │   │                         a pre-filled GitHub issue, no server
 │   │                         (Atlas.corrections)
