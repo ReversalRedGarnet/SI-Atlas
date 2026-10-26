@@ -156,6 +156,9 @@
  * shared/styles/base.css — see shared/verification-badge.js. This just
  * places it under the school-kind line. */
 .verified-badge { margin-top: .5rem; }
+/* What the sources behind the record are — computed in js/panel.js from
+ * sourceUrls. Plain text, so a screen reader reads it as written. */
+.source-strength { margin-top: .3rem; font-size: .84rem; color: var(--text-mid); }
 
 .detail-actions { display: flex; flex-wrap: wrap; gap: .4rem; padding: .8rem .9rem; }
 .detail-actions .btn { flex: 1 1 auto; }

@@ -175,18 +175,17 @@
   font-size: .8rem; color: var(--mute); line-height: 1.45;
 }
 
-.contact-list, .source-list { padding: 0 .9rem; }
-.contact-list li, .source-list li {
+/* The sources list itself is shared with Index E — see
+   ../shared/styles/base.css and ../shared/sources.js. */
+.contact-list { padding: 0 .9rem; }
+.contact-list li {
   display: flex; align-items: center; gap: .5rem;
   font-size: .86rem; color: var(--text);
   border-bottom: 1px solid var(--rule-soft);
 }
-.contact-list li:last-child, .source-list li:last-child { border-bottom: 0; }
-.contact-list a, .source-list a { color: var(--link); padding: .35rem 0; }
+.contact-list li:last-child { border-bottom: 0; }
+.contact-list a { color: var(--link); padding: .35rem 0; }
 .contact-list .phone-plain { padding: .35rem 0; }
-.source-list li { padding: .35rem 0; line-height: 1.4; }
-.source-links li { padding: 0; word-break: break-word; }
-.source-links a { word-break: break-all; }
 
 .detail-foot { padding: .2rem .9rem 2rem; font-size: .82rem; color: var(--text-mid); }
 .detail-foot p + p { margin-top: .35rem; }

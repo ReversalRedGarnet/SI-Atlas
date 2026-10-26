@@ -89,6 +89,7 @@ SF.panel.render = function (state) {
           ' &middot; ' + esc(school.schoolType) + ' school' +
           (showDenomination ? ' &middot; ' + esc(school.denomination) : '') + '</p>' +
         '<p class="verified-badge">' + Atlas.verificationBadge.render(verificationStatusFor(school), school.lastVerified) + '</p>' +
+        '<p class="source-strength">' + esc(sourceStrength(school)) + '</p>' +
       '</header>' +
 
       (actionButtons ? '<div class="detail-actions">' + actionButtons + '</div>' : '') +
@@ -127,9 +128,16 @@ SF.panel.render = function (state) {
           : '<p class="detail-no-data">Contact details not yet available.</p>') +
       '</section>' +
 
+      '<section class="detail-section">' +
+        '<h3>Sources' + (school.sourceUrls.length ? ' <span class="muted-count">' + school.sourceUrls.length + '</span>' : '') + '</h3>' +
+        Atlas.sources.block({ urls: school.sourceUrls, kindFor: sourceKind }) +
+      '</section>' +
+
       '<footer class="detail-foot">' +
-        '<p>These details were last checked against public records on <strong class="verified">' + esc(SF.format.date(school.lastVerified)) + '</strong>.</p>' +
-        '<p class="fineprint">Sourced from public MEHRD records and, where noted above, the school’s own published contact details. Fields not yet confirmed are shown as such rather than guessed.</p>' +
+        (school.lastVerified
+          ? '<p>Last checked <strong class="verified">' + esc(SF.format.date(school.lastVerified)) + '</strong>.</p>'
+          : '<p>No date was recorded for when this record was last checked.</p>') +
+        '<p class="fineprint">Fields not yet confirmed are shown as such rather than guessed.</p>' +
       '</footer>' +
     '</div>';
 };
@@ -144,6 +152,31 @@ SF.panel.render = function (state) {
  */
 function verificationStatusFor(school) {
   return school.verificationStatus ? 'verified' : 'unverified';
+}
+
+/*
+ * What the record's own sourceUrls say, computed at render time rather than
+ * stored: whether MEHRD is among them, and whether anything else is. This
+ * describes what is cited — it is not a judgement of the school, and it is
+ * deliberately not the dataset's Tier 1 / Tier 2 split (those tiers are
+ * defined by which fields are filled in, not by which sources back them).
+ */
+function isMehrd(url) {
+  return /(^|\.)mehrd\.gov\.sb$/i.test(Atlas.sources.hostOf(url));
+}
+
+function sourceStrength(school) {
+  var urls = school.sourceUrls || [];
+  var official = urls.filter(isMehrd).length;
+  var other = urls.length - official;
+  if (official && other) return 'Confirmed by MEHRD and an independent source';
+  if (official) return 'Confirmed by MEHRD only';
+  if (other) return 'Public sources only, not found in MEHRD records';
+  return 'No source recorded';
+}
+
+function sourceKind(url) {
+  return isMehrd(url) ? 'MEHRD (official)' : 'Other public source';
 }
 
 /* Only shown once a year span is actually confirmed — see the data-policy

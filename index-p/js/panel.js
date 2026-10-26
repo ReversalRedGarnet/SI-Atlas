@@ -182,29 +182,10 @@ function contactBlock(station, phone, telHref) {
 /* sources and sourceUrls are parallel lists, not pairs — the workbook does not
  * make them 1:1 (see js/data/stations.js). So the citations are listed as
  * text, and the URLs listed as links, rather than being zipped into
- * name-linked-to-URL pairs that would assert a match that isn't in the data. */
+ * name-linked-to-URL pairs that would assert a match that isn't in the data.
+ * The rendering itself is shared with Index E — see ../shared/sources.js. */
 function sourcesBlock(station) {
-  var esc = SP.format.esc;
-  var out = '';
-
-  if (station.sources.length) {
-    out += '<ul class="source-list">' +
-      station.sources.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') +
-      '</ul>';
-  } else {
-    out += '<p class="detail-no-data">No source recorded.</p>';
-  }
-
-  if (station.sourceUrls.length) {
-    out += '<ul class="source-list source-links">' +
-      station.sourceUrls.map(function (u) {
-        return '<li>' + iconLink() + '<a href="' + esc(u) + '" target="_blank" rel="noopener">' +
-               esc(shortUrl(u)) + '</a></li>';
-      }).join('') +
-      '</ul>';
-  }
-
-  return out;
+  return Atlas.sources.block({ citations: station.sources, urls: station.sourceUrls });
 }
 
 /* "Last checked" is the date_accessed column. It is shown for every record
@@ -229,22 +210,12 @@ function noData(text) {
   return '<span class="no-data">' + SP.format.esc(text) + '</span>';
 }
 
-/* Host + a trimmed path, so a 120-character PDF URL does not blow out the
- * panel. The href is always the full URL. */
-function shortUrl(url) {
-  var stripped = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-  return stripped.length > 52 ? stripped.slice(0, 49) + '…' : stripped;
-}
-
 /* Small inline icons — kept here so the panel has no image dependencies. */
 function iconPin() {
   return '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" class="ico"><path d="M8 1.5a4.5 4.5 0 0 0-4.5 4.5c0 3.4 4.5 8.5 4.5 8.5s4.5-5.1 4.5-8.5A4.5 4.5 0 0 0 8 1.5Zm0 6.2a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6Z"/></svg>';
 }
 function iconPhone() {
   return '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" class="ico"><path d="M5.1 2.2 6.6 5 5.3 6.4a8.6 8.6 0 0 0 4.3 4.3L11 9.4l2.8 1.5-.6 2.4c-.2.6-.8 1-1.4.9C6.9 13.6 2.4 9.1 1.7 4.2c-.1-.6.3-1.2.9-1.4l2.5-.6Z"/></svg>';
-}
-function iconLink() {
-  return '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" class="ico"><path d="M6.9 9.1a2.9 2.9 0 0 0 4.1 0l2-2a2.9 2.9 0 0 0-4.1-4.1l-1 1 1 1 1-1a1.5 1.5 0 0 1 2.1 2.1l-2 2a1.5 1.5 0 0 1-2.1 0Zm2.2-2.2a2.9 2.9 0 0 0-4.1 0l-2 2a2.9 2.9 0 0 0 4.1 4.1l1-1-1-1-1 1a1.5 1.5 0 0 1-2.1-2.1l2-2a1.5 1.5 0 0 1 2.1 0Z"/></svg>';
 }
 
 })();

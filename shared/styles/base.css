@@ -168,3 +168,22 @@ svg { fill: currentColor; }
 .badge-verified   { color: var(--green); border-color: var(--green); background: #EAF3EC; }
 .badge-unverified { color: var(--mute);  border-color: var(--rule-strong); background: var(--panel-alt); }
 .badge-unknown    { color: var(--mute);  border-color: var(--rule-strong); background: var(--panel-alt); font-style: italic; }
+
+/* --- Sources list -----------------------------------------------------------
+   Rendered by shared/sources.js inside a profile's "Sources" section, the
+   same way in every index: citations as plain rows, URLs as links that show
+   their host, optionally with a short label (.source-kind) under the link. */
+.source-list { padding: 0 .9rem; }
+.source-list li {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .35rem 0;
+  font-size: .86rem; color: var(--text); line-height: 1.4;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.source-list li:last-child { border-bottom: 0; }
+.source-list a { color: var(--link); padding: .35rem 0; }
+.source-links li { padding: 0; word-break: break-word; }
+.source-links a { word-break: break-all; }
+.source-item { display: flex; flex-direction: column; padding: .35rem 0; min-width: 0; }
+.source-item a { padding: 0; }
+.source-kind { font-size: .78rem; color: var(--mute); }
