@@ -1,1 +1,6 @@
 .DS_Store
+Thumbs.db
+
+# Audit artefacts — never part of the published site
+audit-screens/
+.playwright-mcp/
