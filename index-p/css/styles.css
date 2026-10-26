@@ -119,7 +119,11 @@
 .detail-bar .text-close { margin-left: auto; }
 
 .detail-head { padding: .8rem .9rem .1rem; }
-.detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; }
+.detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; width: fit-content; max-width: 100%; }
+/* Focus ring for the heading that takes focus when a profile opens — same
+   treatment and reasoning as Index E's (see index-e/css/styles.css). */
+.detail-head h2:focus { outline: none; }
+.detail-head h2:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 .detail-place { font-size: .88rem; color: var(--text-mid); margin-top: .25rem; }
 .detail-distance { color: var(--navy); font-weight: 700; margin-left: .4rem; }
 .detail-kind {

@@ -144,7 +144,14 @@
 .detail-bar .text-close { margin-left: auto; }
 
 .detail-head { padding: .8rem .9rem .1rem; }
-.detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; }
+.detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; width: fit-content; max-width: 100%; }
+/* The heading takes focus when a profile opens (../shared/shell.js). It is
+   not a control, so its ring is lighter than a button's: 2px, hugging the
+   text rather than boxing the whole panel width. Still plainly visible
+   (WCAG 2.4.7), keyboard-only (:focus-visible), and never under the sticky
+   bar above it, since a profile always opens scrolled to the top (2.4.11). */
+.detail-head h2:focus { outline: none; }
+.detail-head h2:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 .detail-place { font-size: .88rem; color: var(--text-mid); margin-top: .25rem; }
 .detail-distance { color: var(--navy); font-weight: 700; }
 .detail-kind {
