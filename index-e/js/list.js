@@ -157,7 +157,7 @@ SF.list.render = function (results, state) {
     listEl.innerHTML =
       '<div class="empty">' +
         '<p class="empty-title">No schools match these filters</p>' +
-        '<p class="empty-body">Try taking off a filter, raising the fee limit, or searching for a town such as “Honiara”.</p>' +
+        '<p class="empty-body">Try taking off a filter, or searching for a town such as “Honiara”.</p>' +
         '<button type="button" class="btn btn-primary" id="empty-clear">Start again</button>' +
       '</div>';
     return;

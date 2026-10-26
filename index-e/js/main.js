@@ -23,6 +23,7 @@ var shell;
 
 document.addEventListener('DOMContentLoaded', function () {
   syncStaticCounts();
+  dropUnanswerableSorts();
 
   SF.filterPanel.init();
   SF.list.init();
@@ -51,6 +52,18 @@ var TOTAL_COUNT = SF.SCHOOLS.length;
 function syncStaticCounts() {
   ['intro-count-long', 'intro-count-short'].forEach(function (id) {
     document.getElementById(id).textContent = TOTAL_COUNT;
+  });
+}
+
+/* The fee sorts can only order schools that have fees; with none in the data
+ * they would just return file order, so they are removed (not merely
+ * disabled) until SF.HAS_FEE_DATA says otherwise. */
+function dropUnanswerableSorts() {
+  if (SF.HAS_FEE_DATA) return;
+  var sort = document.getElementById('sort-select');
+  ['feeLow', 'feeHigh'].forEach(function (v) {
+    var opt = sort.querySelector('option[value="' + v + '"]');
+    if (opt) opt.remove();
   });
 }
 
@@ -128,7 +141,7 @@ var INFO = {
   help: {
     title: 'Help &amp; FAQ',
     body: '<ul><li><strong>Start by searching.</strong> The search box looks at school names, towns, provinces and subjects all at once.</li>' +
-          '<li><strong>Use the Filters button</strong> to narrow things down by school level, province, subjects, fees and more.</li>' +
+          '<li><strong>Use the Filters button</strong> to narrow things down by school level, province, who runs the school and more.</li>' +
           '<li><strong>Picking more than one option widens the results.</strong> Choosing both Honiara and Guadalcanal shows schools in either. Adding a school level narrows them again.</li>' +
           '<li><strong>Subjects work differently:</strong> a school has to teach every subject you tick.</li>' +
           '<li><strong>Share your location</strong> to see how far away each school is and to sort by the closest. Everything else works without it.</li>' +

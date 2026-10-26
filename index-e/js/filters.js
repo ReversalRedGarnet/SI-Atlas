@@ -263,4 +263,15 @@ function setKey(key, value) { var o = {}; o[key] = value; return o; }
 /* Pre-compute the search blobs once so filtered copies inherit them. */
 SF.SCHOOLS.forEach(haystack);
 
+/* --- What the data can actually answer ------------------------------------
+ * A filter or sort that can only ever return nothing (or the same single
+ * school) is not offered. Computed from the records rather than hard-coded,
+ * so each control comes back on its own once real figures arrive.
+ *   - Fees: no record has confirmed fee data, so the fee filter could only
+ *     return 0 schools and both fee sorts would just be file order.
+ *   - Year group: needs at least two schools with a confirmed year span to
+ *     narrow anything down. */
+SF.HAS_FEE_DATA = SF.SCHOOLS.some(function (s) { return s.feeMin !== null; });
+SF.HAS_YEAR_DATA = SF.SCHOOLS.filter(function (s) { return !!s.yearLevels; }).length > 1;
+
 })();
