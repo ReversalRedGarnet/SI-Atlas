@@ -82,6 +82,12 @@
   font-size: 1rem; font-weight: 700; color: var(--link);
   margin-bottom: .3rem; line-height: 1.25;
 }
+/* The row's control: a real button holding the name, styled as the plain
+   heading text it replaces (focus ring from base.css's :focus-visible). */
+.result-btn {
+  background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
 .result:hover .result-name { text-decoration: underline; }
 .result.is-selected .result-name { color: var(--navy); }
 

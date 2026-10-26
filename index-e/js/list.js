@@ -132,13 +132,9 @@ SF.list.init = function () {
     if (row) SF.select(row.getAttribute('data-id'));
   });
 
-  listEl.addEventListener('keydown', function (e) {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    var row = e.target.closest('.result');
-    if (!row) return;
-    e.preventDefault();
-    SF.select(row.getAttribute('data-id'));
-  });
+  /* No keydown handler: each row's name is a real <button> (see card()),
+   * so Enter and Space work natively, and a click anywhere on the row is
+   * caught by the click handler above. */
 
   /* Removable filter chips above the results. */
   chipsEl.addEventListener('click', function (e) {
@@ -230,8 +226,13 @@ function card(school, isSelected) {
 
   return '' +
     '<div class="result' + (isSelected ? ' is-selected' : '') + '" data-id="' + esc(school.id) + '"' +
-      ' role="button" tabindex="0" aria-pressed="' + (isSelected ? 'true' : 'false') + '">' +
-      '<h3 class="result-name">' + esc(school.name) + '</h3>' +
+      '>' +
+      /* The row is a plain container; the control is a real button inside
+       * the heading, so screen readers keep heading navigation and the
+       * facts list, and the button's name is just the school's name.
+       * aria-current marks the one whose profile is open. */
+      '<h3 class="result-name"><button type="button" class="result-btn"' + (isSelected ? ' aria-current="true"' : '') + '>' +
+        esc(school.name) + '</button></h3>' +
       '<dl class="result-facts">' +
         rows.map(function (r) {
           return '<div class="rf"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>';

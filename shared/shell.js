@@ -181,7 +181,7 @@ Atlas.shell.wire = function (ns, opts) {
    *     tabindex="-1"), so keyboard and screen-reader users land on what
    *     they just opened;
    *   - selection cleared: if focus was lost, put it back on that record's
-   *     row (when it is still listed and visible). If focus is somewhere
+   *     row button (when it is still listed and visible). If focus is somewhere
    *     real — the search box, a filter — it is left alone. */
   function syncSelectionFocus(prevId, nextId) {
     if (nextId) {
@@ -192,9 +192,9 @@ Atlas.shell.wire = function (ns, opts) {
     if (!prevId) return;
     var active = document.activeElement;
     if (active && active !== document.body) return;
-    var sel = '#results-list .result[data-id="' + (window.CSS && CSS.escape ? CSS.escape(prevId) : prevId) + '"]';
-    var row = document.querySelector(sel);
-    if (row && row.offsetParent !== null) row.focus();
+    var sel = '#results-list .result[data-id="' + (window.CSS && CSS.escape ? CSS.escape(prevId) : prevId) + '"] .result-btn';
+    var btn = document.querySelector(sel);
+    if (btn && btn.offsetParent !== null) btn.focus();
   }
 
   /* --- When a render pass throws ---------------------------------------------
