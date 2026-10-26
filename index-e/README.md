@@ -53,9 +53,11 @@ There is no build step, no bundler and no server-side code.
   root (`python -m http.server`). A local server is recommended, because
   browser geolocation only works on `https://` or `localhost`.
 
-External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs), a Google
-font (Open Sans) and Esri basemap tiles (see [Basemap](#basemap)). Nothing is
-installed. If Leaflet fails to load, the directory still works — search,
+External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs) and Esri
+basemap tiles (see [Basemap](#basemap)) — nothing else; text uses the
+system font stack (Segoe UI on Windows, San Francisco on Apple devices,
+Roboto or the distribution's sans-serif elsewhere), so no web font is
+fetched. Nothing is installed. If Leaflet fails to load, the directory still works — search,
 filters, list and profiles — and the map column says "Map unavailable, the
 list still works."
 
