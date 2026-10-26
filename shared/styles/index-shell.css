@@ -490,6 +490,19 @@ body.filters-open .filters-rail { transform: translateX(0); }
   .leaflet-bottom.leaflet-right { bottom: 40px; }
 }
 
+/* Short viewports — a laptop at 200% zoom (1280x720 becomes 640x360), a
+   phone held sideways. The fixed, non-scrolling shell above gives the
+   workspace whatever height the masthead, nav, notice, intro and toolbar
+   leave over, which here is nothing: the results list was 0px tall and could
+   not be scrolled to (WCAG 1.4.10 Reflow). Below this height the page scrolls
+   instead — the header chrome scrolls away, and the workspace under it is one
+   full viewport tall, its columns scrolling inside it exactly as before. */
+@media (max-height: 600px) {
+  html, body { height: auto; }
+  body { min-height: 100%; overflow: visible; }
+  .workspace { flex: none; height: 100vh; height: 100dvh; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
