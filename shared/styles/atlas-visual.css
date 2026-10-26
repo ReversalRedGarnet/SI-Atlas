@@ -1,0 +1,492 @@
+/*
+ * SI Atlas — visual refresh layer
+ * Direction: Pacific civic atlas — oceanic, calm, credible, and more polished.
+ * This file intentionally sits after the existing stylesheets. Remove its
+ * <link> from each page to revert the visual treatment without touching app logic.
+ */
+:root {
+  --navy:       #10394A;
+  --navy-dark:  #082B39;
+  --navy-mid:   #1A5663;
+  --navy-pale:  #E3F1EF;
+  --link:       #087C7A;
+  --link-hover: #075E61;
+  --green:      #11766C;
+  --red:        #B64D42;
+  --gold:       #E4B05C;
+  --page:       #F2F6F4;
+  --panel:      #FFFFFF;
+  --panel-alt:  #F7FAF8;
+  --band:       #EAF2EF;
+  --notice-bg:  #FFF5E3;
+  --rule:       #D6E2DE;
+  --rule-soft:  #E7EEEB;
+  --rule-strong:#8BA29C;
+  --text:       #1C3036;
+  --text-mid:   #4C6266;
+  --mute:       #63787A;
+  --font-ui:    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-head:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  color: var(--text);
+  background-color: var(--page);
+  font-family: var(--font-ui);
+  letter-spacing: .002em;
+}
+h1, h2, h3 { letter-spacing: -.025em; }
+:focus-visible { outline-color: var(--link); outline-offset: 3px; }
+
+/* Controls: consistent radii, quieter borders, more deliberate hover states. */
+.btn {
+  border-radius: 8px;
+  transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+.btn-primary { background: var(--navy); border-color: var(--navy); box-shadow: 0 2px 5px rgba(8,43,57,.12); }
+.btn-primary:hover { background: var(--navy-dark); border-color: var(--navy-dark); box-shadow: 0 4px 10px rgba(8,43,57,.16); }
+.btn-secondary { border-color: #C9D8D3; border-radius: 8px; }
+.btn-secondary:hover, .btn-secondary.is-active { background: var(--navy-pale); border-color: var(--link); }
+.link-btn { color: var(--link); }
+.text-close { border-radius: 7px; border-color: #C9D8D3; }
+.select, .search-input, .mini-search {
+  border-radius: 8px;
+  border-color: #C9D8D3;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.search-input { padding-left: .8rem; padding-right: .8rem; }
+.search-input:focus, .mini-search:focus, .select:focus-visible {
+  outline: 3px solid rgba(8,124,122,.18);
+  outline-offset: 0;
+  border-color: var(--link);
+  box-shadow: 0 0 0 1px var(--link);
+}
+.count-pill { border-radius: 999px; background: var(--link); }
+.chip { border-radius: 999px; }
+.badge { border-radius: 999px; padding: .22rem .6rem; }
+.badge-verified { color: #146B54; border-color: #A8D7C4; background: #E6F5EE; }
+.badge-unverified, .badge-unknown { border-color: #D4DFDB; background: #F1F5F3; }
+
+/* App chrome. The dark masthead gives the atlas a stable, memorable identity. */
+.masthead {
+  background: linear-gradient(112deg, #0A2B3D 0%, #10495A 72%, #0F6D70 100%);
+  border-bottom: 3px solid var(--gold);
+}
+.masthead-inner { padding-top: .72rem; padding-bottom: .72rem; }
+.service-name { color: #FFFFFF; font-size: 1.3rem; letter-spacing: -.035em; }
+.gov-nav {
+  background: #082B39;
+  box-shadow: 0 5px 15px rgba(8,43,57,.10);
+}
+.gov-nav-inner { gap: .25rem; }
+.nav-link {
+  padding: .68rem .95rem;
+  border: 0 !important;
+  border-radius: 8px 8px 0 0;
+  margin-top: .22rem;
+  color: rgba(255,255,255,.82);
+  transition: color .15s ease, background-color .15s ease;
+}
+.nav-link:hover { background: rgba(255,255,255,.1); color: #FFFFFF; }
+.gov-nav :focus-visible, .masthead :focus-visible, .rail-head :focus-visible { outline-color: var(--gold); }
+
+.notice {
+  padding-top: .48rem;
+  padding-bottom: .48rem;
+  background: var(--notice-bg);
+  border-bottom-color: #F0DDB8;
+  border-left: 4px solid #D78B4F;
+  font-size: .82rem;
+}
+.notice-label { color: #95502E; }
+.page-intro {
+  padding-top: .95rem;
+  padding-bottom: 1rem;
+  background: linear-gradient(105deg, #FFFFFF 5%, #F0F8F5 100%);
+  border-bottom-color: #DCE8E3;
+}
+.page-intro h1 {
+  color: var(--navy);
+  font-size: clamp(1.3rem, 1.6vw, 1.75rem);
+  line-height: 1.2;
+  margin-bottom: .35rem;
+  letter-spacing: -.04em;
+}
+.page-intro p { color: #50676A; line-height: 1.55; }
+.toolbar {
+  background: #F7FAF8;
+  border-bottom-color: #DDE7E2;
+  padding-top: .8rem;
+  padding-bottom: .85rem;
+}
+.field-label { color: #52696C; font-size: .78rem; letter-spacing: .015em; }
+
+/* Workspace panels retain the existing layout and dimensions, but get a
+   softer card treatment and a little breathing room. */
+.results-col, .detail-col {
+  border: 1px solid var(--rule);
+  border-radius: 13px;
+  box-shadow: 0 4px 18px rgba(20,55,60,.06);
+  overflow: hidden;
+}
+.results-col { margin: .55rem 0 .55rem .55rem; }
+.detail-col { margin: .55rem 0 .55rem .55rem; }
+.map-col {
+  margin: .55rem;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(20,55,60,.08);
+  background: #DCEBE7;
+}
+.results-head {
+  background: linear-gradient(110deg, #E7F2EF, #F4F8F6);
+  border-bottom-color: var(--rule);
+  padding: .65rem .85rem .7rem;
+}
+.results-head h2 { color: var(--navy); font-size: .98rem; }
+.results-sub { color: var(--text-mid); }
+.result {
+  width: auto;
+  margin: .35rem .5rem;
+  padding: .72rem .78rem;
+  border: 1px solid var(--rule-soft);
+  border-left: 4px solid transparent;
+  border-radius: 9px;
+  background: #FFFFFF;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.result:hover {
+  background: #F8FCFA;
+  border-color: #C8DDD5;
+  box-shadow: 0 3px 9px rgba(16,57,74,.06);
+}
+.result.is-selected {
+  background: #EAF5F1;
+  border-color: #A8CEC1;
+  border-left-color: var(--link);
+  box-shadow: 0 2px 8px rgba(8,124,122,.08);
+}
+.result-name { color: var(--link); line-height: 1.3; }
+.result.is-selected .result-name { color: var(--navy); }
+.detail-bar { background: #F2F7F5; border-bottom-color: var(--rule); }
+.detail-head { padding-top: 1rem; }
+.detail-head h2 { color: var(--navy); letter-spacing: -.035em; }
+.detail-section h3 {
+  margin-left: .72rem;
+  margin-right: .72rem;
+  padding: .42rem .65rem;
+  border-radius: 7px;
+  background: var(--navy);
+  letter-spacing: .055em;
+}
+.detail-flag {
+  border-radius: 0 7px 7px 0;
+  background: #FFF6E5;
+}
+.source-list { padding-left: .9rem; padding-right: .9rem; }
+.correction { border-top-color: var(--rule); }
+
+/* Filters and map UI. */
+.filters-rail {
+  border-right: 1px solid var(--rule);
+  box-shadow: 10px 0 35px rgba(8,43,57,.14);
+}
+.rail-head { background: var(--navy-dark); }
+.rail-foot { background: #F5F9F7; border-top-color: var(--rule); }
+.fsection > summary { background: #F7FAF8; }
+.fsection > summary:hover { background: #E8F2EE; }
+.check:hover { background: #F5FAF7; }
+.check input:checked + .check-box { background: var(--link); border-color: var(--link); }
+.check input:focus-visible + .check-box { outline-color: var(--link); }
+.map-note {
+  border: 1px solid rgba(195,214,207,.95);
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(12,48,60,.16);
+  overflow: hidden;
+  background: rgba(255,255,255,.97);
+  backdrop-filter: blur(8px);
+}
+.map-note-toggle { border-radius: 11px 11px 0 0; }
+.map-note-toggle:hover { background: #F0F7F4; }
+.map-key-title { color: var(--navy); }
+.map-reset { border-radius: 8px; box-shadow: 0 3px 10px rgba(12,48,60,.12); }
+.leaflet-control-zoom { overflow: hidden; border: 1px solid #C5D9D2 !important; border-radius: 9px !important; box-shadow: 0 3px 12px rgba(12,48,60,.12) !important; }
+.leaflet-control-zoom a { border-radius: 0 !important; color: var(--navy) !important; }
+.leaflet-control-zoom a:hover { background: #EAF5F1 !important; }
+.leaflet-popup-content-wrapper { border-radius: 10px !important; }
+.leaflet-popup-tip { box-shadow: none !important; }
+.leaflet-tooltip { border-radius: 6px; border-color: #C5D9D2; box-shadow: 0 2px 8px rgba(12,48,60,.08); }
+
+.modal { background: rgba(5,30,40,.58); backdrop-filter: blur(3px); }
+.modal-card {
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--link);
+  border-radius: 16px;
+  box-shadow: 0 22px 70px rgba(4,30,39,.28);
+  padding: 1.4rem 1.45rem;
+}
+.modal-card h2 { color: var(--navy); }
+.scrim { background: rgba(5,30,40,.43); backdrop-filter: blur(2px); }
+
+/* Portal landing page — more like the front door to a real public-data tool. */
+.portal-page {
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: clamp(1rem, 3vw, 2.8rem);
+  background:
+    radial-gradient(ellipse at 88% 8%, rgba(18,124,118,.09), transparent 29rem),
+    linear-gradient(180deg, #F5F8F6 0%, #EEF4F1 100%);
+}
+.portal-page::before {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  left: -11rem;
+  bottom: -17rem;
+  width: 30rem;
+  height: 30rem;
+  border: 1px solid rgba(12,106,106,.09);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2rem rgba(12,106,106,.025), 0 0 0 4rem rgba(12,106,106,.02), 0 0 0 6rem rgba(12,106,106,.015);
+}
+.portal { position: relative; z-index: 1; width: 100%; max-width: 1120px; margin: 0 auto; }
+.portal-head {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 270px;
+  padding: clamp(2rem, 5.5vw, 4.5rem);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 23px;
+  background: linear-gradient(115deg, #092C3F 0%, #104B5A 65%, #0D7774 100%);
+  box-shadow: 0 16px 44px rgba(8,43,57,.16);
+}
+.portal-head::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 390px;
+  height: 390px;
+  top: -205px;
+  right: -52px;
+  border: 1px solid rgba(255,255,255,.17);
+  border-radius: 50%;
+  box-shadow: 0 0 0 27px rgba(255,255,255,.035), 0 0 0 58px rgba(255,255,255,.03), 0 0 0 90px rgba(255,255,255,.022);
+}
+.portal-head::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 160px;
+  height: 160px;
+  right: 9%;
+  bottom: -115px;
+  border: 1px solid rgba(228,176,92,.45);
+  border-radius: 50%;
+  box-shadow: 0 0 0 15px rgba(228,176,92,.07), 0 0 0 30px rgba(228,176,92,.04);
+}
+.portal-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  margin-bottom: 1rem;
+  color: #C9E8DE;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.portal-eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px rgba(228,176,92,.17); }
+.portal-head h1 {
+  color: #FFFFFF;
+  font-size: clamp(2.6rem, 6.6vw, 4.6rem);
+  line-height: 1.02;
+  font-weight: 800;
+  letter-spacing: -.065em;
+  margin-bottom: .9rem;
+}
+.portal-head p {
+  max-width: 68ch;
+  color: rgba(246,252,249,.84);
+  font-size: clamp(.96rem, 1.45vw, 1.08rem);
+  line-height: 1.7;
+}
+.portal-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: .9rem;
+}
+.portal-section-heading h2 { color: var(--navy); font-size: 1.2rem; letter-spacing: -.035em; }
+.portal-section-heading p { margin-top: .2rem; font-size: .88rem; color: var(--text-mid); }
+.index-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 0;
+}
+.index-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 225px;
+  padding: 1.35rem 1.3rem 1.2rem;
+  overflow: hidden;
+  border: 1px solid #D7E4DF;
+  border-radius: 16px;
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 5px 18px rgba(22,58,58,.045);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform .17s ease, box-shadow .17s ease, border-color .17s ease, background-color .17s ease;
+}
+.index-card::before {
+  content: "E";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 1.1rem;
+  border: 1px solid #C9E2D8;
+  border-radius: 12px;
+  background: #EAF5F0;
+  color: #126D63;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -.04em;
+}
+.index-card:nth-child(2)::before { content: "P"; color: #8B6330; background: #FBF2E3; border-color: #EEDDBA; }
+.index-card:nth-child(3)::before { content: "H"; color: #456E9B; background: #EDF3FA; border-color: #D5E1F0; }
+.index-card.is-live:hover {
+  background: #FFFFFF;
+  border-color: #98C6B7;
+  transform: translateY(-3px);
+  box-shadow: 0 13px 28px rgba(22,76,67,.11);
+}
+.index-card:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+.index-card.is-pending { background: rgba(249,251,250,.8); border-style: dashed; color: var(--mute); box-shadow: none; }
+.index-card.is-pending::before { opacity: .72; }
+.index-name {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .55rem;
+  padding-right: 0;
+  color: var(--navy);
+  font-size: 1.1rem;
+  line-height: 1.3;
+  letter-spacing: -.025em;
+}
+.index-card.is-pending .index-name { color: #607477; }
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: .2rem .5rem;
+  border: 1px solid #D8E5DF;
+  border-radius: 999px;
+  background: #F6FAF8;
+  color: #4E6867;
+  font-size: .65rem;
+  letter-spacing: .06em;
+}
+.index-card.is-live .status-tag { background: #E8F5EF; border-color: #BCE0D0; color: #166C51; }
+.index-card.is-pending .status-tag { background: #F2F5F3; color: #68797A; }
+.index-desc { margin-top: .6rem; color: var(--text-mid); font-size: .88rem; line-height: 1.6; }
+.index-count {
+  margin-top: auto;
+  padding-top: 1.1rem;
+  color: var(--link);
+  font-size: .78rem;
+  font-weight: 750;
+  line-height: 1.5;
+}
+.index-card.is-pending .index-count { color: var(--mute); }
+.portal-foot {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  margin-top: 1.5rem;
+  padding: 1rem .1rem 0;
+  border-top: 1px solid #D6E2DE;
+  color: #627779;
+  font-size: .8rem;
+  line-height: 1.55;
+}
+.portal-foot::before { content: ""; display: block; flex: none; width: 7px; height: 7px; background: var(--link); border-radius: 50%; }
+
+/* Health placeholder and 404 page share the same calmer surfaces. */
+.health-page {
+  background: radial-gradient(ellipse at 50% 5%, rgba(13,119,116,.08), transparent 26rem), var(--page);
+}
+.health-page .coming-soon {
+  width: 100%;
+  max-width: 560px;
+  padding: clamp(1.7rem, 5vw, 3rem);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  background: rgba(255,255,255,.94);
+  box-shadow: 0 16px 44px rgba(8,43,57,.08);
+  text-align: left;
+}
+.health-page .coming-soon::before {
+  content: "INDEX H  /  IN DEVELOPMENT";
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: .3rem .55rem;
+  border: 1px solid #D6E5F0;
+  border-radius: 999px;
+  background: #F0F5FA;
+  color: #456E9B;
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+}
+.health-page .coming-soon h1 { color: var(--navy); font-size: 1.8rem; letter-spacing: -.04em; }
+.health-page .coming-soon p { margin-top: .7rem; color: var(--text-mid); line-height: 1.7; }
+.health-page .back-link { margin-top: 1.3rem; font-weight: 700; }
+
+@media (max-width: 1199px) {
+  .results-col { margin-right: .5rem; }
+  .map-col { margin-left: .15rem; }
+}
+@media (max-width: 859px) {
+  .masthead-inner { padding-top: .5rem; padding-bottom: .5rem; }
+  .service-name { font-size: 1.12rem; }
+  .nav-link { border-radius: 7px 7px 0 0; }
+  .page-intro { padding-top: .6rem; padding-bottom: .65rem; }
+  .toolbar { padding-top: .55rem; padding-bottom: .6rem; }
+  .results-col { margin: 0; border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
+  .detail-col { margin: 0; border-radius: 18px 18px 0 0; border-left: 0; border-right: 0; border-top: 3px solid var(--link); box-shadow: 0 -10px 30px rgba(8,43,57,.18); }
+  .map-col { margin: 0; border-radius: 0; box-shadow: none; }
+  .result { margin: .4rem .55rem; }
+  .view-switch { border: 1px solid var(--navy); border-radius: 11px; overflow: hidden; box-shadow: 0 5px 18px rgba(8,43,57,.2); }
+  .vs-btn { height: 40px; }
+  .vs-btn + .vs-btn { border-left-color: rgba(255,255,255,.2); }
+  .portal-page { padding: .8rem; }
+  .portal-head { min-height: 245px; border-radius: 18px; padding: 2rem 1.5rem; }
+  .portal-head::before { right: -220px; }
+  .portal-section-heading { margin-top: 1.5rem; }
+  .index-list { grid-template-columns: 1fr; gap: .7rem; }
+  .index-card { min-height: 0; padding: 1.1rem; border-radius: 13px; }
+  .index-card::before { width: 36px; height: 36px; margin-bottom: .7rem; border-radius: 10px; }
+  .index-desc { margin-top: .4rem; }
+  .index-count { padding-top: .75rem; }
+  .portal-foot { align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn, .index-card, .search-input, .mini-search { transition: none !important; }
+}
