@@ -175,6 +175,10 @@
   padding: 0 .9rem .9rem;
   font-size: .9rem; color: var(--text); line-height: 1.5;
 }
+/* No Directions/Call/Website row (a school with no coordinates or contact
+   details): the description would otherwise sit flush against the source
+   line. Same gap the action row leaves when it is there. */
+.detail-head + .detail-desc { padding-top: .8rem; }
 
 .detail-section { padding: 0 0 .9rem; }
 /* The MEHRD signature: a solid navy bar as a section header. */
