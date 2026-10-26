@@ -120,11 +120,15 @@ SI-Atlas/
 │   │                         page); each working index keeps its own
 │   └── styles/
 │       ├── base.css         shared design tokens, reset, generic UI primitives
-│       └── index-shell.css  the page skeleton every index shares: masthead,
-│                             nav bar, service notice, page heading, search
-│                             toolbar, workspace column frame, filter-drawer
-│                             chrome, mobile list/map switch, scrim + modal,
-│                             and their responsive reflow
+│       ├── index-shell.css  the page skeleton every index shares: masthead,
+│       │                     nav bar, service notice, page heading, search
+│       │                     toolbar, workspace column frame, filter-drawer
+│       │                     chrome, mobile list/map switch, scrim + modal,
+│       │                     and their responsive reflow
+│       ├── atlas-visual.css the SI Atlas look (palette, radii, type): an
+│       │                     override layer every page loads last; removing
+│       │                     its <link> restores the older square look
+│       └── VISUAL-REFRESH.md notes on that layer and how to revert it
 ├── index-e/                Index E — Education (see index-e/README.md)
 ├── index-p/                Index P — Policing (see index-p/README.md)
 └── index-h/                Index H — Health (stub, not yet built)
@@ -141,8 +145,9 @@ logic (Index E uses `SF`, Index P uses `SP`).
 1. Copy the shape of `index-h/` for a stub, or `index-e/` / `index-p/` for a
    working example: an `index.html` at `index-<letter>/`, its own `css/` and
    `js/`, loading `../shared/styles/base.css` then
-   `../shared/styles/index-shell.css` before its own stylesheet, and the
-   shared scripts before its own — `util.js` first (everything else depends
+   `../shared/styles/index-shell.css` before its own stylesheet and
+   `../shared/styles/atlas-visual.css` after it (the look; see
+   `index-e/README.md` "Design notes"), and the shared scripts before its own — `util.js` first (everything else depends
    on it), then `sources.js`, `schema.js` (only if the index builds its
    records through it, as Index P does), `map.js`, `verification-badge.js`,
    `map-legend.js`, `geolocation.js`, `filter-kit.js`, `shell.js`.

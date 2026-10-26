@@ -75,7 +75,8 @@ body {
 }
 
 /* Focus: navy on light surfaces, gold over the navy bars where navy would
-   disappear (gold on navy measures 4.95:1). Base default is navy — see
+   disappear (atlas-visual.css makes the light-surface ring teal; its gold
+   measures 7.5:1 on the dark nav). Base default is navy — see
    shared/styles/base.css. The filter drawer's header (.rail-head) is navy
    too, and its "Clear all" and "Close" take focus first when it opens. */
 .gov-nav :focus-visible,

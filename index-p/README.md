@@ -195,11 +195,13 @@ turns gold, grows and is drawn on top.
 
 ## Design notes
 
-**Visual reference** is the same as every other SI Atlas index — the live
-Solomon Islands Government services portal (solomons.gov.sb): Arial / Open Sans
-over a light grey page, navy nav bar, solid navy section header bars, green
-page headings, borders instead of shadows, `border-radius: 0` throughout. See
-`../shared/styles/base.css`.
+**The look is SI Atlas's own, shared with every index**, and on purpose not a
+copy of the Solomon Islands Government or RSIPF sites, so the directory does
+not pass for an official service. It is set by
+`../shared/styles/atlas-visual.css` (loaded after the other stylesheets):
+ocean-navy `#10394A` and teal `#087674` with a gold `#E4B05C` accent, rounded
+cards and controls, and the system font stack, with no web font. Palette,
+radii, type and the reasons are in Index E's README, under "Design notes".
 
 **The masthead and favicon deliberately do not use the national coat of arms or
 an RSIPF badge.** They carry a neutral shield service mark instead, following
