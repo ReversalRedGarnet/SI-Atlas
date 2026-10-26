@@ -187,9 +187,11 @@
 </main>
 
 <!-- Mobile list/map switch -->
-<div class="view-switch" role="tablist" aria-label="Switch view">
-  <button type="button" role="tab" class="vs-btn is-active" data-view="list" aria-selected="true">List</button>
-  <button type="button" role="tab" class="vs-btn" data-view="map" aria-selected="false">Map</button>
+<!-- A pair of toggle buttons (aria-pressed), not tabs: there are no tab
+     panels or arrow-key behaviour behind them, just two views. -->
+<div class="view-switch" role="group" aria-label="Show results as">
+  <button type="button" class="vs-btn is-active" data-view="list" aria-pressed="true">List</button>
+  <button type="button" class="vs-btn" data-view="map" aria-pressed="false">Map</button>
 </div>
 
 <div class="scrim" id="scrim" hidden></div>

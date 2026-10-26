@@ -264,7 +264,7 @@ Atlas.shell.wire = function (ns, opts) {
         document.querySelectorAll('.vs-btn').forEach(function (b) {
           var on = b === btn;
           b.classList.toggle('is-active', on);
-          b.setAttribute('aria-selected', String(on));
+          b.setAttribute('aria-pressed', String(on));
         });
         ns.setState({ mobileView: view });
         refreshMapSoon();
