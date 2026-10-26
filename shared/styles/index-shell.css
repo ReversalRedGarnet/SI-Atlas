@@ -75,10 +75,12 @@ body {
 }
 
 /* Focus: navy on light surfaces, gold over the navy bars where navy would
-   disappear (gold on navy measures 4.3:1). Base default is navy — see
-   shared/styles/base.css. */
+   disappear (gold on navy measures 4.95:1). Base default is navy — see
+   shared/styles/base.css. The filter drawer's header (.rail-head) is navy
+   too, and its "Clear all" and "Close" take focus first when it opens. */
 .gov-nav :focus-visible,
-.masthead :focus-visible { outline-color: var(--gold); }
+.masthead :focus-visible,
+.rail-head :focus-visible { outline-color: var(--gold); }
 
 /* --- Masthead ------------------------------------------------------------
    The logo and the service name, side by side. Nothing else — see the note
@@ -196,6 +198,24 @@ body.has-selection .detail-col { display: flex; }
 .map-col { flex: 1 1 auto; min-width: 0; position: relative; z-index: 1; background: #dbe3ee; }
 #map { position: absolute; inset: 0; }
 .map-reset { position: absolute; right: 10px; top: 84px; z-index: 500; }
+
+/* Before the first render: the list column says it is loading (and, with
+   JavaScript off, why it never will). The first render replaces both. */
+.list-loading, .list-loading-noscript {
+  margin: 0; padding: 1.5rem 1rem;
+  font-size: .9rem; color: var(--text-mid); text-align: center;
+}
+
+/* Leaflet failed to load (see Atlas.map.showUnavailable in shared/map.js):
+   one plain line instead of a blank panel, and no key or reset button for a
+   map that isn't there. */
+.map-unavailable {
+  margin: 1rem; padding: .6rem .8rem;
+  background: var(--panel); border: 1px solid var(--rule-strong);
+  font-size: .9rem; color: var(--text);
+}
+.map-col.is-unavailable .map-note,
+.map-col.is-unavailable .map-reset { display: none; }
 
 /* --- Filter drawer ---------------------------------------------------------
    The drawer chrome (rail, header, footer, disclosure sections) and the
@@ -475,6 +495,19 @@ body.filters-open .filters-rail { transform: translateX(0); }
   .map-note { bottom: 56px; left: 6px; font-size: .74rem; }
   .map-reset { top: 78px; right: 6px; }
   .leaflet-bottom.leaflet-right { bottom: 40px; }
+}
+
+/* Short viewports — a laptop at 200% zoom (1280x720 becomes 640x360), a
+   phone held sideways. The fixed, non-scrolling shell above gives the
+   workspace whatever height the masthead, nav, notice, intro and toolbar
+   leave over, which here is nothing: the results list was 0px tall and could
+   not be scrolled to (WCAG 1.4.10 Reflow). Below this height the page scrolls
+   instead — the header chrome scrolls away, and the workspace under it is one
+   full viewport tall, its columns scrolling inside it exactly as before. */
+@media (max-height: 600px) {
+  html, body { height: auto; }
+  body { min-height: 100%; overflow: visible; }
+  .workspace { flex: none; height: 100vh; height: 100dvh; }
 }
 
 @media (prefers-reduced-motion: reduce) {

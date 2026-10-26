@@ -36,10 +36,36 @@ document.addEventListener('DOMContentLoaded', function () {
     storageKey: 'si-atlas:index-p:map-legend'
   });
 
-  shell = Atlas.shell.wire(SP, { info: INFO });
+  shell = Atlas.shell.wire(SP, {
+    info: INFO,
+    indexName: 'Index P — Policing',
+    /* Read out (politely, once typing pauses) when the count changes. */
+    describeCount: function (n) {
+      if (n === 0) return 'No stations or posts match';
+      if (n === TOTAL_COUNT) return 'Showing all ' + n + ' stations and posts';
+      return n === 1 ? '1 station or post matches' : n + ' stations and posts match';
+    }
+  });
+
+  /* Shareable links: read the URL hash into state now (before the first
+   * render), keep it in step afterwards — see ../shared/links.js. Every
+   * value is checked against the vocabularies below. */
+  var links = Atlas.links.wire(SP, {
+    idParam: 'station',
+    isRecord: function (id) { return !!SP.getStationById(id); },
+    arrays: {
+      types: SP.FACILITY_TYPES.map(function (t) { return t.value; }),
+      provinces: SP.PROVINCES,
+      verification: SP.VERIFICATION_FILTER_OPTIONS
+    },
+    choices: { mapped: ['yes', 'no'] },
+    flags: ['hasPhone']
+  });
 
   SP.subscribe(render);
+  SP.subscribe(links.write);   // after render(), which may drop a filtered-out selection
   render(SP.state);
+  links.write(SP.state);
 });
 
 /* --- Whole-dataset counts (fixed for the page's lifetime, unlike the
@@ -64,7 +90,17 @@ function syncStaticCounts() {
 var prevSelectedId = null;
 var prevFiltersOpen = false;
 
+/* If a pass throws, say so in the list (and log it) rather than leave it
+ * blank or half-drawn — see renderFailed() in ../shared/shell.js. */
 function render(state) {
+  try {
+    draw(state);
+  } catch (err) {
+    shell.renderFailed(err);
+  }
+}
+
+function draw(state) {
   var results = SP.filters.getResults(state);
 
   /* Invariant: whatever is selected must be part of the visible result set.
@@ -77,6 +113,7 @@ function render(state) {
 
   SP.list.render(results, state);
   SP.map.render(results, state);
+  shell.syncMapSummary(results.filter(SP.filters.isLocated).length, results.length, ['station or post', 'stations and posts']);
   SP.panel.render(state);
   SP.filterPanel.sync(state);
   shell.syncToolbar(state, results);
@@ -102,6 +139,8 @@ function render(state) {
       SP.map.focus(SP.getStationById(state.selectedId));
       SP.list.revealSelected(state.selectedId);
     }
+    /* The list and profile were just rebuilt, taking focus with them. */
+    shell.syncSelectionFocus(prevSelectedId, state.selectedId);
     prevSelectedId = state.selectedId;
     shell.refreshMapSoon();    // the map column just changed width
   }
@@ -150,7 +189,7 @@ var INFO = {
           '<li><strong>Use the Filters button</strong> to narrow by kind of facility, province, verification status, whether a record has coordinates, and whether it has a phone number.</li>' +
           '<li><strong>Picking more than one option widens the results.</strong> Choosing both Western and Choiseul shows stations in either. Adding a facility type narrows them again.</li>' +
           '<li><strong>Some records are not on the map.</strong> ' + UNMAPPED_COUNT + ' of the ' + TOTAL_COUNT + ' have no confirmed coordinates, and this directory will not invent one. They are still fully searchable — filter “Map location” to “Not yet” to see exactly which.</li>' +
-          '<li><strong>Every marker is a dashed circle.</strong> That means an approximate coordinate. No coordinate in this dataset comes from an official surveyed source, so none is drawn as exact.</li>' +
+          '<li><strong>Every marker has a dashed outline.</strong> That means an approximate coordinate; the marker’s shape shows the kind of facility. No coordinate in this dataset comes from an official surveyed source, so none is drawn as exact.</li>' +
           '<li><strong>Some records list two or three phone numbers.</strong> Different sources of different dates gave different numbers and the difference has not been resolved, so all are kept. The record’s notes explain each case.</li>' +
           '<li>Tap a station in the list or on the map to see its full record, including its sources. Press <kbd>Esc</kbd> to go back.</li></ul>'
   }

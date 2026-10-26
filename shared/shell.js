@@ -32,8 +32,12 @@
  *   content: `{ about: {title, body}, useful: {...}, contact: {...}, help: {...} }`,
  *   each `body` an HTML string. Content only — the modal's own behaviour
  *   (open/close, focus return, click-outside-to-close) is handled here.
- * @returns {Object} `{ refreshMapSoon, syncToolbar }` — the two things the
- *   caller's own render() pass needs to invoke itself.
+ * @param {string} [opts.indexName] - e.g. 'Index E — Education'; used in
+ *   the problem report renderFailed() offers.
+ * @param {function} [opts.describeCount] - n -> words for the result count,
+ *   announced to screen readers when it changes ("27 schools match").
+ * @returns {Object} `{ refreshMapSoon, syncToolbar, syncSelectionFocus }` —
+ *   the things the caller's own render() pass needs to invoke itself.
  * ==========================================================================*/
 
 (function () {
@@ -41,6 +45,19 @@
 
 window.Atlas = window.Atlas || {};
 Atlas.shell = {};
+
+/**
+ * Say something to screen-reader users without moving focus, through the
+ * page's one polite live region (#live-status, visually hidden, present in
+ * the page from the start so announcements are picked up reliably). Cleared
+ * first, so saying the same thing twice ("Link copied") is announced twice.
+ */
+Atlas.shell.announce = function (text) {
+  var el = document.getElementById('live-status');
+  if (!el) return;
+  el.textContent = '';
+  setTimeout(function () { el.textContent = text; }, 60);
+};
 
 Atlas.shell.wire = function (ns, opts) {
   opts = opts || {};
@@ -107,7 +124,21 @@ Atlas.shell.wire = function (ns, opts) {
     });
   }
 
+  /* Result count, said to screen readers when it changes (not on the first
+   * render, and only once typing pauses, so each keystroke isn't read out).
+   * opts.describeCount(n) supplies the index's own wording. */
+  var lastCount = null, countTimer = null;
+  function announceCount(n) {
+    if (!opts.describeCount) return;
+    if (lastCount === null) { lastCount = n; return; }
+    if (n === lastCount) return;
+    lastCount = n;
+    clearTimeout(countTimer);
+    countTimer = setTimeout(function () { Atlas.shell.announce(opts.describeCount(n)); }, 500);
+  }
+
   function syncToolbar(state, results) {
+    announceCount(results.length);
     var granted = state.geoStatus === 'granted' && !!state.userLocation;
 
     document.getElementById('search-clear').hidden = state.query === '';
@@ -139,6 +170,98 @@ Atlas.shell.wire = function (ns, opts) {
     locateBtn.title = locateText;
 
     document.getElementById('drawer-count').textContent = results.length;
+  }
+
+  /* --- Focus across a selection change ----------------------------------------
+   * Both the list and the profile are rebuilt with innerHTML on every render,
+   * so whatever had focus inside them (the row you pressed Enter on, the
+   * profile's Close button) is destroyed and focus falls to <body>. Call
+   * this from render() whenever the selected id changes:
+   *   - something newly selected: focus the profile heading (#detail-name,
+   *     tabindex="-1"), so keyboard and screen-reader users land on what
+   *     they just opened;
+   *   - selection cleared: if focus was lost, put it back on that record's
+   *     row button (when it is still listed and visible). If focus is somewhere
+   *     real — the search box, a filter — it is left alone. */
+  function syncSelectionFocus(prevId, nextId) {
+    if (nextId) {
+      var heading = document.getElementById('detail-name');
+      if (heading) heading.focus({ preventScroll: true });
+      return;
+    }
+    if (!prevId) return;
+    var active = document.activeElement;
+    if (active && active !== document.body) return;
+    var sel = '#results-list .result[data-id="' + (window.CSS && CSS.escape ? CSS.escape(prevId) : prevId) + '"] .result-btn';
+    var btn = document.querySelector(sel);
+    if (btn && btn.offsetParent !== null) btn.focus();
+  }
+
+  /* --- The map, in words -----------------------------------------------------
+   * A screen-reader summary of what the map shows, kept in #map-summary
+   * (visually hidden, referenced by the map region's aria-describedby, so it
+   * is read when the map is reached — not a live region, so it never
+   * interrupts). Updated on every render.
+   *
+   * @param {number} shown - results with a location, i.e. drawn as markers
+   * @param {number} total - all current results
+   * @param {string[]} nouns - [singular, plural], e.g. ['school', 'schools'] */
+  function syncMapSummary(shown, total, nouns) {
+    var el = document.getElementById('map-summary');
+    if (!el) return;
+    var noun = function (n) { return n === 1 ? nouns[0] : nouns[1]; };
+    var text;
+    if (document.querySelector('.map-col.is-unavailable')) {
+      text = 'The map could not load. Every ' + nouns[0] + ' in these results is in the list.';
+    } else if (total === 0) {
+      text = 'The map shows no ' + nouns[1] + ': nothing matches the current search and filters.';
+    } else if (shown === 0) {
+      text = (total === 1 ? 'The ' + nouns[0] + ' in these results has' : 'None of the ' + total + ' ' + nouns[1] + ' in these results has') +
+        ' a confirmed location, so the map shows no markers; ' + (total === 1 ? 'it is' : 'they are') + ' in the list.';
+    } else if (shown === total) {
+      text = 'The map shows ' + (total === 1 ? 'the ' + nouns[0] : 'all ' + total + ' ' + nouns[1]) + ' in these results.' +
+        ' Each marker can be reached with the Tab key and opens the same profile as the list.';
+    } else {
+      text = 'The map shows ' + shown + ' of the ' + total + ' ' + noun(total) + ' in these results' +
+        (total > shown
+          ? '; the other ' + (total - shown) + ' ' + (total - shown === 1 ? 'has' : 'have') +
+            ' no confirmed location and ' + (total - shown === 1 ? 'is' : 'are') + ' in the list only.'
+          : '.') +
+        (shown ? ' Each marker can be reached with the Tab key and opens the same profile as the list.' : '');
+    }
+    el.textContent = text;
+  }
+
+  /* --- When a render pass throws ---------------------------------------------
+   * Better a plain message than a blank or half-drawn list: log the error,
+   * and put "Something went wrong" in the list with a way to report it (a
+   * pre-filled GitHub issue, as for corrections — shared/corrections.js). */
+  function renderFailed(err) {
+    if (window.console) console.error('SI Atlas: rendering failed —', err);
+    var list = document.getElementById('results-list');
+    if (!list) return;
+    var esc = Atlas.util.esc;
+    var tell = 'tell us';
+    if (Atlas.corrections) {
+      var body = [
+        '**Index:** ' + (opts.indexName || document.title),
+        /^https?:$/.test(location.protocol) ? '**Page:** ' + location.href : null,
+        '**Error:** ' + (err && err.message ? err.message : String(err)),
+        '',
+        '### What were you doing when it happened?',
+        ''
+      ].filter(function (line) { return line !== null; }).join('\n');
+      var href = Atlas.util.safeUrl(Atlas.corrections.issueUrl('Problem: page error in ' + (opts.indexName || 'SI Atlas'), body));
+      if (href) {
+        tell = '<a href="' + esc(href) + '" target="_blank" rel="noopener">tell us' +
+          '<span class="sr-only"> (opens GitHub in a new tab)</span></a>';
+      }
+    }
+    list.innerHTML =
+      '<div class="empty render-error" role="alert">' +
+        '<p class="empty-title">Something went wrong.</p>' +
+        '<p class="empty-body">Reload the page, or ' + tell + '.</p>' +
+      '</div>';
   }
 
   function resetEverything() {
@@ -176,7 +299,7 @@ Atlas.shell.wire = function (ns, opts) {
         document.querySelectorAll('.vs-btn').forEach(function (b) {
           var on = b === btn;
           b.classList.toggle('is-active', on);
-          b.setAttribute('aria-selected', String(on));
+          b.setAttribute('aria-pressed', String(on));
         });
         ns.setState({ mobileView: view });
         refreshMapSoon();
@@ -265,7 +388,10 @@ Atlas.shell.wire = function (ns, opts) {
 
   return {
     refreshMapSoon: refreshMapSoon,
-    syncToolbar: syncToolbar
+    syncToolbar: syncToolbar,
+    syncSelectionFocus: syncSelectionFocus,
+    syncMapSummary: syncMapSummary,
+    renderFailed: renderFailed
   };
 };
 

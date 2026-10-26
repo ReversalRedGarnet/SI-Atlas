@@ -32,6 +32,9 @@
 <link rel="stylesheet" href="../shared/styles/base.css">
 <link rel="stylesheet" href="../shared/styles/index-shell.css">
 <link rel="stylesheet" href="css/styles.css">
+<!-- Without JavaScript the list never renders, so drop the "Loading…" line
+     and let the <noscript> message in the list say why. -->
+<noscript><style>.list-loading { display: none; }</style></noscript>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -41,7 +44,10 @@
 <!-- ── Masthead ─────────────────────────────────────────────────────────── -->
 <header class="masthead">
   <div class="masthead-inner">
-    <a class="masthead-id" href="./">
+    <!-- The logo and name lead back to the SI Atlas portal — the only way
+         out to the other indexes. The visible text stays the service name;
+         the sr-only suffix says where the link goes. -->
+    <a class="masthead-id" href="../index.html" title="All SI Atlas indexes">
       <!-- A neutral service mark, not the national coat of arms and not an
            RSIPF badge. Following Index E: a real crest should only ever be
            added with the responsible agency's authorisation. -->
@@ -52,7 +58,7 @@
           <path d="M16 8.4 10 10.7v4.8c0 3.4 2.5 6.4 6 7.6 3.5-1.2 6-4.2 6-7.6v-4.8z" fill="#C8A415"/>
         </svg>
       </span>
-      <span class="service-name">SI Atlas — Index P</span>
+      <span class="service-name">SI Atlas — Index P</span><span class="sr-only"> — back to all SI Atlas indexes</span>
     </a>
   </div>
 </header>
@@ -125,7 +131,7 @@
     </div>
     <div class="rail-body" id="filter-controls"><!-- built by js/filterPanel.js --></div>
     <div class="rail-foot">
-      <button type="button" class="btn btn-primary" id="drawer-apply">Show <span id="drawer-count">0</span> results</button>
+      <button type="button" class="btn btn-primary" id="drawer-apply">Show <span id="drawer-count">…</span> results</button>
       <button type="button" class="btn btn-secondary" id="drawer-clear">Clear filters</button>
     </div>
   </aside>
@@ -134,19 +140,27 @@
   <section class="results-col" id="results-col" aria-labelledby="results-heading">
     <div class="results-head">
       <h2 id="results-heading">
-        <span id="result-count" aria-live="polite">0</span> stations and posts
+        <span id="result-count">…</span> stations and posts
         <span class="results-sub" id="result-sub"></span>
       </h2>
       <div class="chip-row" id="active-chips"></div>
     </div>
-    <div class="results-list" id="results-list"></div>
+    <div class="results-list" id="results-list">
+      <!-- Replaced by the first render (js/list.js). Until then — a slow
+           connection still fetching the data or Leaflet — say so, rather
+           than showing "0 stations" over an empty list. -->
+      <p class="list-loading" role="status">Loading stations and posts…</p>
+      <noscript><p class="list-loading-noscript">This directory needs JavaScript to search and list stations. Please turn it on, or use a browser that supports it.</p></noscript>
+    </div>
   </section>
 
   <!-- Selected station detail -->
   <section class="detail-col" id="detail-col" aria-labelledby="detail-name" aria-live="polite"></section>
 
   <!-- Map -->
-  <section class="map-col" id="map-col" aria-label="Map of police stations">
+  <section class="map-col" id="map-col" aria-label="Map of police stations" aria-describedby="map-summary">
+    <!-- What the map shows, in words, for screen readers (shell.syncMapSummary). -->
+    <p class="sr-only" id="map-summary"></p>
     <div id="map"></div>
     <!-- Collapsible map key. The entries are the facility-type vocabulary: one
          per facility_type value, using the same pin classes the markers do.
@@ -175,12 +189,18 @@
 </main>
 
 <!-- Mobile list/map switch -->
-<div class="view-switch" role="tablist" aria-label="Switch view">
-  <button type="button" role="tab" class="vs-btn is-active" data-view="list" aria-selected="true">List</button>
-  <button type="button" role="tab" class="vs-btn" data-view="map" aria-selected="false">Map</button>
+<!-- A pair of toggle buttons (aria-pressed), not tabs: there are no tab
+     panels or arrow-key behaviour behind them, just two views. -->
+<div class="view-switch" role="group" aria-label="Show results as">
+  <button type="button" class="vs-btn is-active" data-view="list" aria-pressed="true">List</button>
+  <button type="button" class="vs-btn" data-view="map" aria-pressed="false">Map</button>
 </div>
 
 <div class="scrim" id="scrim" hidden></div>
+
+<!-- The page's one polite live region: "Link copied" and the like, said to
+     screen readers without moving focus (Atlas.shell.announce). -->
+<p class="sr-only" id="live-status" role="status" aria-live="polite"></p>
 
 <!-- Static info modal (About / Useful Info / Contact / Help) -->
 <div class="modal" id="info-modal" hidden role="dialog" aria-modal="true" aria-labelledby="info-title">
@@ -198,6 +218,8 @@
      next, because js/data builds its records through Atlas.schema.createEntity()
      at load time. -->
 <script src="../shared/util.js"></script>
+<script src="../shared/sources.js"></script>
+<script src="../shared/corrections.js"></script>
 <script src="../shared/schema.js"></script>
 <script src="../shared/map.js"></script>
 <script src="../shared/verification-badge.js"></script>
@@ -205,6 +227,7 @@
 <script src="../shared/geolocation.js"></script>
 <script src="../shared/filter-kit.js"></script>
 <script src="../shared/shell.js"></script>
+<script src="../shared/links.js"></script>
 
 <!-- App: data → state → logic → views → wiring -->
 <script src="js/data/stations.js"></script>

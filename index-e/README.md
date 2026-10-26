@@ -9,25 +9,31 @@ This document covers Index E's own implementation.
 > The 188 school records in `js/data/schools.js` are named, real institutions
 > — none invented. Every province has now had the same depth-pass treatment,
 > so records split by outcome rather than by which pass or province touched
-> them, both explained in full at the top of that file:
-> - **Tier 1 — Independently verified** (125 of 188 records): at least one of
->   `town`, coordinates, or `denomination` is set to a non-null value — i.e.
->   an independent source beyond MEHRD's own roster confirmed a specific
->   village/town name, a landmark-based coordinate, or a stated religious
->   affiliation for that school.
-> - **Tier 2 — MEHRD-confirmed only** (63 of 188 records): name, code and
->   province are confirmed directly against MEHRD's own Year 10 Placement
->   2026 roster for that exact school, but none of `town`, coordinates or
->   `denomination` has an independent source yet, so they stay `null` rather
->   than guessed.
+> them, both explained in full at the top of that file. The two tiers are
+> defined by which fields are filled in:
+> - **Tier 1 — has a confirmed town, location or denomination** (125 of 188
+>   records): at least one of `town`, coordinates, or `denomination` is set
+>   to a non-null value.
+> - **Tier 2 — name, code and province confirmed against the MEHRD Year 10
+>   Placement 2026 roster only** (63 of 188 records): none of `town`,
+>   coordinates or `denomination` is set, so they stay `null` rather than
+>   guessed. Three Tier 2 records rest on something other than that roster
+>   (two on MEHRD's Isabel Province list, one on public evidence without a
+>   MEHRD code) — see the header of `js/data/schools.js`.
+>
+> **The tiers are not a measure of source strength.** That is the "Sources"
+> line on every profile and list card, computed from each record's cited
+> URLs: "MEHRD and another public source", "MEHRD only", or "No MEHRD source
+> cited; public sources only". The two measures differ — 36 of the 125 Tier 1
+> records cite only MEHRD.
 >
 > Several fields (fees, contact details, exact coordinates, subjects) are
 > unconfirmed for many schools and are recorded as `null` / empty rather than
-> guessed — see the data-policy note at the top of `js/data/schools.js`. A
-> handful of schools (Mount Horeb CHS, Mercy CHS in Honiara, and most of
-> Tier 2) have no public coordinate source and so appear in search/list
-> results only, not on the map. This is a public-service prototype built on
-> real, verified data — not a demonstration of fictional data — but it is
+> guessed — see the data-policy note at the top of `js/data/schools.js`. Most
+> schools — 123 of the 188, including all of Tier 2 and 60 Tier 1 records —
+> have no public coordinate source and so appear in search/list results
+> only, not on the map. This is a public-service prototype built on
+> real, sourced data — not a demonstration of fictional data — but it is
 > not yet a complete or authoritative national directory, and Tier 2 in
 > particular would benefit from a second verification pass per school.
 
@@ -47,24 +53,30 @@ There is no build step, no bundler and no server-side code.
   root (`python -m http.server`). A local server is recommended, because
   browser geolocation only works on `https://` or `localhost`.
 
-External dependencies are loaded from CDNs at runtime: Leaflet 1.9.4 and a
-Google font (Open Sans). Nothing is installed.
+External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs), a Google
+font (Open Sans) and Esri basemap tiles (see [Basemap](#basemap)). Nothing is
+installed. If Leaflet fails to load, the directory still works — search,
+filters, list and profiles — and the map column says "Map unavailable, the
+list still works."
 
 ## Structure
 
 ```
 index.html              app shell / markup
+assets/                 favicon (SVG + PNG), Apple touch icon, and
+                         og-image.png — the 1200x630 link-preview screenshot
 css/styles.css          What goes inside the regions: filter drawer, result
                          rows, detail panel, map contents. The page skeleton
                          itself comes from ../shared/styles/index-shell.css
-js/data/schools.js      Real, national dataset (two verification tiers — see the note above) + filter vocabularies (province, subject taxonomy…)
+js/data/schools.js      Real, national dataset (two coverage tiers — see the note above) + filter vocabularies (province, subject taxonomy…)
 js/state.js             the single app-state object, setters and subscribers
 js/filters.js           search, filtering, sorting, facet counts — pure functions
-js/geolocation.js       geolocation request + haversine distance
+js/geolocation.js       wires ../shared/geolocation.js (location + distance) onto SF
 js/filterPanel.js       renders and syncs the filter controls
 js/list.js              result cards + shared formatting helpers
 js/map.js               adapter onto ../shared/map.js: schools → points, marker clicks → SF.select()
-js/panel.js             selected-school detail panel / mobile bottom sheet
+js/panel.js             selected-school profile / mobile bottom sheet, including
+                         its sources (via ../shared/sources.js)
 js/main.js              wiring: events → state → single render pass
 ```
 
@@ -82,7 +94,9 @@ and the intro paragraph is always visible. The Solomon-Islands-locked Leaflet se
 lives in [`../shared/map.js`](../shared/map.js) (`Atlas.map`); the
 verified/unverified badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)
-(`Atlas.verificationBadge`); the collapsible map key's disclosure behaviour and remembered state come from
+(`Atlas.verificationBadge`); a profile's sources are rendered by
+[`../shared/sources.js`](../shared/sources.js) (`Atlas.sources`), exactly as
+Index P renders its own; the collapsible map key's disclosure behaviour and remembered state come from
 [`../shared/map-legend.js`](../shared/map-legend.js) (`Atlas.mapLegend`).
 
 Scripts are plain `<script>` tags sharing global namespaces (`SF` for this
@@ -125,8 +139,10 @@ except on the drawer and modal overlays, and `border-radius` is 0 throughout.
 `../shared/styles/base.css`: navy `#06337C` for the nav bar, section bars and
 primary buttons (11.9:1 on white); `#1257A0` for links (7.3:1); green
 `#1F6B2E` for page headings, as on both reference sites (6.6:1); red
-`#A5232B` for the prototype notice (7.3:1); gold `#C8A415` is decorative
-only — at 2.9:1 it never carries text.
+`#A5232B` for the prototype notice (6.6:1 on the notice's cream background,
+7.3:1 on white); gold `#C8A415` never carries text on a light surface — at
+2.39:1 on white it is decorative there — and is used for focus rings over the
+navy bars, where it measures 4.95:1.
 
 **The masthead deliberately does not use the national coat of arms.** It
 carries a neutral service mark instead. The real crest should only be added
@@ -160,6 +176,19 @@ picker with the streams picker entirely. Filters the user can no longer see
 are cleared rather than left silently applied — see `SF.normalizeFilters()`
 in `js/state.js`.
 
+## When the data changes
+
+The school count in the intro and About text, the source line and sources
+list on every profile, and whether the fee and year-group controls are
+offered (`SF.HAS_FEE_DATA` / `SF.HAS_YEAR_DATA` in `js/filters.js`) are all
+computed from `SF.SCHOOLS` on every load, so they can't go stale. The meta
+tags in `index.html` deliberately carry no numbers. These places still quote
+counts by hand (188 records, 125 / 63 per tier, 123 without coordinates) and
+need updating with the data:
+
+- this README and the repo-root `README.md`;
+- the header comment of `js/data/schools.js`.
+
 ## Swapping the dataset for an API
 
 `js/data/schools.js` is the only file that knows what the data is. Replace the
@@ -175,18 +204,33 @@ generic `{ id, name, type, location, sources, verification_status,
 last_verified, contact, notes }` envelope every future index is meant to
 follow. `js/panel.js`'s `verificationStatusFor()` bridges the two only for
 badge rendering (a non-empty `verificationStatus` note reads as
-`'verified'`). Aligning this dataset's field names to the shared schema is
+`'verified'`, which every record has). Because that badge alone can't tell
+records apart, each profile and list card also shows what its `sourceUrls`
+actually are, as a "Sources" line computed at render time
+(`SF.format.sourceStrength()` in `js/list.js`): "MEHRD and another public
+source", "MEHRD only", or "No MEHRD source cited; public sources only". The
+"other" sources are not called independent or confirming — they range from
+news coverage and encyclopaedias to Facebook pages, OpenStreetMap and airport
+listings. The profile's Sources section lists every URL, labelled "MEHRD
+(official)" or "Other public source". The free-text `verificationStatus`
+note itself is not shown, and the Tier 1 / Tier 2 split is not used in the
+UI (it is defined by which fields are filled in, not by which sources back
+them). Aligning this dataset's field names to the shared schema is
 a deliberate follow-up, not done as part of the shared/index-e/index-h
 restructuring, to avoid touching already-verified data and app logic in the
 same pass.
 
 ## Basemap
 
-Standard OpenStreetMap raster tiles — free, no API key, no sign-up. The tile
-layer is desaturated slightly in CSS (`.leaflet-tile-pane`) so the school
-markers stay the loudest thing on screen. Note that OSM's public tile server is
-fine for a demo but has a usage policy; a real deployment should use a tile
-provider with a proper plan.
+Esri's World Topographic Map tiles (`server.arcgisonline.com`), configured
+once for every index in [`../shared/map.js`](../shared/map.js)
+(`Atlas.map.BASE_LAYERS`) — no API key, no sign-up. Esri's attribution, its
+full contributor list including OpenStreetMap contributors, is reproduced in
+full behind the ⓘ credit badge in the map's corner. The tile layer is
+desaturated slightly in CSS (`.leaflet-tile-pane`) so the school markers stay
+the loudest thing on screen. Check Esri's terms of use before treating this as
+a production service; switching provider is a one-entry change in
+`BASE_LAYERS`.
 
 ## Out of scope
 

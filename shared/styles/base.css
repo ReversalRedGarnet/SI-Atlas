@@ -110,8 +110,11 @@ svg { fill: currentColor; }
 .btn-secondary.is-active { background: var(--navy-pale); border-color: var(--navy); }
 .btn-block { width: 100%; }
 
+/* min-height keeps text-only buttons ("Clear all", "All results") at the
+   24px minimum touch target (WCAG 2.5.8) without changing how they look. */
 .link-btn {
   background: none; border: 0; padding: 0; cursor: pointer;
+  min-height: 24px;
   color: var(--link); font-size: .85rem;
   text-decoration: underline;
 }
@@ -150,7 +153,7 @@ svg { fill: currentColor; }
   border: 1px solid #C4D2E6;
 }
 .chip-static { background: var(--panel-alt); color: var(--text-mid); border-color: var(--rule); }
-.chip-removable { cursor: pointer; }
+.chip-removable { cursor: pointer; min-height: 24px; }   /* WCAG 2.5.8 target size */
 .chip-removable:hover { background: #D8E3F2; }
 .chip-removable span[aria-hidden] { font-weight: 700; }
 
@@ -168,3 +171,32 @@ svg { fill: currentColor; }
 .badge-verified   { color: var(--green); border-color: var(--green); background: #EAF3EC; }
 .badge-unverified { color: var(--mute);  border-color: var(--rule-strong); background: var(--panel-alt); }
 .badge-unknown    { color: var(--mute);  border-color: var(--rule-strong); background: var(--panel-alt); font-style: italic; }
+
+/* --- Sources list -----------------------------------------------------------
+   Rendered by shared/sources.js inside a profile's "Sources" section, the
+   same way in every index: citations as plain rows, URLs as links that show
+   their host, optionally with a short label (.source-kind) under the link. */
+.source-list { padding: 0 .9rem; }
+.source-list li {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .35rem 0;
+  font-size: .86rem; color: var(--text); line-height: 1.4;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.source-list li:last-child { border-bottom: 0; }
+.source-list a { color: var(--link); padding: .35rem 0; }
+.source-links li { padding: 0; word-break: break-word; }
+.source-links a { word-break: break-all; }
+.source-item { display: flex; flex-direction: column; padding: .35rem 0; min-width: 0; }
+.source-item a { padding: 0; }
+.source-kind { font-size: .78rem; color: var(--mute); }
+
+/* --- Report a correction ------------------------------------------------------
+   Rendered by shared/corrections.js at the foot of every profile. */
+.correction { margin-top: .8rem; padding-top: .7rem; border-top: 1px solid var(--rule-soft); }
+.correction-link {
+  display: inline-flex; align-items: center; gap: .4rem;
+  min-height: 24px;
+  font-size: .86rem; font-weight: 700; color: var(--link);
+}
+.correction-note { margin-top: .3rem; font-size: .78rem; color: var(--mute); line-height: 1.45; }

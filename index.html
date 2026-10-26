@@ -7,8 +7,22 @@
 <meta name="description" content="SI Atlas is an open-data information layer for Solomon Islands public services. Index E (Education) and Index P (Policing) are live; more indexes are planned.">
 <meta name="theme-color" content="#06337C">
 
+<!-- Link previews. og:url must be an absolute URL for scrapers, so it is the
+     only non-relative path on this page; update it if the site moves to a
+     custom domain or a differently named repository. No og:image: the
+     portal has no screenshot of its own, and borrowing an index's would
+     misrepresent it. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SI Atlas">
+<meta property="og:title" content="SI Atlas — Solomon Islands public services">
+<meta property="og:description" content="An open-data information layer for Solomon Islands public services: searchable, mapped directories of schools and police stations, with the sources behind every record shown plainly.">
+<meta property="og:url" content="https://reversalredgarnet.github.io/SI-Atlas/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SI Atlas — Solomon Islands public services">
+<meta name="twitter:description" content="Searchable, mapped directories of Solomon Islands schools and police stations, with the sources behind every record shown plainly.">
+
 <link rel="stylesheet" href="shared/styles/base.css">
-<link rel="icon" href="index-e/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="shared/assets/favicon.svg" type="image/svg+xml">
 
 <style>
   body {
@@ -76,6 +90,15 @@
     color: var(--mute);
   }
   .index-card.is-live .status-tag { color: var(--green); border-color: var(--green); }
+  /* Live figures under each card, generated from the index's own data file
+     (script at the bottom of this page). Hidden until filled, so a failed
+     load shows no number rather than a wrong one. */
+  .index-count {
+    margin-top: .3rem;
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
   .portal-foot {
     margin-top: 2.5rem;
     font-size: .82rem;
@@ -94,12 +117,14 @@
   <nav class="index-list" aria-label="Indexes">
     <a class="index-card is-live" href="index-e/index.html">
       <span class="index-name">Index E — Education <span class="status-tag">Live</span></span>
-      <p class="index-desc">SI Atlas — Index E: a searchable directory and map of schools, currently a Honiara pilot.</p>
+      <p class="index-desc">SI Atlas — Index E: a searchable directory and map of schools across all ten provinces, with the sources behind every record.</p>
+      <p class="index-count" id="count-e" hidden></p>
     </a>
 
     <a class="index-card is-live" href="index-p/index.html">
       <span class="index-name">Index P — Policing <span class="status-tag">Live</span></span>
       <p class="index-desc">SI Atlas — Index P: a searchable directory and map of RSIPF police stations, posts and outposts across ten provinces.</p>
+      <p class="index-count" id="count-p" hidden></p>
     </a>
 
     <a class="index-card is-pending" href="index-h/index.html">
@@ -110,6 +135,45 @@
 
   <p class="portal-foot">Open source. No accounts, no tracking, no fabricated data — unknown fields are left blank rather than guessed.</p>
 </main>
+
+<!-- Live counts for the cards above, read from the same data files the
+     indexes use, so they can never disagree with them. `defer` keeps the
+     portal itself from waiting on them; if one fails to load, its card just
+     shows no count. schema.js is needed because stations.js builds its
+     records through Atlas.schema.createEntity(). -->
+<script defer src="index-e/js/data/schools.js"></script>
+<script defer src="shared/schema.js"></script>
+<script defer src="index-p/js/data/stations.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function distinct(list, key) {
+    var seen = {};
+    list.forEach(function (r) { seen[key(r)] = true; });
+    return Object.keys(seen).length;
+  }
+  function show(id, text) {
+    var el = document.getElementById(id);
+    el.textContent = text;
+    el.hidden = false;
+  }
+  try {
+    var schools = window.SF && window.SF.SCHOOLS;
+    if (schools && schools.length) {
+      show('count-e', schools.length + ' schools · ' +
+        distinct(schools, function (s) { return s.province; }) + ' provinces · ' +
+        schools.filter(function (s) { return s.latitude !== null; }).length + ' on the map');
+    }
+  } catch (e) { /* no count is better than a wrong one */ }
+  try {
+    var stations = window.SP && window.SP.STATIONS;
+    if (stations && stations.length) {
+      show('count-p', stations.length + ' stations and posts · ' +
+        distinct(stations, function (s) { return s.province; }) + ' provinces · ' +
+        stations.filter(function (s) { return s.location.lat !== null; }).length + ' on the map');
+    }
+  } catch (e) { /* no count is better than a wrong one */ }
+});
+</script>
 
 </body>
 </html>

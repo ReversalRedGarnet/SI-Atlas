@@ -16,8 +16,9 @@ var root;
 var esc = Atlas.util.esc;
 
 var DISTANCE_OPTIONS = [5, 10, 25, 50, 100, 250];
-/* No school in the current dataset has confirmed fee data, so this ceiling
- * is a placeholder pending real figures rather than derived from the set. */
+/* No school in the current dataset has confirmed fee data, so the fee
+ * section isn't built at all (SF.HAS_FEE_DATA). This ceiling is a
+ * placeholder for when it is, pending real figures. */
 var FEE_CEILING = 8500;
 var FEE_STEP = 250;
 
@@ -30,8 +31,9 @@ SF.filterPanel.init = function () {
     streamsSection(),
     checkboxSection('denominations', 'Who runs the school', SF.DENOMINATIONS, false),
     boardingSection(),
-    yearLevelSection(),
-    feeSection(),
+    /* Only offered when the data can answer them — see SF.HAS_* in filters.js. */
+    SF.HAS_YEAR_DATA ? yearLevelSection() : '',
+    SF.HAS_FEE_DATA ? feeSection() : '',
     distanceSection()
   ].join('');
 
@@ -146,16 +148,22 @@ SF.filterPanel.sync = function (state) {
     });
   });
 
-  /* Year level */
+  /* Year level (absent while the data can't support it) */
   var year = root.querySelector('#year-select');
-  year.value = f.yearLevel === null ? '' : String(f.yearLevel);
+  if (year) year.value = f.yearLevel === null ? '' : String(f.yearLevel);
 
-  /* Fees */
+  /* Fees (absent while no record has fee data) */
   var fee = root.querySelector('#fee-range');
-  fee.value = f.feeMax === null ? FEE_CEILING : f.feeMax;
-  root.querySelector('#fee-output').textContent = f.feeMax === null
-    ? 'Any fee'
-    : 'Up to $' + f.feeMax.toLocaleString('en-US') + ' a year';
+  if (fee) {
+    fee.value = f.feeMax === null ? FEE_CEILING : f.feeMax;
+    var feeText = f.feeMax === null
+      ? 'Any fee'
+      : 'Up to $' + f.feeMax.toLocaleString('en-US') + ' a year';
+    root.querySelector('#fee-output').textContent = feeText;
+    /* Without this a screen reader reads the raw slider number ("8500")
+     * where the screen says "Any fee". */
+    fee.setAttribute('aria-valuetext', feeText);
+  }
 
   /* Subjects: chips + section state */
   renderSubjectChips(f.subjects);
@@ -321,7 +329,7 @@ function yearLevelSection() {
 
 function feeSection() {
   var body =
-    '<output class="range-output" id="fee-output" for="fee-range">Any annual fee</output>' +
+    '<output class="range-output" id="fee-output" for="fee-range">Any fee</output>' +
     '<input type="range" class="range" id="fee-range" min="0" max="' + FEE_CEILING + '" step="' + FEE_STEP + '" value="' + FEE_CEILING + '" aria-label="Maximum annual fee in Solomon Islands dollars">' +
     '<div class="range-scale"><span>Free</span><span>$' + FEE_CEILING.toLocaleString('en-US') + '+</span></div>' +
     '<p class="field-hint">Shows schools where fees start at or below this amount.</p>';

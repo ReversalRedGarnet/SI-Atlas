@@ -14,6 +14,11 @@ SF.filters = {};
 
 /* --- Free-text search ----------------------------------------------------- */
 
+/* Records and the reader's text are both folded by Atlas.util.searchKey()
+ * (shared/util.js): case, accents, apostrophes and punctuation don't
+ * matter, so "St Josephs" finds "St Joseph's". */
+var fold = Atlas.util.searchKey;
+
 /** The searchable text blob for a school (name, place, subjects, keywords). */
 function haystack(school) {
   if (!school._haystack) {
@@ -22,14 +27,15 @@ function haystack(school) {
       school.denomination, school.schoolType, school.boarding,
       school.educationLevels.join(' '), school.subjects.join(' '),
       school.description
-    ].join(' ').toLowerCase();
+    ].join(' ');
+    school._haystack = fold(school._haystack);
   }
   return school._haystack;
 }
 
 /** All whitespace-separated terms must appear somewhere (AND within search). */
 SF.filters.matchesQuery = function (school, query) {
-  var q = (query || '').trim().toLowerCase();
+  var q = fold(query);
   if (!q) return true;
   var hay = haystack(school);
   return q.split(/\s+/).every(function (term) { return hay.indexOf(term) !== -1; });
@@ -37,16 +43,18 @@ SF.filters.matchesQuery = function (school, query) {
 
 /** Higher is better. Used only for the "Best match" sort. */
 SF.filters.relevanceScore = function (school, query) {
-  var q = (query || '').trim().toLowerCase();
+  var q = fold(query);
   if (!q) return 0;
-  var name = school.name.toLowerCase();
-  var place = (school.town + ' ' + school.island + ' ' + school.province).toLowerCase();
+  var name = fold(school.name);
+  /* `|| ''` so an unconfirmed (null) town or island doesn't become the
+   * literal text "null" and score a match for it. */
+  var place = fold((school.town || '') + ' ' + (school.island || '') + ' ' + school.province);
   var score = 0;
   if (name.indexOf(q) === 0) score += 100;
   else if (name.indexOf(q) !== -1) score += 60;
   if (place.indexOf(q) !== -1) score += 30;
-  if (school.subjects.some(function (s) { return s.toLowerCase().indexOf(q) !== -1; })) score += 20;
-  if (school.description.toLowerCase().indexOf(q) !== -1) score += 5;
+  if (school.subjects.some(function (s) { return fold(s).indexOf(q) !== -1; })) score += 20;
+  if (fold(school.description).indexOf(q) !== -1) score += 5;
   return score;
 };
 
@@ -166,27 +174,34 @@ SF.filters.sort = function (schools, state) {
   var out = schools.slice();
   var byName = function (a, b) { return a.name.localeCompare(b.name); };
 
+  /* Records with no value for the sort key go after every record that has
+   * one, in name order among themselves. Returning 1 whenever `a` was null —
+   * including when both were — was not a valid comparator, and left the
+   * unvalued records in raw file order. */
   switch (state.sortBy) {
     case 'name':
       return out.sort(byName);
     case 'distance':
       return out.sort(function (a, b) {
-        if (a.distanceKm === null) return 1;
-        if (b.distanceKm === null) return -1;
+        if (a.distanceKm === null || b.distanceKm === null) {
+          return (a.distanceKm === null) - (b.distanceKm === null) || byName(a, b);
+        }
         return a.distanceKm - b.distanceKm || byName(a, b);
       });
     /* Schools with no confirmed fee data sort after every priced school,
      * regardless of direction — same rule as the distance sort above. */
     case 'feeLow':
       return out.sort(function (a, b) {
-        if (a.feeMin === null) return 1;
-        if (b.feeMin === null) return -1;
+        if (a.feeMin === null || b.feeMin === null) {
+          return (a.feeMin === null) - (b.feeMin === null) || byName(a, b);
+        }
         return a.feeMin - b.feeMin || byName(a, b);
       });
     case 'feeHigh':
       return out.sort(function (a, b) {
-        if (a.feeMax === null) return 1;
-        if (b.feeMax === null) return -1;
+        if (a.feeMax === null || b.feeMax === null) {
+          return (a.feeMax === null) - (b.feeMax === null) || byName(a, b);
+        }
         return b.feeMax - a.feeMax || byName(a, b);
       });
     default: // relevance — falls back to name when there is no query
@@ -262,5 +277,16 @@ function setKey(key, value) { var o = {}; o[key] = value; return o; }
 
 /* Pre-compute the search blobs once so filtered copies inherit them. */
 SF.SCHOOLS.forEach(haystack);
+
+/* --- What the data can actually answer ------------------------------------
+ * A filter or sort that can only ever return nothing (or the same single
+ * school) is not offered. Computed from the records rather than hard-coded,
+ * so each control comes back on its own once real figures arrive.
+ *   - Fees: no record has confirmed fee data, so the fee filter could only
+ *     return 0 schools and both fee sorts would just be file order.
+ *   - Year group: needs at least two schools with a confirmed year span to
+ *     narrow anything down. */
+SF.HAS_FEE_DATA = SF.SCHOOLS.some(function (s) { return s.feeMin !== null; });
+SF.HAS_YEAR_DATA = SF.SCHOOLS.filter(function (s) { return !!s.yearLevels; }).length > 1;
 
 })();

@@ -82,6 +82,12 @@
   font-size: 1rem; font-weight: 700; color: var(--link);
   margin-bottom: .3rem; line-height: 1.25;
 }
+/* The row's control: a real button holding the name, styled as the plain
+   heading text it replaces (focus ring from base.css's :focus-visible). */
+.result-btn {
+  background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
 .result:hover .result-name { text-decoration: underline; }
 .result.is-selected .result-name { color: var(--navy); }
 
@@ -117,9 +123,14 @@
 .back-btn { display: inline-flex; align-items: center; gap: .25rem; }
 .back-btn svg { fill: none; stroke: currentColor; stroke-width: 2; }
 .detail-bar .text-close { margin-left: auto; }
+.detail-bar .copy-link + .text-close { margin-left: 0; }
 
 .detail-head { padding: .8rem .9rem .1rem; }
-.detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; }
+.detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; width: fit-content; max-width: 100%; }
+/* Focus ring for the heading that takes focus when a profile opens — same
+   treatment and reasoning as Index E's (see index-e/css/styles.css). */
+.detail-head h2:focus { outline: none; }
+.detail-head h2:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 .detail-place { font-size: .88rem; color: var(--text-mid); margin-top: .25rem; }
 .detail-distance { color: var(--navy); font-weight: 700; margin-left: .4rem; }
 .detail-kind {
@@ -175,18 +186,17 @@
   font-size: .8rem; color: var(--mute); line-height: 1.45;
 }
 
-.contact-list, .source-list { padding: 0 .9rem; }
-.contact-list li, .source-list li {
+/* The sources list itself is shared with Index E — see
+   ../shared/styles/base.css and ../shared/sources.js. */
+.contact-list { padding: 0 .9rem; }
+.contact-list li {
   display: flex; align-items: center; gap: .5rem;
   font-size: .86rem; color: var(--text);
   border-bottom: 1px solid var(--rule-soft);
 }
-.contact-list li:last-child, .source-list li:last-child { border-bottom: 0; }
-.contact-list a, .source-list a { color: var(--link); padding: .35rem 0; }
+.contact-list li:last-child { border-bottom: 0; }
+.contact-list a { color: var(--link); padding: .35rem 0; }
 .contact-list .phone-plain { padding: .35rem 0; }
-.source-list li { padding: .35rem 0; line-height: 1.4; }
-.source-links li { padding: 0; word-break: break-word; }
-.source-links a { word-break: break-all; }
 
 .detail-foot { padding: .2rem .9rem 2rem; font-size: .82rem; color: var(--text-mid); }
 .detail-foot p + p { margin-top: .35rem; }

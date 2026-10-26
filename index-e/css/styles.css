@@ -112,6 +112,12 @@
   font-size: 1rem; font-weight: 700; color: var(--link);
   margin-bottom: .3rem; line-height: 1.25;
 }
+/* The row's control: a real button holding the name, styled as the plain
+   heading text it replaces (focus ring from base.css's :focus-visible). */
+.result-btn {
+  background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
 .result:hover .result-name { text-decoration: underline; }
 .result.is-selected .result-name { color: var(--navy); }
 
@@ -142,9 +148,17 @@
 .back-btn { display: inline-flex; align-items: center; gap: .25rem; }
 .back-btn svg { fill: none; stroke: currentColor; stroke-width: 2; }
 .detail-bar .text-close { margin-left: auto; }
+.detail-bar .copy-link + .text-close { margin-left: 0; }
 
 .detail-head { padding: .8rem .9rem .1rem; }
-.detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; }
+.detail-head h2 { font-size: 1.3rem; color: var(--navy); line-height: 1.2; width: fit-content; max-width: 100%; }
+/* The heading takes focus when a profile opens (../shared/shell.js). It is
+   not a control, so its ring is lighter than a button's: 2px, hugging the
+   text rather than boxing the whole panel width. Still plainly visible
+   (WCAG 2.4.7), keyboard-only (:focus-visible), and never under the sticky
+   bar above it, since a profile always opens scrolled to the top (2.4.11). */
+.detail-head h2:focus { outline: none; }
+.detail-head h2:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 .detail-place { font-size: .88rem; color: var(--text-mid); margin-top: .25rem; }
 .detail-distance { color: var(--navy); font-weight: 700; }
 .detail-kind {
@@ -156,6 +170,9 @@
  * shared/styles/base.css — see shared/verification-badge.js. This just
  * places it under the school-kind line. */
 .verified-badge { margin-top: .5rem; }
+/* What the sources behind the record are — computed in js/panel.js from
+ * sourceUrls. Plain text, so a screen reader reads it as written. */
+.source-strength { margin-top: .3rem; font-size: .84rem; color: var(--text-mid); }
 
 .detail-actions { display: flex; flex-wrap: wrap; gap: .4rem; padding: .8rem .9rem; }
 .detail-actions .btn { flex: 1 1 auto; }
@@ -165,6 +182,10 @@
   padding: 0 .9rem .9rem;
   font-size: .9rem; color: var(--text); line-height: 1.5;
 }
+/* No Directions/Call/Website row (a school with no coordinates or contact
+   details): the description would otherwise sit flush against the source
+   line. Same gap the action row leaves when it is there. */
+.detail-head + .detail-desc { padding-top: .8rem; }
 
 .detail-section { padding: 0 0 .9rem; }
 /* The MEHRD signature: a solid navy bar as a section header. */
@@ -210,6 +231,10 @@
 .map-note i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 .map-note .k-school   { background: var(--navy); }
 .map-note .k-selected { background: var(--navy); box-shadow: 0 0 0 3px var(--gold); }
+/* Every located school is approximate today, so every pin is dashed; the key
+   says what the dashes mean. Drawn as a dashed navy ring, since the pin's own
+   white dashes would vanish against the key's white background. */
+.map-note .k-approx   { width: 12px; height: 12px; background: #fff; border: 2px dashed var(--navy); }
 
 .pin {
   display: block; width: 100%; height: 100%;

@@ -35,6 +35,11 @@ SP.filters.needsCoordinates = function (station) {
 
 /* --- Free-text search ----------------------------------------------------- */
 
+/* Records and the reader's text are both folded by Atlas.util.searchKey()
+ * (shared/util.js): case, accents, apostrophes and punctuation don't
+ * matter, so "Rennell and Bellona" finds "Rennell & Bellona". */
+var fold = Atlas.util.searchKey;
+
 /** The searchable text blob for a station (name, place, type, notes). */
 function haystack(station) {
   if (!station._haystack) {
@@ -47,14 +52,15 @@ function haystack(station) {
       SP.shortTypeLabel(station.type),
       station.contact.phone,
       station.notes
-    ].filter(Boolean).join(' ').toLowerCase();
+    ].filter(Boolean).join(' ');
+    station._haystack = fold(station._haystack);
   }
   return station._haystack;
 }
 
 /** All whitespace-separated terms must appear somewhere (AND within search). */
 SP.filters.matchesQuery = function (station, query) {
-  var q = (query || '').trim().toLowerCase();
+  var q = fold(query);
   if (!q) return true;
   var hay = haystack(station);
   return q.split(/\s+/).every(function (term) { return hay.indexOf(term) !== -1; });
@@ -62,17 +68,17 @@ SP.filters.matchesQuery = function (station, query) {
 
 /** Higher is better. Used only for the "Best match" sort. */
 SP.filters.relevanceScore = function (station, query) {
-  var q = (query || '').trim().toLowerCase();
+  var q = fold(query);
   if (!q) return 0;
-  var name = station.name.toLowerCase();
-  var place = ((station.address || '') + ' ' + (station.province || '') + ' ' +
-               (station.constituencyWard || '')).toLowerCase();
+  var name = fold(station.name);
+  var place = fold((station.address || '') + ' ' + (station.province || '') + ' ' +
+                  (station.constituencyWard || ''));
   var score = 0;
   if (name.indexOf(q) === 0) score += 100;
   else if (name.indexOf(q) !== -1) score += 60;
   if (place.indexOf(q) !== -1) score += 30;
-  if (SP.label(station.type).toLowerCase().indexOf(q) !== -1) score += 20;
-  if ((station.notes || '').toLowerCase().indexOf(q) !== -1) score += 5;
+  if (fold(SP.label(station.type)).indexOf(q) !== -1) score += 20;
+  if (fold(station.notes).indexOf(q) !== -1) score += 5;
   return score;
 };
 
@@ -163,10 +169,14 @@ SP.filters.sort = function (stations, state) {
     /* Records with no coordinates have no distance at all. They sort after
      * every located record rather than being dropped or given a stand-in
      * position — the same rule Index E applies to unpriced schools. */
+    /* Returning 1 whenever `a` was null — including when both were — was
+     * not a valid comparator, and left the unlocated records in file order;
+     * among themselves they now sort by name. */
     case 'distance':
       return out.sort(function (a, b) {
-        if (a.distanceKm === null) return 1;
-        if (b.distanceKm === null) return -1;
+        if (a.distanceKm === null || b.distanceKm === null) {
+          return (a.distanceKm === null) - (b.distanceKm === null) || byName(a, b);
+        }
         return a.distanceKm - b.distanceKm || byName(a, b);
       });
     default: // relevance — falls back to name when there is no query

@@ -95,6 +95,26 @@ SF.format = {
       .map(function (w) { return w.charAt(0).toUpperCase(); })
       .join('');
   },
+  /* What a record's own sourceUrls are, computed at render time — never
+   * stored, and never a judgement of the school. It says only whether a
+   * mehrd.gov.sb URL is among them and whether anything else is. "Anything
+   * else" is deliberately not called independent or confirming: it covers
+   * news sites and encyclopaedias, but also Facebook pages, OpenStreetMap
+   * and airport listings. Not the dataset's Tier 1 / Tier 2 split either —
+   * those tiers measure which fields are filled in, not the sources. The
+   * same three labels are used on the list card and the profile. */
+  isMehrdUrl: function (url) {
+    return /(^|\.)mehrd\.gov\.sb$/i.test(Atlas.sources.hostOf(url));
+  },
+  sourceStrength: function (school) {
+    var urls = school.sourceUrls || [];
+    var mehrd = urls.filter(SF.format.isMehrdUrl).length;
+    var other = urls.length - mehrd;
+    if (mehrd && other) return 'MEHRD and another public source';
+    if (mehrd) return 'MEHRD only';
+    if (other) return 'No MEHRD source cited; public sources only';
+    return 'No source recorded';
+  },
   date: Atlas.util.formatDate,
   esc: Atlas.util.esc
 };
@@ -112,13 +132,9 @@ SF.list.init = function () {
     if (row) SF.select(row.getAttribute('data-id'));
   });
 
-  listEl.addEventListener('keydown', function (e) {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    var row = e.target.closest('.result');
-    if (!row) return;
-    e.preventDefault();
-    SF.select(row.getAttribute('data-id'));
-  });
+  /* No keydown handler: each row's name is a real <button> (see card()),
+   * so Enter and Space work natively, and a click anywhere on the row is
+   * caught by the click handler above. */
 
   /* Removable filter chips above the results. */
   chipsEl.addEventListener('click', function (e) {
@@ -157,7 +173,7 @@ SF.list.render = function (results, state) {
     listEl.innerHTML =
       '<div class="empty">' +
         '<p class="empty-title">No schools match these filters</p>' +
-        '<p class="empty-body">Try taking off a filter, raising the fee limit, or searching for a town such as “Honiara”.</p>' +
+        '<p class="empty-body">Try taking off a filter, or searching for a town such as “Honiara”.</p>' +
         '<button type="button" class="btn btn-primary" id="empty-clear">Start again</button>' +
       '</div>';
     return;
@@ -172,7 +188,7 @@ SF.list.render = function (results, state) {
 SF.list.revealSelected = function (id) {
   if (!id || !listEl) return;
   var el = listEl.querySelector('.result[data-id="' + id + '"]');
-  if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest', behavior: Atlas.util.prefersReducedMotion() ? 'auto' : 'smooth' });
 };
 
 function card(school, isSelected) {
@@ -186,14 +202,20 @@ function card(school, isSelected) {
     ['Level',     esc(SF.format.levels(school))],
     ['Run by',    esc(SF.format.operator(school))],
     ['Attendance', esc(SF.format.boardingStatus(school))],
-    ['Yearly fees', SF.format.feesHtml(school, ' ' + school.currency)]
+    ['Sources',   esc(SF.format.sourceStrength(school))]
   ];
+
+  /* While no school has fee data, "Fee information not yet available" on all
+   * 188 cards says nothing that varies; the row returns with the data (same
+   * check as the fee filter — SF.HAS_FEE_DATA in filters.js). The profile
+   * still says it plainly. */
+  if (SF.HAS_FEE_DATA) rows.push(['Yearly fees', SF.format.feesHtml(school, ' ' + esc(school.currency))]);
 
   if (typeof school.distanceKm === 'number') {
     rows.splice(2, 0, ['Distance', esc(SF.geo.formatDistance(school.distanceKm)) + ' away']);
   }
 
-  /* Mount Horeb CHS and Mercy CHS have no public coordinate source — they
+  /* Most schools (123 of 188 today) have no public coordinate source — they
    * still belong in the directory, but the map has nothing to plot. Say so
    * rather than silently omitting the school or guessing a pin location.
    * (Approximate-vs-exact coordinates are noted in the detail panel and on
@@ -204,8 +226,13 @@ function card(school, isSelected) {
 
   return '' +
     '<div class="result' + (isSelected ? ' is-selected' : '') + '" data-id="' + esc(school.id) + '"' +
-      ' role="button" tabindex="0" aria-pressed="' + (isSelected ? 'true' : 'false') + '">' +
-      '<h3 class="result-name">' + esc(school.name) + '</h3>' +
+      '>' +
+      /* The row is a plain container; the control is a real button inside
+       * the heading, so screen readers keep heading navigation and the
+       * facts list, and the button's name is just the school's name.
+       * aria-current marks the one whose profile is open. */
+      '<h3 class="result-name"><button type="button" class="result-btn"' + (isSelected ? ' aria-current="true"' : '') + '>' +
+        esc(school.name) + '</button></h3>' +
       '<dl class="result-facts">' +
         rows.map(function (r) {
           return '<div class="rf"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>';

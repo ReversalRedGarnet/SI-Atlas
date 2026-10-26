@@ -28,6 +28,7 @@ SP.map = {};
 
 var atlasMap;               // the Atlas.map controller
 var markers = {};           // station id → L.marker
+var offsets = {};           // station id → [dx, dy] for exactly-stacked stations
 var lastSignature = null;   // result-set fingerprint, so we only refit on change
 
 SP.map.init = function () {
@@ -96,17 +97,23 @@ function pinIcon(station, selected) {
     (selected ? ' pin-selected' : '') +
     (station.location.precision === 'approximate' ? ' pin-approx' : '');
   var size = selected ? 26 : 22;
+  /* Same exact-coordinate fan-out as the shared pin — see
+   * Atlas.map.coincidentOffsets() in ../shared/map.js. */
+  var d = offsets[station.id] || [0, 0];
   return L.divIcon({
     className: '',
     html: '<span class="' + cls + '"></span>',
     iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2]
+    iconAnchor: [size / 2 - d[0], size / 2 - d[1]]
   });
 }
 
 function drawMarkers(results) {
   atlasMap.markerLayer.clearLayers();
   markers = {};
+  offsets = Atlas.map.coincidentOffsets(results.filter(SP.filters.isLocated).map(function (s) {
+    return { id: s.id, lat: s.location.lat, lng: s.location.lng };
+  }));
 
   results.forEach(function (station) {
     if (!SP.filters.isLocated(station)) return;
@@ -129,7 +136,9 @@ function drawMarkers(results) {
       e.originalEvent.preventDefault();
       SP.select(station.id);
     });
-    marker.bindTooltip(label, { direction: 'top', offset: [0, -13], opacity: 1 });
+    /* Leaflet inserts a string tooltip as HTML, so the label is escaped. */
+    var d = offsets[station.id] || [0, 0];
+    marker.bindTooltip(Atlas.util.esc(label), { direction: 'top', offset: [d[0], d[1] - 13], opacity: 1 });
 
     marker.addTo(atlasMap.markerLayer);
     markers[station.id] = marker;

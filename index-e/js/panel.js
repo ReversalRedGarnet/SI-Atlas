@@ -19,6 +19,8 @@ SF.panel.init = function () {
 
   el.addEventListener('click', function (e) {
     if (e.target.closest('[data-close-panel]')) SF.clearSelection();
+    var copy = e.target.closest('[data-copy-link]');
+    if (copy && SF.state.selectedId) Atlas.links.copyFromButton(copy, Atlas.links.recordUrl('school', SF.state.selectedId));
   });
 };
 
@@ -39,10 +41,16 @@ SF.panel.render = function (state) {
     ? SF.geo.haversineKm(state.userLocation, { lat: school.latitude, lng: school.longitude })
     : null;
 
+  /* Every href built from the data goes through Atlas.util.safeUrl(), so
+   * only the schemes a record should link to (https/http, tel:, mailto:)
+   * can ever become a link — see shared/util.js. */
+  var safeUrl = Atlas.util.safeUrl;
   var directionsUrl = hasCoords
-    ? 'https://www.google.com/maps/dir/?api=1&destination=' + school.latitude + ',' + school.longitude
+    ? safeUrl('https://www.google.com/maps/dir/?api=1&destination=' + school.latitude + ',' + school.longitude)
     : null;
-  var telHref = school.phone ? 'tel:' + school.phone.replace(/[^\d+]/g, '') : null;
+  var telHref = school.phone ? safeUrl('tel:' + school.phone.replace(/[^\d+]/g, ''), ['tel:']) : null;
+  var mailHref = school.email ? safeUrl('mailto:' + school.email, ['mailto:']) : null;
+  var websiteHref = safeUrl(school.website);
 
   /* Denomination only earns its own line when it names something — 'Other'
    * and an unconfirmed denomination both say nothing beyond the school type
@@ -50,18 +58,18 @@ SF.panel.render = function (state) {
   var showDenomination = school.denomination && school.denomination !== 'Other';
 
   var actionButtons = [
-    hasCoords ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions</a>' : '',
+    directionsUrl ? '<a class="btn btn-primary" href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' + iconPin() + 'Get directions' + Atlas.util.NEW_TAB + '</a>' : '',
     telHref ? '<a class="btn btn-secondary" href="' + esc(telHref) + '">' + iconPhone() + 'Call</a>' : '',
-    school.website ? '<a class="btn btn-secondary" href="' + esc(school.website) + '" target="_blank" rel="noopener">' + iconGlobe() + 'Website</a>' : ''
+    websiteHref ? '<a class="btn btn-secondary" href="' + esc(websiteHref) + '" target="_blank" rel="noopener">' + iconGlobe() + 'Website' + Atlas.util.NEW_TAB + '</a>' : ''
   ].filter(Boolean).join('');
 
   var contactItems = [
     telHref ? '<li>' + iconPhone() + '<a href="' + esc(telHref) + '">' + esc(school.phone) + '</a></li>' : '',
-    school.email ? '<li>' + iconMail() + '<a href="mailto:' + esc(school.email) + '">' + esc(school.email) + '</a></li>' : '',
-    school.website ? '<li>' + iconGlobe() + '<a href="' + esc(school.website) + '" target="_blank" rel="noopener">' + esc(school.website.replace(/^https?:\/\//, '')) + '</a></li>' : '',
-    hasCoords
+    mailHref ? '<li>' + iconMail() + '<a href="' + esc(mailHref) + '">' + esc(school.email) + '</a></li>' : '',
+    websiteHref ? '<li>' + iconGlobe() + '<a href="' + esc(websiteHref) + '" target="_blank" rel="noopener">' + esc(school.website.replace(/^https?:\/\//, '')) + Atlas.util.NEW_TAB + '</a></li>' : '',
+    directionsUrl
       ? '<li>' + iconPin() + '<a href="' + esc(directionsUrl) + '" target="_blank" rel="noopener">' +
-          school.latitude.toFixed(4) + ', ' + school.longitude.toFixed(4) + '</a>' +
+          school.latitude.toFixed(4) + ', ' + school.longitude.toFixed(4) + Atlas.util.NEW_TAB + '</a>' +
           (school.locationPrecision === 'approximate' ? ' <span class="approx-note">(approximate location)</span>' : '') +
         '</li>'
       : '<li>' + iconPin() + '<span>Map location not yet available</span></li>'
@@ -76,11 +84,13 @@ SF.panel.render = function (state) {
         '<button type="button" class="link-btn back-btn" data-close-panel>' +
           '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg> All results' +
         '</button>' +
+        /* A link straight to this profile (#school=<id>) — see ../shared/links.js. */
+        '<button type="button" class="text-close copy-link" data-copy-link>' + Atlas.links.COPY_LABEL + '</button>' +
         '<button type="button" class="text-close" data-close-panel>Close <span aria-hidden="true">&times;</span></button>' +
       '</div>' +
 
       '<header class="detail-head">' +
-        '<h2 id="detail-name">' + esc(school.name) + '</h2>' +
+        '<h2 id="detail-name" tabindex="-1">' + esc(school.name) + '</h2>' +
         '<p class="detail-place">' +
           (placeDetail ? esc(placeDetail) + ' &middot; ' : '') + esc(school.province) + ' Province' +
           (distanceKm !== null ? '<span class="detail-distance">' + SF.geo.formatDistance(distanceKm) + ' away</span>' : '') +
@@ -89,6 +99,9 @@ SF.panel.render = function (state) {
           ' &middot; ' + esc(school.schoolType) + ' school' +
           (showDenomination ? ' &middot; ' + esc(school.denomination) : '') + '</p>' +
         '<p class="verified-badge">' + Atlas.verificationBadge.render(verificationStatusFor(school), school.lastVerified) + '</p>' +
+        /* "Sources:" is visible, not screen-reader-only: on its own, "MEHRD
+         * only" under the badge doesn't say what it describes to anyone. */
+        '<p class="source-strength">Sources: ' + esc(SF.format.sourceStrength(school)) + '</p>' +
       '</header>' +
 
       (actionButtons ? '<div class="detail-actions">' + actionButtons + '</div>' : '') +
@@ -98,14 +111,14 @@ SF.panel.render = function (state) {
       '<section class="detail-section">' +
         '<h3>At a glance</h3>' +
         '<dl class="facts">' +
-          fact('School level', SF.format.levels(school)) +
+          fact('School level', esc(SF.format.levels(school))) +
           yearsFact(school) +
           streamFact('Form 6 streams', school, 'form6') +
           streamFact('Form 7 streams', school, 'form7') +
-          fact('Boarding or day', SF.format.boardingStatus(school)) +
-          fact('Yearly fees', SF.format.feesHtml(school, ' ' + school.currency)) +
-          (showDenomination ? fact('Run by', SF.label(school.denomination)) : '') +
-          fact('Type of school', school.schoolType) +
+          fact('Boarding or day', esc(SF.format.boardingStatus(school))) +
+          fact('Yearly fees', SF.format.feesHtml(school, ' ' + esc(school.currency))) +
+          (showDenomination ? fact('Run by', esc(SF.label(school.denomination))) : '') +
+          fact('Type of school', esc(school.schoolType)) +
           (!hasCoords ? fact('Map', 'Map location not yet available') :
             school.locationPrecision === 'approximate' ? fact('Map', 'Approximate location') : '') +
         '</dl>' +
@@ -127,9 +140,17 @@ SF.panel.render = function (state) {
           : '<p class="detail-no-data">Contact details not yet available.</p>') +
       '</section>' +
 
+      '<section class="detail-section">' +
+        '<h3>Sources' + (school.sourceUrls.length ? ' <span class="muted-count">' + school.sourceUrls.length + '</span>' : '') + '</h3>' +
+        Atlas.sources.block({ urls: school.sourceUrls, kindFor: sourceKind }) +
+      '</section>' +
+
       '<footer class="detail-foot">' +
-        '<p>These details were last checked against public records on <strong class="verified">' + esc(SF.format.date(school.lastVerified)) + '</strong>.</p>' +
-        '<p class="fineprint">Sourced from public MEHRD records and, where noted above, the school’s own published contact details. Fields not yet confirmed are shown as such rather than guessed.</p>' +
+        (school.lastVerified
+          ? '<p>Last checked <strong class="verified">' + esc(SF.format.date(school.lastVerified)) + '</strong>.</p>'
+          : '<p>No date was recorded for when this record was last checked.</p>') +
+        '<p class="fineprint">Fields not yet confirmed are shown as such rather than guessed.</p>' +
+        Atlas.corrections.block({ indexName: 'Index E — Education', name: school.name, id: school.id, pageUrl: pageUrl(school.id) }) +
       '</footer>' +
     '</div>';
 };
@@ -146,22 +167,36 @@ function verificationStatusFor(school) {
   return school.verificationStatus ? 'verified' : 'unverified';
 }
 
+/* A link straight to this school's profile, for a correction report to
+ * point back to — only on a real web address (not file://). */
+function pageUrl(id) {
+  return /^https?:$/.test(location.protocol) ? Atlas.links.recordUrl('school', id) : '';
+}
+
+/* The label under each source link. The line summarising all of a record's
+ * sources is SF.format.sourceStrength() in list.js, shared with the cards. */
+function sourceKind(url) {
+  return SF.format.isMehrdUrl(url) ? 'MEHRD (official)' : 'Other public source';
+}
+
 /* Only shown once a year span is actually confirmed — see the data-policy
  * note at the top of js/data/schools.js for why most secondary records
  * don't have one yet. */
 function yearsFact(school) {
-  return school.yearLevels ? fact('Year groups', SF.format.years(school)) : '';
+  return school.yearLevels ? fact('Year groups', SF.format.esc(SF.format.years(school))) : '';
 }
 
-function fact(term, value) {
-  return '<div class="fact"><dt>' + term + '</dt><dd>' + value + '</dd></div>';
+/* `valueHtml` is inserted as HTML (the fees line carries markup), so every
+ * caller escapes data-derived text before passing it in. */
+function fact(term, valueHtml) {
+  return '<div class="fact"><dt>' + term + '</dt><dd>' + valueHtml + '</dd></div>';
 }
 
 /* Only shown when the school actually offers that form. */
 function streamFact(term, school, key) {
   var list = (school.streams && school.streams[key]) || [];
   if (!list.length) return '';
-  return fact(term, list.map(SF.label).join(', '));
+  return fact(term, SF.format.esc(list.map(SF.label).join(', ')));
 }
 
 /* Small inline icons — kept here so the panel has no image dependencies. */

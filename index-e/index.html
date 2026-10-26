@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SI Atlas — Index E: Find a school in Honiara</title>
-<meta name="description" content="Search verified Honiara schools, plus two Guadalcanal schools — by location, education level, denomination, subjects offered and fees. Real school data from public MEHRD records; verification and expansion to other provinces is ongoing.">
+<title>SI Atlas — Index E: Find a school in Solomon Islands</title>
+<meta name="description" content="Search schools across all ten provinces of Solomon Islands by place, school level and who runs them. Compiled from public MEHRD records and other public sources, with the sources listed on every school's profile.">
 <meta name="theme-color" content="#06337C">
 
 <!-- Link previews. og:url and og:image must be absolute URLs for scrapers, so
@@ -13,19 +13,19 @@
      site moves to a custom domain or a differently named repository. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SI Atlas — Index E">
-<meta property="og:title" content="SI Atlas — Index E: Find a school in Honiara">
-<meta property="og:description" content="Search verified Honiara schools, plus two Guadalcanal schools — by location, education level, denomination, subjects offered and fees. Real school data from public MEHRD records; verification and expansion to other provinces is ongoing.">
+<meta property="og:title" content="SI Atlas — Index E: Find a school in Solomon Islands">
+<meta property="og:description" content="Search schools across all ten provinces of Solomon Islands by place, school level and who runs them. Compiled from public MEHRD records and other public sources, with the sources listed on every school's profile.">
 <meta property="og:url" content="https://reversalredgarnet.github.io/SI-Atlas/index-e/">
 <meta property="og:image" content="https://reversalredgarnet.github.io/SI-Atlas/index-e/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The SI Atlas — Index E directory: a filterable list of schools beside a map of Honiara with school markers.">
+<meta property="og:image:alt" content="The SI Atlas — Index E directory: a search box above a list of schools beside a map of Solomon Islands with school markers.">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SI Atlas — Index E: Find a school in Honiara">
-<meta name="twitter:description" content="Search verified Honiara schools, plus two Guadalcanal schools — by location, education level, denomination, subjects offered and fees. Real school data from public MEHRD records; verification and expansion to other provinces is ongoing.">
+<meta name="twitter:title" content="SI Atlas — Index E: Find a school in Solomon Islands">
+<meta name="twitter:description" content="Search schools across all ten provinces of Solomon Islands by place, school level and who runs them. Compiled from public MEHRD records and other public sources, with the sources listed on every school's profile.">
 <meta name="twitter:image" content="https://reversalredgarnet.github.io/SI-Atlas/index-e/assets/og-image.png">
-<meta name="twitter:image:alt" content="The SI Atlas — Index E directory: a filterable list of schools beside a map of Honiara with school markers.">
+<meta name="twitter:image:alt" content="The SI Atlas — Index E directory: a search box above a list of schools beside a map of Solomon Islands with school markers.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,6 +37,9 @@
 <link rel="stylesheet" href="../shared/styles/base.css">
 <link rel="stylesheet" href="../shared/styles/index-shell.css">
 <link rel="stylesheet" href="css/styles.css">
+<!-- Without JavaScript the list never renders, so drop the "Loading…" line
+     and let the <noscript> message in the list say why. -->
+<noscript><style>.list-loading { display: none; }</style></noscript>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="assets/favicon.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
@@ -48,7 +51,10 @@
 <!-- ── Masthead ─────────────────────────────────────────────────────────── -->
 <header class="masthead">
   <div class="masthead-inner">
-    <a class="masthead-id" href="./">
+    <!-- The logo and name lead back to the SI Atlas portal — the only way
+         out to the other indexes. The visible text stays the service name;
+         the sr-only suffix says where the link goes. -->
+    <a class="masthead-id" href="../index.html" title="All SI Atlas indexes">
       <span class="crest" aria-hidden="true">
         <svg viewBox="0 0 32 32" width="38" height="38">
           <rect width="32" height="32" fill="#06337C"/>
@@ -56,7 +62,7 @@
           <path d="M9 16v5c0 2 3.2 3.6 7 3.6s7-1.6 7-3.6v-5l-7 3.5z" fill="#C8A415"/>
         </svg>
       </span>
-      <span class="service-name">SI Atlas — Index E</span>
+      <span class="service-name">SI Atlas — Index E</span><span class="sr-only"> — back to all SI Atlas indexes</span>
     </a>
   </div>
 </header>
@@ -74,14 +80,14 @@
 <!-- ── Service notice ───────────────────────────────────────────────────── -->
 <div class="notice" role="note">
   <span class="notice-label">Prototype &middot; not an MEHRD service</span>
-  <span class="notice-text"><span class="long">An independent open-data directory compiled from public MEHRD records for Honiara, plus two Guadalcanal schools. Some fields (fees, contacts, exact coordinates) are not yet confirmed for every school — verification and expansion to other provinces is ongoing. Check with a school directly before acting on anything here.</span><span class="short">Independent open-data directory from public MEHRD records. Some fields are still being verified.</span></span>
+  <span class="notice-text"><span class="long">An independent open-data directory compiled from public MEHRD records and other public sources. Many fields (contact details, exact locations, subjects) are not yet confirmed for most schools, and each school’s profile lists the sources it rests on. Check with a school directly before acting on anything here.</span><span class="short">Independent open-data directory from public MEHRD and other public records. Many fields are not yet confirmed.</span></span>
 </div>
 
 <!-- ── Page heading ─────────────────────────────────────────────────────── -->
 <section class="page-intro">
   <div class="page-intro-main">
-    <h1>Find a school in Honiara</h1>
-    <p><span class="long">Search verified schools in Honiara, plus two schools in Guadalcanal &mdash; by where they are, what they teach, who runs them and what they cost. More provinces are being added as their data is verified.</span><span class="short">Search verified schools in Honiara, plus two schools in Guadalcanal.</span></p>
+    <h1>Find a school in Solomon Islands</h1>
+    <p><span class="long"><span id="intro-count-long">…</span> schools across all ten provinces, from public MEHRD records and other public sources. How well each one is confirmed varies &mdash; every profile says which sources it rests on.</span><span class="short"><span id="intro-count-short">…</span> schools across all ten provinces, with the sources on every profile.</span></p>
   </div>
 </section>
 
@@ -130,7 +136,7 @@
     </div>
     <div class="rail-body" id="filter-controls"><!-- built by js/filterPanel.js --></div>
     <div class="rail-foot">
-      <button type="button" class="btn btn-primary" id="drawer-apply">Show <span id="drawer-count">0</span> schools</button>
+      <button type="button" class="btn btn-primary" id="drawer-apply">Show <span id="drawer-count">…</span> schools</button>
       <button type="button" class="btn btn-secondary" id="drawer-clear">Clear filters</button>
     </div>
   </aside>
@@ -139,19 +145,27 @@
   <section class="results-col" id="results-col" aria-labelledby="results-heading">
     <div class="results-head">
       <h2 id="results-heading">
-        <span id="result-count" aria-live="polite">0</span> schools
+        <span id="result-count">…</span> schools
         <span class="results-sub" id="result-sub"></span>
       </h2>
       <div class="chip-row" id="active-chips"></div>
     </div>
-    <div class="results-list" id="results-list"></div>
+    <div class="results-list" id="results-list">
+      <!-- Replaced by the first render (js/list.js). Until then — a slow
+           connection still fetching the data or Leaflet — say so, rather
+           than showing "0 schools" over an empty list. -->
+      <p class="list-loading" role="status">Loading schools…</p>
+      <noscript><p class="list-loading-noscript">This directory needs JavaScript to search and list schools. Please turn it on, or use a browser that supports it.</p></noscript>
+    </div>
   </section>
 
   <!-- Selected school detail -->
   <section class="detail-col" id="detail-col" aria-labelledby="detail-name" aria-live="polite"></section>
 
   <!-- Map -->
-  <section class="map-col" id="map-col" aria-label="Map of schools">
+  <section class="map-col" id="map-col" aria-label="Map of schools" aria-describedby="map-summary">
+    <!-- What the map shows, in words, for screen readers (shell.syncMapSummary). -->
+    <p class="sr-only" id="map-summary"></p>
     <div id="map"></div>
     <!-- Collapsible map key. The disclosure behaviour (aria-expanded, the
          remembered state) is shared — see ../shared/map-legend.js. Collapsed,
@@ -165,6 +179,7 @@
       <div class="map-note-body" id="map-note-body">
         <span><i class="k-school"></i>A school</span>
         <span><i class="k-selected"></i>The school you picked</span>
+        <span><i class="k-approx"></i>Dashed outline: approximate location</span>
         <span id="key-you" hidden><i class="k-you"></i>You are here</span>
       </div>
     </div>
@@ -173,12 +188,18 @@
 </main>
 
 <!-- Mobile list/map switch -->
-<div class="view-switch" role="tablist" aria-label="Switch view">
-  <button type="button" role="tab" class="vs-btn is-active" data-view="list" aria-selected="true">List</button>
-  <button type="button" role="tab" class="vs-btn" data-view="map" aria-selected="false">Map</button>
+<!-- A pair of toggle buttons (aria-pressed), not tabs: there are no tab
+     panels or arrow-key behaviour behind them, just two views. -->
+<div class="view-switch" role="group" aria-label="Show results as">
+  <button type="button" class="vs-btn is-active" data-view="list" aria-pressed="true">List</button>
+  <button type="button" class="vs-btn" data-view="map" aria-pressed="false">Map</button>
 </div>
 
 <div class="scrim" id="scrim" hidden></div>
+
+<!-- The page's one polite live region: "Link copied" and the like, said to
+     screen readers without moving focus (Atlas.shell.announce). -->
+<p class="sr-only" id="live-status" role="status" aria-live="polite"></p>
 
 <!-- Static info modal (About / Useful Info / Contact / Help) -->
 <div class="modal" id="info-modal" hidden role="dialog" aria-modal="true" aria-labelledby="info-title">
@@ -194,12 +215,15 @@
 
 <!-- Shared SI Atlas modules (Atlas.*) — util first, since the others use it -->
 <script src="../shared/util.js"></script>
+<script src="../shared/sources.js"></script>
+<script src="../shared/corrections.js"></script>
 <script src="../shared/map.js"></script>
 <script src="../shared/verification-badge.js"></script>
 <script src="../shared/map-legend.js"></script>
 <script src="../shared/geolocation.js"></script>
 <script src="../shared/filter-kit.js"></script>
 <script src="../shared/shell.js"></script>
+<script src="../shared/links.js"></script>
 
 <!-- App: data → state → logic → views → wiring -->
 <script src="js/data/schools.js"></script>

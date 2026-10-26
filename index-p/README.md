@@ -2,7 +2,8 @@
 
 A searchable directory and interactive map of Royal Solomon Islands Police
 Force (RSIPF) stations, posts and outposts — all 42 found in public records,
-across ten provinces. This is the third index of **SI Atlas** — see the
+across ten provinces. This is the second working index of **SI Atlas**
+(Index H is still a stub) — see the
 [repo-root README](../README.md) for the umbrella project and methodology.
 This document covers Index P's own implementation.
 
@@ -38,8 +39,9 @@ There is no build step, no bundler and no server-side code.
   (`python -m http.server`). A local server is recommended, because browser
   geolocation only works on `https://` or `localhost`.
 
-External dependencies are loaded from CDNs at runtime: Leaflet 1.9.4 and a
-Google font (Open Sans). Nothing is installed.
+External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs), a Google
+font (Open Sans) and Esri basemap tiles (see "Design notes"). Nothing is
+installed. If Leaflet fails to load, the directory still works without a map.
 
 ## Structure
 
@@ -78,7 +80,9 @@ lives in [`../shared/map.js`](../shared/map.js) (`Atlas.map`); the
 verified/unverified/unknown badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)
 (`Atlas.verificationBadge`), used unmodified so the badge looks and behaves
-identically to every other index; and the entity envelope comes from
+identically to every other index; the profile's Sources section is rendered
+by [`../shared/sources.js`](../shared/sources.js) (`Atlas.sources`), shared
+with Index E; and the entity envelope comes from
 [`../shared/schema.js`](../shared/schema.js) (`Atlas.schema`); the collapsible map key's disclosure behaviour and remembered state come from
 [`../shared/map-legend.js`](../shared/map-legend.js) (`Atlas.mapLegend`).
 
@@ -208,10 +212,24 @@ RSIPF service.
 **The map is locked to Solomon Islands** — shared logic, see the bounds
 constants in `../shared/map.js`.
 
-**Basemap** is standard OpenStreetMap raster tiles: free, no API key, no
-sign-up, desaturated slightly in CSS so the markers stay the loudest thing on
-screen. OSM's public tile server is fine for a prototype but has a usage
-policy; a real deployment should use a tile provider with a proper plan.
+**Basemap** is Esri's World Topographic Map (`server.arcgisonline.com`),
+shared by every index and configured once in `../shared/map.js`: no API key,
+no sign-up, with Esri's full attribution (including OpenStreetMap
+contributors) behind the ⓘ credit badge, desaturated slightly in CSS so the
+markers stay the loudest thing on screen. Check Esri's terms of use before
+treating this as a production service.
+
+## When the data changes
+
+The service notice, the About and Help text, and the "not shown on the map"
+note are generated from `SP.STATIONS` on every load, so they can't go stale.
+These places still quote the counts (42 records, 11 without coordinates, 31
+with) by hand and need updating with the data:
+
+- `index.html` — the `description`, `og:description` and
+  `twitter:description` meta tags (they can't be generated);
+- this README and the repo-root `README.md`;
+- the header comment of `js/data/stations.js`.
 
 ## Swapping the dataset for an API
 

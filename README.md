@@ -4,15 +4,18 @@ SI Atlas is an open-data information layer for Solomon Islands public
 services: a family of directories, each covering one domain, built the same
 way and sharing the same visual and data conventions.
 
-- **[Index E — Education](index-e/README.md)** ([live](index-e/index.html)):
+- **[Index E — Education](index-e/README.md)** ([live](https://reversalredgarnet.github.io/SI-Atlas/index-e/)):
   SI Atlas — Index E, a searchable directory and map of schools — 188 records
-  across all ten provinces, though verification depth varies (see its own
-  README for the two coverage tiers).
-- **[Index P — Policing](index-p/README.md)** ([live](index-p/index.html)):
+  across all ten provinces. How much is confirmed varies by record: its
+  README explains the two coverage tiers (125 with a confirmed town, location
+  or denomination; 63 confirmed against MEHRD's Year 10 Placement 2026
+  roster only), and every profile shows a "Sources" line computed from the
+  record's cited URLs, which is the measure of source strength.
+- **[Index P — Policing](index-p/README.md)** ([live](https://reversalredgarnet.github.io/SI-Atlas/index-p/)):
   SI Atlas — Index P, a searchable directory and map of RSIPF police stations,
   posts and outposts — 42 records across ten provinces, 31 of them with
   confirmed coordinates.
-- **Index H — Health** ([stub](index-h/index.html)): a planned directory and
+- **Index H — Health** ([stub](https://reversalredgarnet.github.io/SI-Atlas/index-h/)): a planned directory and
   map of health facilities. Not yet built.
 - Further indexes (government services, disaster/emergency, agriculture,
   transport, business) may follow the same pattern.
@@ -69,14 +72,34 @@ see exactly how a result was produced.
 ## Repository structure
 
 ```
-si-atlas/
+SI-Atlas/
 ├── README.md              this file
+├── index.html             the portal: links to every index
+├── 404.html               GitHub Pages' "not found" page: links to every
+│                           index, rebased to the site root (self-contained)
+├── .nojekyll              keeps GitHub Pages from running files through Jekyll
+├── .github/ISSUE_TEMPLATE/correction.md
+│                           the same correction template, for issues started
+│                           on GitHub itself
 ├── shared/
-│   ├── util.js              small stateless string helpers (Atlas.util.esc,
-│   │                         Atlas.util.formatDate) every other shared/index
-│   │                         file builds on — loads first
+│   ├── util.js              small stateless helpers (Atlas.util.esc,
+│   │                         .safeUrl, .formatDate, .prefersReducedMotion)
+│   │                         every other shared/index file builds on —
+│   │                         loads first
+│   ├── sources.js           renders a record's sources the same way in every
+│   │                         index: citations as text, URLs as links showing
+│   │                         their host (Atlas.sources)
+│   ├── links.js             shareable links: the open record, search, filters
+│   │                         and sort live in the URL hash (#school=…), are
+│   │                         validated and restored on load, and "Copy link"
+│   │                         on every profile (Atlas.links)
+│   ├── corrections.js       the "Report a correction" link on every profile:
+│   │                         a pre-filled GitHub issue, no server
+│   │                         (Atlas.corrections)
 │   ├── schema.js           the generic entity envelope every index's data conforms to
-│   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map)
+│   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map);
+│   │                         degrades to a "Map unavailable" note if Leaflet
+│   │                         fails to load
 │   ├── verification-badge.js   verified/unverified/unknown badge renderer (Atlas.verificationBadge)
 │   ├── map-legend.js        collapsible map key: disclosure behaviour +
 │   │                         remembered state (Atlas.mapLegend)
@@ -91,6 +114,8 @@ si-atlas/
 │   │                         collapsible section, a checkbox row, a section
 │   │                         of checkboxes, the distance select
 │   │                         (Atlas.filterKit)
+│   ├── assets/favicon.svg   the SI Atlas umbrella mark (portal, Index H, 404
+│   │                         page); each working index keeps its own
 │   └── styles/
 │       ├── base.css         shared design tokens, reset, generic UI primitives
 │       └── index-shell.css  the page skeleton every index shares: masthead,
@@ -116,7 +141,8 @@ logic (Index E uses `SF`, Index P uses `SP`).
    `js/`, loading `../shared/styles/base.css` then
    `../shared/styles/index-shell.css` before its own stylesheet, and the
    shared scripts before its own — `util.js` first (everything else depends
-   on it), then `schema.js`, `map.js`, `verification-badge.js`,
+   on it), then `sources.js`, `schema.js` (only if the index builds its
+   records through it, as Index P does), `map.js`, `verification-badge.js`,
    `map-legend.js`, `geolocation.js`, `filter-kit.js`, `shell.js`.
 
    `index-shell.css` carries the whole page skeleton — masthead, nav bar,
@@ -164,7 +190,10 @@ rules apply to it, and they are the current convention for every index:
   open-data directory compiled from public records, and putting a government
   name in the masthead implied an endorsement or authorship none of these
   indexes has. Say what the sources actually are in the service notice and the
-  About panel, where it can be stated accurately.
+  About panel, where it can be stated accurately. The logo-and-name link
+  goes to the SI Atlas portal (`../index.html`), with a visually hidden
+  "back to all SI Atlas indexes" for screen readers — the way out to the
+  other indexes, without adding anything visible to the masthead.
 - **No collapsible statistics widget.** No "N records / N provinces covered"
   readout above the results, and no "Hide this introduction" toggle. The counts
   restated what the page already showed, and the toggle was an affordance for

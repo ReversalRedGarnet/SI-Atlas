@@ -22,6 +22,9 @@ window.SF = window.SF || {};
 var shell;
 
 document.addEventListener('DOMContentLoaded', function () {
+  syncStaticCounts();
+  dropUnanswerableSorts();
+
   SF.filterPanel.init();
   SF.list.init();
   SF.map.init();
@@ -33,18 +36,87 @@ document.addEventListener('DOMContentLoaded', function () {
     storageKey: 'si-atlas:index-e:map-legend'
   });
 
-  shell = Atlas.shell.wire(SF, { info: INFO });
+  shell = Atlas.shell.wire(SF, {
+    info: INFO,
+    indexName: 'Index E — Education',
+    /* Read out (politely, once typing pauses) when the count changes. */
+    describeCount: function (n) {
+      if (n === 0) return 'No schools match';
+      if (n === TOTAL_COUNT) return 'Showing all ' + n + ' schools';
+      return n === 1 ? '1 school matches' : n + ' schools match';
+    }
+  });
+
+  /* Shareable links: read the URL hash into state now (before the first
+   * render), keep it in step afterwards — see ../shared/links.js. Every
+   * value is checked against the vocabularies below; a filter the page
+   * doesn't offer (fees, year group, while the data can't answer them)
+   * is simply not accepted from a link. */
+  var numbers = {};
+  if (SF.HAS_YEAR_DATA) numbers.yearLevel = { min: 1, max: 13 };
+  if (SF.HAS_FEE_DATA) numbers.feeMax = { min: 0, max: 1000000 };
+  var links = Atlas.links.wire(SF, {
+    idParam: 'school',
+    isRecord: function (id) { return !!SF.getSchoolById(id); },
+    arrays: {
+      provinces: SF.PROVINCES,
+      denominations: SF.DENOMINATIONS,
+      levels: SF.SCHOOL_LEVEL_OPTIONS.map(function (o) { return o.value; }),
+      form6Streams: SF.FORM6_STREAMS,
+      form7Streams: SF.FORM7_STREAMS,
+      subjects: [].concat.apply([], SF.SUBJECT_GROUPS.map(function (g) { return g.subjects; }))
+    },
+    choices: { boarding: ['Day', 'Boarding'] },
+    numbers: numbers
+  });
 
   SF.subscribe(render);
+  SF.subscribe(links.write);   // after render(), which may drop a filtered-out selection
   render(SF.state);
+  links.write(SF.state);
 });
+
+/* --- Whole-dataset counts (fixed for the page's lifetime, unlike the
+ * filtered counts render() produces on every pass) ------------------------
+ * Computed from SF.SCHOOLS rather than typed in, the way Index P does it, so
+ * a data update can never leave the intro or About text quoting a stale
+ * figure the way the old "Honiara plus two Guadalcanal schools" copy did. */
+var TOTAL_COUNT = SF.SCHOOLS.length;
+
+function syncStaticCounts() {
+  ['intro-count-long', 'intro-count-short'].forEach(function (id) {
+    document.getElementById(id).textContent = TOTAL_COUNT;
+  });
+}
+
+/* The fee sorts can only order schools that have fees; with none in the data
+ * they would just return file order, so they are removed (not merely
+ * disabled) until SF.HAS_FEE_DATA says otherwise. */
+function dropUnanswerableSorts() {
+  if (SF.HAS_FEE_DATA) return;
+  var sort = document.getElementById('sort-select');
+  ['feeLow', 'feeHigh'].forEach(function (v) {
+    var opt = sort.querySelector('option[value="' + v + '"]');
+    if (opt) opt.remove();
+  });
+}
 
 /* --- The single render pass --------------------------------------------- */
 
 var prevSelectedId = null;
 var prevFiltersOpen = false;
 
+/* If a pass throws, say so in the list (and log it) rather than leave it
+ * blank or half-drawn — see renderFailed() in ../shared/shell.js. */
 function render(state) {
+  try {
+    draw(state);
+  } catch (err) {
+    shell.renderFailed(err);
+  }
+}
+
+function draw(state) {
   var results = SF.filters.getResults(state);
 
   /* Invariant: whatever is selected must be part of the visible result set.
@@ -57,6 +129,7 @@ function render(state) {
 
   SF.list.render(results, state);
   SF.map.render(results, state);
+  shell.syncMapSummary(results.filter(function (s) { return s.latitude !== null; }).length, results.length, ['school', 'schools']);
   SF.panel.render(state);
   SF.filterPanel.sync(state);
   shell.syncToolbar(state, results);
@@ -77,6 +150,8 @@ function render(state) {
       SF.map.focus(SF.getSchoolById(state.selectedId));
       SF.list.revealSelected(state.selectedId);
     }
+    /* The list and profile were just rebuilt, taking focus with them. */
+    shell.syncSelectionFocus(prevSelectedId, state.selectedId);
     prevSelectedId = state.selectedId;
     shell.refreshMapSoon();    // the map column just changed width
   }
@@ -92,8 +167,8 @@ function render(state) {
 var INFO = {
   about: {
     title: 'About SI Atlas — Index E',
-    body: '<p>SI Atlas — Index E is a Honiara pilot for what is intended to become a national school directory: one place where families and students can find a school, compare what it offers, and see where it is on the map.</p>' +
-          '<p>School names and details in this build are real, sourced from public MEHRD records for Honiara, plus St Joseph’s Tenaru and Selwyn College in Guadalcanal. Some fields — fees, contact details, exact coordinates, subjects — are not yet confirmed for every school and are shown as such rather than guessed. Verification and expansion to other provinces is ongoing.</p>' +
+    body: '<p>SI Atlas — Index E is a directory of schools across all ten provinces of Solomon Islands: one place where families and students can find a school, see what is known about it, and see where it is on the map.</p>' +
+          '<p>All ' + TOTAL_COUNT + ' records are real schools, compiled from public MEHRD records (province school lists and Year 10 Placement 2026 rosters) and, for many schools, other public sources such as news coverage. How well each record is confirmed varies, and every school’s profile lists the sources it rests on. Many fields — contact details, exact locations, subjects — are not yet confirmed for most schools and are shown as such rather than guessed.</p>' +
           '<p>This is an independent open-data prototype built from public records. It is not an official MEHRD service and is not affiliated with or endorsed by the Ministry of Education &amp; Human Resources Development, and nothing entered on this page is stored or sent anywhere. Check with a school directly before acting on anything here.</p>'
   },
   useful: {
@@ -113,7 +188,7 @@ var INFO = {
   help: {
     title: 'Help &amp; FAQ',
     body: '<ul><li><strong>Start by searching.</strong> The search box looks at school names, towns, provinces and subjects all at once.</li>' +
-          '<li><strong>Use the Filters button</strong> to narrow things down by school level, province, subjects, fees and more.</li>' +
+          '<li><strong>Use the Filters button</strong> to narrow things down by school level, province, who runs the school and more.</li>' +
           '<li><strong>Picking more than one option widens the results.</strong> Choosing both Honiara and Guadalcanal shows schools in either. Adding a school level narrows them again.</li>' +
           '<li><strong>Subjects work differently:</strong> a school has to teach every subject you tick.</li>' +
           '<li><strong>Share your location</strong> to see how far away each school is and to sort by the closest. Everything else works without it.</li>' +

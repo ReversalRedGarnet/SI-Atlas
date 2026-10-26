@@ -18,12 +18,17 @@
 window.Atlas = window.Atlas || {};
 Atlas.map = {};
 
+/* Bounds are plain [[south, west], [north, east]] corner pairs, which every
+ * Leaflet call below accepts as-is. They deliberately do NOT touch `L` at
+ * load time: if the Leaflet CDN fails, this file must still load so the
+ * list can render without a map (see create()). */
+
 /* The country, snug: roughly half a degree of margin on every side. This is
  * what the initial view and "reset view" fit to. */
-Atlas.map.SI_VIEW_BOUNDS = L.latLngBounds([-12.20, 155.60], [-6.30, 166.60]);
+Atlas.map.SI_VIEW_BOUNDS = [[-12.20, 155.60], [-6.30, 166.60]];
 
 /* The hard pan limit, one degree wider again. Panning stops dead here. */
-Atlas.map.SI_MAX_BOUNDS = L.latLngBounds([-13.20, 154.60], [-5.30, 167.60]);
+Atlas.map.SI_MAX_BOUNDS = [[-13.20, 154.60], [-5.30, 167.60]];
 
 /* Padding used for both fitting and the min-zoom calculation, so that the
  * zoomed-all-the-way-out view is exactly the reset view. */
@@ -84,6 +89,11 @@ Atlas.map.createBaseLayer = function (key) {
  * here is module-level state — so more than one Atlas map can exist on a
  * page if an index ever needs that.
  *
+ * Returns null — and leaves a one-line note in the container — when Leaflet
+ * itself failed to load (CDN blocked, offline, timed out). Every index's
+ * map adapter already no-ops without a controller, so the list, search and
+ * profiles keep working with no map.
+ *
  * @param {string} elementId - id of the element to render the map into.
  * @param {Object} [opts]
  * @param {number} [opts.maxZoom=17]
@@ -93,6 +103,11 @@ Atlas.map.createBaseLayer = function (key) {
 Atlas.map.create = function (elementId, opts) {
   opts = opts || {};
 
+  if (typeof L === 'undefined') {
+    Atlas.map.showUnavailable(elementId);
+    return null;
+  }
+
   var map = L.map(elementId, {
     zoomControl: false,
     attributionControl: true,
@@ -100,8 +115,16 @@ Atlas.map.create = function (elementId, opts) {
     maxBoundsViscosity: 1.0,
     worldCopyJump: false,
     minZoom: 5,
-    maxZoom: opts.maxZoom || 17
+    maxZoom: opts.maxZoom || 17,
+    /* Reduced motion: no animated zooms or tile fades. Pans are handled
+     * per call below, via animate(). */
+    zoomAnimation: !Atlas.util.prefersReducedMotion(),
+    fadeAnimation: !Atlas.util.prefersReducedMotion(),
+    markerZoomAnimation: !Atlas.util.prefersReducedMotion()
   });
+
+  /* Leaflet's per-call `animate` option, honouring prefers-reduced-motion. */
+  function animate() { return !Atlas.util.prefersReducedMotion(); }
 
   /* Deliberately no `bounds:` here — clipping tiles to SI_MAX_BOUNDS leaves
    * grey voids whenever the viewport is taller than the box. Panning is
@@ -174,7 +197,7 @@ Atlas.map.create = function (elementId, opts) {
 
     /** Reset to the whole-country view. */
     resetView: function () {
-      map.fitBounds(Atlas.map.SI_VIEW_BOUNDS, { padding: Atlas.map.FIT_PADDING });
+      map.fitBounds(Atlas.map.SI_VIEW_BOUNDS, { padding: Atlas.map.FIT_PADDING, animate: animate() });
     },
 
     /**
@@ -201,7 +224,7 @@ Atlas.map.create = function (elementId, opts) {
       if (map.getSize().x === 0) { pendingFit = points; return; }
       if (!points.length) return;
       var bounds = L.latLngBounds(points.map(function (p) { return [p.lat, p.lng]; }));
-      map.fitBounds(bounds, { padding: [40, 40], maxZoom: points.length === 1 ? 13 : 15 });
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: points.length === 1 ? 13 : 15, animate: animate() });
     },
 
     /** Recentre on one point without changing zoom unless it's off-screen. */
@@ -209,7 +232,7 @@ Atlas.map.create = function (elementId, opts) {
       if (!point || point.lat === null || point.lng === null) return;
       var target = L.latLng(point.lat, point.lng);
       if (!map.getBounds().pad(-0.15).contains(target)) {
-        map.panTo(target, { animate: true });
+        map.panTo(target, { animate: animate() });
       }
     },
 
@@ -229,17 +252,70 @@ Atlas.map.create = function (elementId, opts) {
 };
 
 /**
+ * Say plainly that the map could not load, inside the map's own container.
+ * The map key and "Show whole country" button describe a map that isn't
+ * there, so the column is flagged and index-shell.css hides them.
+ */
+Atlas.map.showUnavailable = function (elementId) {
+  var el = document.getElementById(elementId);
+  if (!el) return;
+  if (window.console) console.warn('SI Atlas: Leaflet did not load, so the map is unavailable. The list still works.');
+  el.innerHTML = '<p class="map-unavailable" role="status">Map unavailable, the list still works.</p>';
+  var col = el.closest('.map-col');
+  if (col) col.classList.add('is-unavailable');
+};
+
+/**
+ * Pixel offsets that fan out records sharing an EXACT coordinate (two
+ * schools given the same "Lunga area" point, say), so every marker in the
+ * stack stays visible and clickable at every zoom instead of one sitting
+ * permanently under the other. Nothing about the data changes — only where
+ * each icon is drawn relative to its point, by a few pixels, in a small ring.
+ * Points that merely sit close together are left alone (that is clustering,
+ * a different job).
+ *
+ * @param {Array<{id: string, lat: number, lng: number}>} points
+ * @param {number} [radiusPx=12]
+ * @returns {Object} id -> [dx, dy], for stacked points only.
+ */
+Atlas.map.coincidentOffsets = function (points, radiusPx) {
+  radiusPx = radiusPx || 12;
+  var groups = {};
+  points.forEach(function (p) {
+    var key = p.lat + ',' + p.lng;
+    (groups[key] = groups[key] || []).push(p.id);
+  });
+  var out = {};
+  Object.keys(groups).forEach(function (key) {
+    var ids = groups[key];
+    if (ids.length < 2) return;
+    /* Sorted, so a record keeps its slot in the ring whatever the list's
+     * current sort order. */
+    ids.slice().sort().forEach(function (id, i, all) {
+      var a = 2 * Math.PI * i / all.length - Math.PI / 2;
+      out[id] = [Math.round(radiusPx * Math.cos(a)), Math.round(radiusPx * Math.sin(a))];
+    });
+  });
+  return out;
+};
+
+/**
  * A standard entity pin. Every entity is the same colour; the selected one
  * gets a highlighted ring, and an approximate-location entity gets a dashed
  * ring instead of a solid one, so a landmark/memory-based estimate never
  * reads as authoritatively as a surveyed coordinate would.
+ *
+ * @param {number[]} [offset] - [dx, dy] pixels to draw the pin away from its
+ *   point, from Atlas.map.coincidentOffsets().
  */
-Atlas.map.pinIcon = function (selected, approximate) {
+Atlas.map.pinIcon = function (selected, approximate, offset) {
   var cls = 'pin' + (selected ? ' pin-selected' : '') + (approximate ? ' pin-approx' : '');
+  var half = selected ? 13 : 12;
+  var d = offset || [0, 0];
   return L.divIcon({
     className: '',
     html: '<span class="' + cls + '"></span>',
-    iconSize: selected ? [26, 26] : [24, 24],
-    iconAnchor: selected ? [13, 13] : [12, 12]
+    iconSize: [half * 2, half * 2],
+    iconAnchor: [half - d[0], half - d[1]]
   });
 };
