@@ -64,8 +64,9 @@
  *     genuinely multi-island provinces, so naming one island would be a
  *     guess. Set only where a province is effectively single-island
  *     (Guadalcanal, Choiseul, Malaita, Santa Isabel) or a specific source
- *     confirms one school's island directly (Bellona CHS; RC Nicholson
- *     College on Vella Lavella).
+ *     confirms one school's island directly — e.g. Bellona CHS, RC Nicholson
+ *     College on Vella Lavella, and (as of this file) 25 schools in total
+ *     across Central, Makira, Rennell and Bellona, Temotu and Western.
  *   - `locationPrecision` — 'approximate' for every located school in this
  *     pass (coordinates are memory/landmark-based, not a surveyed address);
  *     `null` when there are no coordinates at all. Nothing in this dataset
@@ -145,9 +146,9 @@ window.SF = window.SF || {};
 
 /* FILTERABLE subjects. Deliberately short: IT is the only subject offering
  * confirmed as consistent across schools, so it is the only one the subject
- * filter exposes. Each school record still carries a fuller `subjects` list
- * for display in its profile, but those are demo values and must not be
- * presented as a searchable, confirmed national dataset until they are. */
+ * filter exposes. A record's `subjects` is empty unless a source explicitly
+ * listed them (see the data policy above) — today only St Nicholas Anglican
+ * College has any. */
 SF.SUBJECT_GROUPS = [
   { group: 'Confirmed offerings', subjects: ['IT'] }
 ];

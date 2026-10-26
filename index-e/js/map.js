@@ -63,10 +63,9 @@ SF.map.refresh = function () {
 
 /* --- internals ----------------------------------------------------------- */
 
-/* A couple of real records (Mount Horeb CHS, Mercy CHS) have no public
- * coordinate source — see js/data/schools.js. There is nothing honest to plot
- * for them, so they're left out of the point set entirely rather than
- * guessing a location. */
+/* Most records (123 of 188 today) have no public coordinate source — see
+ * js/data/schools.js. There is nothing honest to plot for them, so they're
+ * left out of the point set entirely rather than guessing a location. */
 function locatedPoints(results) {
   return results
     .filter(function (s) { return s.latitude !== null && s.longitude !== null; })

@@ -193,7 +193,7 @@ function card(school, isSelected) {
     rows.splice(2, 0, ['Distance', esc(SF.geo.formatDistance(school.distanceKm)) + ' away']);
   }
 
-  /* Mount Horeb CHS and Mercy CHS have no public coordinate source — they
+  /* Most schools (123 of 188 today) have no public coordinate source — they
    * still belong in the directory, but the map has nothing to plot. Say so
    * rather than silently omitting the school or guessing a pin location.
    * (Approximate-vs-exact coordinates are noted in the detail panel and on
