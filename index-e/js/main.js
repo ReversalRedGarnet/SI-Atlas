@@ -22,6 +22,8 @@ window.SF = window.SF || {};
 var shell;
 
 document.addEventListener('DOMContentLoaded', function () {
+  syncStaticCounts();
+
   SF.filterPanel.init();
   SF.list.init();
   SF.map.init();
@@ -38,6 +40,19 @@ document.addEventListener('DOMContentLoaded', function () {
   SF.subscribe(render);
   render(SF.state);
 });
+
+/* --- Whole-dataset counts (fixed for the page's lifetime, unlike the
+ * filtered counts render() produces on every pass) ------------------------
+ * Computed from SF.SCHOOLS rather than typed in, the way Index P does it, so
+ * a data update can never leave the intro or About text quoting a stale
+ * figure the way the old "Honiara plus two Guadalcanal schools" copy did. */
+var TOTAL_COUNT = SF.SCHOOLS.length;
+
+function syncStaticCounts() {
+  ['intro-count-long', 'intro-count-short'].forEach(function (id) {
+    document.getElementById(id).textContent = TOTAL_COUNT;
+  });
+}
 
 /* --- The single render pass --------------------------------------------- */
 
@@ -92,8 +107,8 @@ function render(state) {
 var INFO = {
   about: {
     title: 'About SI Atlas — Index E',
-    body: '<p>SI Atlas — Index E is a Honiara pilot for what is intended to become a national school directory: one place where families and students can find a school, compare what it offers, and see where it is on the map.</p>' +
-          '<p>School names and details in this build are real, sourced from public MEHRD records for Honiara, plus St Joseph’s Tenaru and Selwyn College in Guadalcanal. Some fields — fees, contact details, exact coordinates, subjects — are not yet confirmed for every school and are shown as such rather than guessed. Verification and expansion to other provinces is ongoing.</p>' +
+    body: '<p>SI Atlas — Index E is a directory of schools across all ten provinces of Solomon Islands: one place where families and students can find a school, see what is known about it, and see where it is on the map.</p>' +
+          '<p>All ' + TOTAL_COUNT + ' records are real schools, compiled from public MEHRD records (province school lists and Year 10 Placement 2026 rosters) and, for many schools, other public sources such as news coverage. How well each record is confirmed varies, and every school’s profile lists the sources it rests on. Many fields — contact details, exact locations, subjects — are not yet confirmed for most schools and are shown as such rather than guessed.</p>' +
           '<p>This is an independent open-data prototype built from public records. It is not an official MEHRD service and is not affiliated with or endorsed by the Ministry of Education &amp; Human Resources Development, and nothing entered on this page is stored or sent anywhere. Check with a school directly before acting on anything here.</p>'
   },
   useful: {
