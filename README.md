@@ -69,14 +69,22 @@ see exactly how a result was produced.
 ## Repository structure
 
 ```
-si-atlas/
+SI-Atlas/
 ├── README.md              this file
+├── index.html             the portal: links to every index
+├── .nojekyll              keeps GitHub Pages from running files through Jekyll
 ├── shared/
-│   ├── util.js              small stateless string helpers (Atlas.util.esc,
-│   │                         Atlas.util.formatDate) every other shared/index
-│   │                         file builds on — loads first
+│   ├── util.js              small stateless helpers (Atlas.util.esc,
+│   │                         .safeUrl, .formatDate, .prefersReducedMotion)
+│   │                         every other shared/index file builds on —
+│   │                         loads first
+│   ├── sources.js           renders a record's sources the same way in every
+│   │                         index: citations as text, URLs as links showing
+│   │                         their host (Atlas.sources)
 │   ├── schema.js           the generic entity envelope every index's data conforms to
-│   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map)
+│   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map);
+│   │                         degrades to a "Map unavailable" note if Leaflet
+│   │                         fails to load
 │   ├── verification-badge.js   verified/unverified/unknown badge renderer (Atlas.verificationBadge)
 │   ├── map-legend.js        collapsible map key: disclosure behaviour +
 │   │                         remembered state (Atlas.mapLegend)
@@ -116,7 +124,8 @@ logic (Index E uses `SF`, Index P uses `SP`).
    `js/`, loading `../shared/styles/base.css` then
    `../shared/styles/index-shell.css` before its own stylesheet, and the
    shared scripts before its own — `util.js` first (everything else depends
-   on it), then `schema.js`, `map.js`, `verification-badge.js`,
+   on it), then `sources.js`, `schema.js` (only if the index builds its
+   records through it, as Index P does), `map.js`, `verification-badge.js`,
    `map-legend.js`, `geolocation.js`, `filter-kit.js`, `shell.js`.
 
    `index-shell.css` carries the whole page skeleton — masthead, nav bar,

@@ -80,7 +80,9 @@ lives in [`../shared/map.js`](../shared/map.js) (`Atlas.map`); the
 verified/unverified/unknown badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)
 (`Atlas.verificationBadge`), used unmodified so the badge looks and behaves
-identically to every other index; and the entity envelope comes from
+identically to every other index; the profile's Sources section is rendered
+by [`../shared/sources.js`](../shared/sources.js) (`Atlas.sources`), shared
+with Index E; and the entity envelope comes from
 [`../shared/schema.js`](../shared/schema.js) (`Atlas.schema`); the collapsible map key's disclosure behaviour and remembered state come from
 [`../shared/map-legend.js`](../shared/map-legend.js) (`Atlas.mapLegend`).
 

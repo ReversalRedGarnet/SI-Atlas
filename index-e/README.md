@@ -57,17 +57,20 @@ list still works."
 
 ```
 index.html              app shell / markup
+assets/                 favicon (SVG + PNG), Apple touch icon, and
+                         og-image.png — the 1200x630 link-preview screenshot
 css/styles.css          What goes inside the regions: filter drawer, result
                          rows, detail panel, map contents. The page skeleton
                          itself comes from ../shared/styles/index-shell.css
 js/data/schools.js      Real, national dataset (two verification tiers — see the note above) + filter vocabularies (province, subject taxonomy…)
 js/state.js             the single app-state object, setters and subscribers
 js/filters.js           search, filtering, sorting, facet counts — pure functions
-js/geolocation.js       geolocation request + haversine distance
+js/geolocation.js       wires ../shared/geolocation.js (location + distance) onto SF
 js/filterPanel.js       renders and syncs the filter controls
 js/list.js              result cards + shared formatting helpers
 js/map.js               adapter onto ../shared/map.js: schools → points, marker clicks → SF.select()
-js/panel.js             selected-school detail panel / mobile bottom sheet
+js/panel.js             selected-school profile / mobile bottom sheet, including
+                         its sources (via ../shared/sources.js)
 js/main.js              wiring: events → state → single render pass
 ```
 
@@ -85,7 +88,9 @@ and the intro paragraph is always visible. The Solomon-Islands-locked Leaflet se
 lives in [`../shared/map.js`](../shared/map.js) (`Atlas.map`); the
 verified/unverified badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)
-(`Atlas.verificationBadge`); the collapsible map key's disclosure behaviour and remembered state come from
+(`Atlas.verificationBadge`); a profile's sources are rendered by
+[`../shared/sources.js`](../shared/sources.js) (`Atlas.sources`), exactly as
+Index P renders its own; the collapsible map key's disclosure behaviour and remembered state come from
 [`../shared/map-legend.js`](../shared/map-legend.js) (`Atlas.mapLegend`).
 
 Scripts are plain `<script>` tags sharing global namespaces (`SF` for this
@@ -193,7 +198,15 @@ generic `{ id, name, type, location, sources, verification_status,
 last_verified, contact, notes }` envelope every future index is meant to
 follow. `js/panel.js`'s `verificationStatusFor()` bridges the two only for
 badge rendering (a non-empty `verificationStatus` note reads as
-`'verified'`). Aligning this dataset's field names to the shared schema is
+`'verified'`, which every record has). Because that badge alone can't tell
+records apart, each profile also shows what its `sourceUrls` actually are:
+a line computed at render time — "Confirmed by MEHRD and an independent
+source", "Confirmed by MEHRD only" or "Public sources only, not found in
+MEHRD records" — and a Sources section listing every URL, labelled "MEHRD
+(official)" or "Other public source". The free-text `verificationStatus`
+note itself is not shown, and the Tier 1 / Tier 2 split is not used in the
+UI (it is defined by which fields are filled in, not by which sources back
+them). Aligning this dataset's field names to the shared schema is
 a deliberate follow-up, not done as part of the shared/index-e/index-h
 restructuring, to avoid touching already-verified data and app logic in the
 same pass.
