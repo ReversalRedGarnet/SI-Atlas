@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — SI Atlas</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#06337C">
+<link rel="icon" href="shared/assets/favicon.svg" type="image/svg+xml" data-root-href="shared/assets/favicon.svg">
+
+<!-- GitHub Pages serves this file for ANY missing path on the site, at that
+     path — so /SI-Atlas/js/app.js (an old SchoolFinder-era URL, say) shows
+     this page with the browser still at /SI-Atlas/js/app.js. Relative links
+     would then resolve against the missing URL and break, and so would a
+     relative stylesheet; hence the styles are inline, and the small script
+     at the bottom points every [data-root-href] link at the site root. -->
+<style>
+  :root { --navy: #06337C; --green: #1F6B2E; --link: #1257A0; --text: #333; --text-mid: #555; --page: #ECECEB; --rule-strong: #767C84; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem 1rem;
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 15px; line-height: 1.45;
+    color: var(--text); background: var(--page);
+  }
+  main { max-width: 560px; width: 100%; background: #fff; border: 1px solid var(--rule-strong); border-top: 4px solid var(--navy); padding: 1.4rem 1.5rem; }
+  h1 { margin: 0 0 .5rem; font-size: 1.45rem; color: var(--green); font-family: 'Open Sans', Arial, sans-serif; }
+  p { margin: 0 0 .9rem; color: var(--text-mid); }
+  ul { margin: 0; padding: 0; list-style: none; }
+  li + li { margin-top: .35rem; }
+  a { color: var(--link); }
+  a:focus-visible { outline: 3px solid var(--navy); outline-offset: 1px; }
+  .muted { color: var(--text-mid); font-size: .88rem; }
+</style>
+</head>
+<body>
+
+<main>
+  <h1>Page not found</h1>
+  <p>There is nothing at this address. It may have moved when the site was reorganised into SI Atlas. You can find everything from here:</p>
+  <ul>
+    <li><a href="index.html" data-root-href="index.html">SI Atlas — all indexes</a></li>
+    <li><a href="index-e/index.html" data-root-href="index-e/index.html">Index E — Education: find a school</a></li>
+    <li><a href="index-p/index.html" data-root-href="index-p/index.html">Index P — Policing: find a police station</a></li>
+    <li><a href="index-h/index.html" data-root-href="index-h/index.html">Index H — Health</a> <span class="muted">(coming soon)</span></li>
+  </ul>
+</main>
+
+<script>
+/* On a *.github.io project site the first path segment is the repository
+ * (e.g. /SI-Atlas/), so links are rebuilt against that root, whatever
+ * missing path this page was served at. Anywhere else — a local server,
+ * file:// — the relative hrefs above already resolve, so nothing changes. */
+(function () {
+  if (!/\.github\.io$/i.test(location.hostname)) return;
+  var repo = location.pathname.split('/')[1];
+  if (!repo || /\.html?$/i.test(repo)) return;
+  var root = '/' + repo + '/';
+  Array.prototype.forEach.call(document.querySelectorAll('[data-root-href]'), function (el) {
+    el.setAttribute('href', root + el.getAttribute('data-root-href'));
+  });
+})();
+</script>
+</body>
+</html>

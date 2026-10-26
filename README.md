@@ -72,6 +72,8 @@ see exactly how a result was produced.
 SI-Atlas/
 ├── README.md              this file
 ├── index.html             the portal: links to every index
+├── 404.html               GitHub Pages' "not found" page: links to every
+│                           index, rebased to the site root (self-contained)
 ├── .nojekyll              keeps GitHub Pages from running files through Jekyll
 ├── shared/
 │   ├── util.js              small stateless helpers (Atlas.util.esc,
@@ -175,7 +177,10 @@ rules apply to it, and they are the current convention for every index:
   open-data directory compiled from public records, and putting a government
   name in the masthead implied an endorsement or authorship none of these
   indexes has. Say what the sources actually are in the service notice and the
-  About panel, where it can be stated accurately.
+  About panel, where it can be stated accurately. The logo-and-name link
+  goes to the SI Atlas portal (`../index.html`), with a visually hidden
+  "back to all SI Atlas indexes" for screen readers — the way out to the
+  other indexes, without adding anything visible to the masthead.
 - **No collapsible statistics widget.** No "N records / N provinces covered"
   readout above the results, and no "Hide this introduction" toggle. The counts
   restated what the page already showed, and the toggle was an affordance for
