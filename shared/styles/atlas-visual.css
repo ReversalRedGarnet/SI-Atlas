@@ -365,8 +365,12 @@ h1, h2, h3 { letter-spacing: -.025em; }
   text-decoration: none;
   transition: transform .17s ease, box-shadow .17s ease, border-color .17s ease, background-color .17s ease;
 }
+/* The letter tiles and the Index H pill are decoration: the visible text
+   beside them already says it. `/ ""` gives them empty alt text so screen
+   readers skip them (the plain `content` line is for older browsers). */
 .index-card::before {
   content: "E";
+  content: "E" / "";
   display: flex;
   align-items: center;
   justify-content: center;
@@ -381,8 +385,8 @@ h1, h2, h3 { letter-spacing: -.025em; }
   font-weight: 800;
   letter-spacing: -.04em;
 }
-.index-card:nth-child(2)::before { content: "P"; color: #8B6330; background: #FBF2E3; border-color: #EEDDBA; }
-.index-card:nth-child(3)::before { content: "H"; color: #456E9B; background: #EDF3FA; border-color: #D5E1F0; }
+.index-card:nth-child(2)::before { content: "P"; content: "P" / ""; color: #8B6330; background: #FBF2E3; border-color: #EEDDBA; }
+.index-card:nth-child(3)::before { content: "H"; content: "H" / ""; color: #456E9B; background: #EDF3FA; border-color: #D5E1F0; }
 .index-card.is-live:hover {
   background: #FFFFFF;
   border-color: #98C6B7;
@@ -455,6 +459,7 @@ h1, h2, h3 { letter-spacing: -.025em; }
 }
 .health-page .coming-soon::before {
   content: "INDEX H  /  IN DEVELOPMENT";
+  content: "INDEX H  /  IN DEVELOPMENT" / "";
   display: inline-block;
   margin-bottom: 1rem;
   padding: .3rem .55rem;
