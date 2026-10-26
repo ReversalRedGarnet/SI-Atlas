@@ -95,7 +95,9 @@ SF.panel.render = function (state) {
           ' &middot; ' + esc(school.schoolType) + ' school' +
           (showDenomination ? ' &middot; ' + esc(school.denomination) : '') + '</p>' +
         '<p class="verified-badge">' + Atlas.verificationBadge.render(verificationStatusFor(school), school.lastVerified) + '</p>' +
-        '<p class="source-strength">' + esc(sourceStrength(school)) + '</p>' +
+        /* "Sources:" is visible, not screen-reader-only: on its own, "MEHRD
+         * only" under the badge doesn't say what it describes to anyone. */
+        '<p class="source-strength">Sources: ' + esc(SF.format.sourceStrength(school)) + '</p>' +
       '</header>' +
 
       (actionButtons ? '<div class="detail-actions">' + actionButtons + '</div>' : '') +
@@ -160,29 +162,10 @@ function verificationStatusFor(school) {
   return school.verificationStatus ? 'verified' : 'unverified';
 }
 
-/*
- * What the record's own sourceUrls say, computed at render time rather than
- * stored: whether MEHRD is among them, and whether anything else is. This
- * describes what is cited — it is not a judgement of the school, and it is
- * deliberately not the dataset's Tier 1 / Tier 2 split (those tiers are
- * defined by which fields are filled in, not by which sources back them).
- */
-function isMehrd(url) {
-  return /(^|\.)mehrd\.gov\.sb$/i.test(Atlas.sources.hostOf(url));
-}
-
-function sourceStrength(school) {
-  var urls = school.sourceUrls || [];
-  var official = urls.filter(isMehrd).length;
-  var other = urls.length - official;
-  if (official && other) return 'Confirmed by MEHRD and an independent source';
-  if (official) return 'Confirmed by MEHRD only';
-  if (other) return 'Public sources only, not found in MEHRD records';
-  return 'No source recorded';
-}
-
+/* The label under each source link. The line summarising all of a record's
+ * sources is SF.format.sourceStrength() in list.js, shared with the cards. */
 function sourceKind(url) {
-  return isMehrd(url) ? 'MEHRD (official)' : 'Other public source';
+  return SF.format.isMehrdUrl(url) ? 'MEHRD (official)' : 'Other public source';
 }
 
 /* Only shown once a year span is actually confirmed — see the data-policy

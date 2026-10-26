@@ -95,6 +95,26 @@ SF.format = {
       .map(function (w) { return w.charAt(0).toUpperCase(); })
       .join('');
   },
+  /* What a record's own sourceUrls are, computed at render time — never
+   * stored, and never a judgement of the school. It says only whether a
+   * mehrd.gov.sb URL is among them and whether anything else is. "Anything
+   * else" is deliberately not called independent or confirming: it covers
+   * news sites and encyclopaedias, but also Facebook pages, OpenStreetMap
+   * and airport listings. Not the dataset's Tier 1 / Tier 2 split either —
+   * those tiers measure which fields are filled in, not the sources. The
+   * same three labels are used on the list card and the profile. */
+  isMehrdUrl: function (url) {
+    return /(^|\.)mehrd\.gov\.sb$/i.test(Atlas.sources.hostOf(url));
+  },
+  sourceStrength: function (school) {
+    var urls = school.sourceUrls || [];
+    var mehrd = urls.filter(SF.format.isMehrdUrl).length;
+    var other = urls.length - mehrd;
+    if (mehrd && other) return 'MEHRD and another public source';
+    if (mehrd) return 'MEHRD only';
+    if (other) return 'No MEHRD source cited; public sources only';
+    return 'No source recorded';
+  },
   date: Atlas.util.formatDate,
   esc: Atlas.util.esc
 };
@@ -186,6 +206,7 @@ function card(school, isSelected) {
     ['Level',     esc(SF.format.levels(school))],
     ['Run by',    esc(SF.format.operator(school))],
     ['Attendance', esc(SF.format.boardingStatus(school))],
+    ['Sources',   esc(SF.format.sourceStrength(school))],
     ['Yearly fees', SF.format.feesHtml(school, ' ' + esc(school.currency))]
   ];
 

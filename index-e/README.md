@@ -199,10 +199,13 @@ last_verified, contact, notes }` envelope every future index is meant to
 follow. `js/panel.js`'s `verificationStatusFor()` bridges the two only for
 badge rendering (a non-empty `verificationStatus` note reads as
 `'verified'`, which every record has). Because that badge alone can't tell
-records apart, each profile also shows what its `sourceUrls` actually are:
-a line computed at render time — "Confirmed by MEHRD and an independent
-source", "Confirmed by MEHRD only" or "Public sources only, not found in
-MEHRD records" — and a Sources section listing every URL, labelled "MEHRD
+records apart, each profile and list card also shows what its `sourceUrls`
+actually are, as a "Sources" line computed at render time
+(`SF.format.sourceStrength()` in `js/list.js`): "MEHRD and another public
+source", "MEHRD only", or "No MEHRD source cited; public sources only". The
+"other" sources are not called independent or confirming — they range from
+news coverage and encyclopaedias to Facebook pages, OpenStreetMap and airport
+listings. The profile's Sources section lists every URL, labelled "MEHRD
 (official)" or "Other public source". The free-text `verificationStatus`
 note itself is not shown, and the Tier 1 / Tier 2 split is not used in the
 UI (it is defined by which fields are filled in, not by which sources back

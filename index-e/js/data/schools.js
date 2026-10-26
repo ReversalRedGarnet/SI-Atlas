@@ -32,7 +32,8 @@
  * record carries `sourceUrls` and `verificationStatus` for provenance. Each
  * school's profile lists every `sourceUrls` entry, labelled MEHRD (official)
  * or other public source, with a line computed from them at render time
- * (MEHRD and an independent source / MEHRD only / public sources only) —
+ * ("MEHRD and another public source" / "MEHRD only" / "No MEHRD source
+ * cited; public sources only") —
  * see js/panel.js. The free-text `verificationStatus` note is kept in the
  * data for traceability but not shown; `lastVerified` appears as the badge
  * date and the profile's "Last checked" line.
