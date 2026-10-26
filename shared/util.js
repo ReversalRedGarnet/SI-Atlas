@@ -18,6 +18,16 @@ Atlas.util.esc = function (s) {
 };
 
 /**
+ * True when the reader has asked their system for reduced motion. The CSS
+ * side is handled in index-shell.css; this is for motion started from JS
+ * (smooth scrolling, Leaflet's animated pans and zooms). Read on each call,
+ * so changing the setting takes effect without a reload.
+ */
+Atlas.util.prefersReducedMotion = function () {
+  return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+};
+
+/**
  * A URL from the data, made safe to put in an href — or null when it isn't.
  * esc() stops a value breaking out of the attribute, but an escaped
  * "javascript:alert(1)" is still a working link; this allows only the

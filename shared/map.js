@@ -115,8 +115,16 @@ Atlas.map.create = function (elementId, opts) {
     maxBoundsViscosity: 1.0,
     worldCopyJump: false,
     minZoom: 5,
-    maxZoom: opts.maxZoom || 17
+    maxZoom: opts.maxZoom || 17,
+    /* Reduced motion: no animated zooms or tile fades. Pans are handled
+     * per call below, via animate(). */
+    zoomAnimation: !Atlas.util.prefersReducedMotion(),
+    fadeAnimation: !Atlas.util.prefersReducedMotion(),
+    markerZoomAnimation: !Atlas.util.prefersReducedMotion()
   });
+
+  /* Leaflet's per-call `animate` option, honouring prefers-reduced-motion. */
+  function animate() { return !Atlas.util.prefersReducedMotion(); }
 
   /* Deliberately no `bounds:` here — clipping tiles to SI_MAX_BOUNDS leaves
    * grey voids whenever the viewport is taller than the box. Panning is
@@ -189,7 +197,7 @@ Atlas.map.create = function (elementId, opts) {
 
     /** Reset to the whole-country view. */
     resetView: function () {
-      map.fitBounds(Atlas.map.SI_VIEW_BOUNDS, { padding: Atlas.map.FIT_PADDING });
+      map.fitBounds(Atlas.map.SI_VIEW_BOUNDS, { padding: Atlas.map.FIT_PADDING, animate: animate() });
     },
 
     /**
@@ -216,7 +224,7 @@ Atlas.map.create = function (elementId, opts) {
       if (map.getSize().x === 0) { pendingFit = points; return; }
       if (!points.length) return;
       var bounds = L.latLngBounds(points.map(function (p) { return [p.lat, p.lng]; }));
-      map.fitBounds(bounds, { padding: [40, 40], maxZoom: points.length === 1 ? 13 : 15 });
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: points.length === 1 ? 13 : 15, animate: animate() });
     },
 
     /** Recentre on one point without changing zoom unless it's off-screen. */
@@ -224,7 +232,7 @@ Atlas.map.create = function (elementId, opts) {
       if (!point || point.lat === null || point.lng === null) return;
       var target = L.latLng(point.lat, point.lng);
       if (!map.getBounds().pad(-0.15).contains(target)) {
-        map.panTo(target, { animate: true });
+        map.panTo(target, { animate: animate() });
       }
     },
 

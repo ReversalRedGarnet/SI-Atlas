@@ -172,7 +172,7 @@ SF.list.render = function (results, state) {
 SF.list.revealSelected = function (id) {
   if (!id || !listEl) return;
   var el = listEl.querySelector('.result[data-id="' + id + '"]');
-  if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest', behavior: Atlas.util.prefersReducedMotion() ? 'auto' : 'smooth' });
 };
 
 function card(school, isSelected) {

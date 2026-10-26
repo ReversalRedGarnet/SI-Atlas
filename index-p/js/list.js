@@ -132,7 +132,7 @@ SP.list.render = function (results, state) {
 SP.list.revealSelected = function (id) {
   if (!id || !listEl) return;
   var el = listEl.querySelector('.result[data-id="' + id + '"]');
-  if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest', behavior: Atlas.util.prefersReducedMotion() ? 'auto' : 'smooth' });
 };
 
 function row(station, isSelected) {
