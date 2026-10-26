@@ -32,6 +32,7 @@ var markers = {};           // station id → L.marker
 var offsets = {};           // station id → [dx, dy] for exactly-stacked stations
 var lastSignature = null;   // result-set fingerprint, so we only refit on change
 var SELECTED_Z = 1000000;   // see paintSelection()
+var paintedId = null;       // the id currently drawn as the selected pin
 
 SP.map.init = function () {
   atlasMap = Atlas.map.create('map');
@@ -114,6 +115,7 @@ function pinIcon(station, selected) {
 function drawMarkers(results) {
   atlasMap.markerLayer.clearLayers();
   markers = {};
+  paintedId = null;   // every pin is drawn unselected; paintSelection() follows
   offsets = Atlas.map.coincidentOffsets(results.filter(SP.filters.isLocated).map(function (s) {
     return { id: s.id, lat: s.location.lat, lng: s.location.lng };
   }));
@@ -155,16 +157,23 @@ function drawMarkers(results) {
   });
 }
 
+/* Only the pins whose selected state actually changes are redrawn — the one
+ * losing the selection and the one gaining it — rather than all of them on
+ * every render (see the same function in index-e/js/map.js). */
 function paintSelection(selectedId) {
-  Object.keys(markers).forEach(function (id) {
+  if (selectedId === paintedId) return;
+  [paintedId, selectedId].forEach(function (id) {
+    if (!id || !markers[id]) return;
     var station = SP.getStationById(id);
     if (!station) return;
-    markers[id].setIcon(pinIcon(station, id === selectedId));
+    var on = id === selectedId;
+    markers[id].setIcon(pinIcon(station, on));
     /* Leaflet's z-index is the marker's layer y plus this offset, and layer y
      * runs to tens of thousands at high zoom, so the lift has to be far
      * larger than that for the selected pin to sit on top at every zoom. */
-    markers[id].setZIndexOffset(id === selectedId ? SELECTED_Z : 0);
+    markers[id].setZIndexOffset(on ? SELECTED_Z : 0);
   });
+  paintedId = selectedId;
 }
 
 })();

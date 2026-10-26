@@ -23,6 +23,7 @@ var markers = {};           // school id → L.marker
 var offsets = {};           // school id → [dx, dy] for exactly-stacked schools
 var lastSignature = null;   // result-set fingerprint, so we only refit on change
 var SELECTED_Z = 1000000;   // see paintSelection()
+var paintedId = null;       // the id currently drawn as the selected pin
 
 SF.map.init = function () {
   atlasMap = Atlas.map.create('map');
@@ -78,6 +79,7 @@ function locatedPoints(results) {
 function drawMarkers(results) {
   atlasMap.markerLayer.clearLayers();
   markers = {};
+  paintedId = null;   // every pin is drawn unselected; paintSelection() follows
   /* Schools given the exact same coordinate would otherwise stack, one
    * permanently hiding the other; fan them a few pixels apart. */
   offsets = Atlas.map.coincidentOffsets(results
@@ -119,19 +121,27 @@ function drawMarkers(results) {
   });
 }
 
+/* Only the pins whose selected state actually changes are redrawn — the one
+ * losing the selection and the one gaining it — rather than all of them on
+ * every render (each is an SVG icon; repainting all 65 on every keystroke
+ * made filtering measurably slower on a slow phone). */
 function paintSelection(selectedId) {
-  Object.keys(markers).forEach(function (id) {
+  if (selectedId === paintedId) return;
+  [paintedId, selectedId].forEach(function (id) {
+    if (!id || !markers[id]) return;
     var school = SF.getSchoolById(id);
+    var on = id === selectedId;
     markers[id].setIcon(Atlas.map.pinIcon({
-      selected: id === selectedId,
+      selected: on,
       approximate: !!school && school.locationPrecision === 'approximate',
       offset: offsets[id]
     }));
     /* Leaflet's z-index is the marker's layer y plus this offset, and layer y
      * runs to tens of thousands at high zoom, so the lift has to be far
      * larger than that for the selected pin to sit on top at every zoom. */
-    markers[id].setZIndexOffset(id === selectedId ? SELECTED_Z : 0);
+    markers[id].setZIndexOffset(on ? SELECTED_Z : 0);
   });
+  paintedId = selectedId;
 }
 
 })();
