@@ -62,7 +62,8 @@ h1, h2, h3 { letter-spacing: -.025em; }
   box-shadow: 0 0 0 1px var(--link);
 }
 .count-pill { border-radius: 999px; background: var(--link); }
-.chip { border-radius: 999px; }
+.chip { border-radius: 999px; border-color: #BCD8CF; }
+.chip-removable:hover { background: #D3EAE3; }
 .badge { border-radius: 999px; padding: .22rem .6rem; }
 .badge-verified { color: #146B54; border-color: #A8D7C4; background: #E6F5EE; }
 .badge-unverified, .badge-unknown { border-color: #D4DFDB; background: #F1F5F3; }
@@ -227,6 +228,11 @@ h1, h2, h3 { letter-spacing: -.025em; }
 .leaflet-control-zoom a.leaflet-disabled:hover { color: #A3B3B0 !important; background: #F4F7F6 !important; }
 .leaflet-popup-content-wrapper { border-radius: 10px !important; }
 .leaflet-popup-tip { box-shadow: none !important; }
+/* Old-palette blues the layers below still set: the map's own background
+   (seen before tiles load), the credit badge hover, the location dot's halo. */
+.leaflet-container { background: #DCEBE7; }
+.map-attribution-toggle:hover .map-attribution-badge { background: #EAF5F1; }
+.you-are-here { box-shadow: 0 0 0 4px rgba(17,118,108,.3); }
 .leaflet-tooltip { border-radius: 6px; border-color: #C5D9D2; box-shadow: 0 2px 8px rgba(12,48,60,.08); }
 
 .modal { background: rgba(5,30,40,.58); backdrop-filter: blur(3px); }
