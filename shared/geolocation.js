@@ -18,6 +18,9 @@
  * index) before calling attach().
  * ==========================================================================*/
 
+(function () {
+'use strict';
+
 window.Atlas = window.Atlas || {};
 Atlas.geo = {};
 
@@ -107,3 +110,5 @@ Atlas.geo.attach = function (ns) {
 };
 
 function toRad(deg) { return deg * Math.PI / 180; }
+
+})();
