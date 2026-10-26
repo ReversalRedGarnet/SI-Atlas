@@ -191,6 +191,13 @@ body {
 .detail-col { display: none; flex: 0 0 420px; width: 420px; }
 body.has-selection .detail-col { display: flex; }
 .detail-inner { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; }
+/* Every scrolling region is positioned, so absolutely positioned text inside
+   it (the .sr-only "opens in a new tab" and "Record status:" spans) is placed
+   and clipped by that region. Otherwise it is placed against the page and,
+   on a short screen where the page scrolls, stretches the page past the
+   workspace into blank space. (.rail-body sits in the fixed drawer, which
+   already contains it; it is listed for the same reason.) */
+.results-list, .detail-inner, .rail-body { position: relative; }
 /* Only ever visible as the bottom-sheet grab handle below 860px. */
 .sheet-grip { display: none; }
 
