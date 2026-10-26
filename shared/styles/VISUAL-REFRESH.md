@@ -33,4 +33,4 @@ The layer was reviewed before it was merged into the site and then adjusted, eac
 
 The palette, radii and type are documented in `index-e/README.md` under "Design notes"; `audit-scripts/contrast.js` (not shipped) measures every colour pair.
 
-The search, filtering, record data, map behaviour, and application JavaScript were not intentionally changed.
+The proposal itself changed no JavaScript, data, search, filtering or map behaviour. The import added two small script changes of its own, listed above: `shared/shell.js` (the heading focus ring) and `shared/verification-badge.js` (the badge wording), plus one hint sentence in `index-p/js/filterPanel.js`. Record data is untouched.
