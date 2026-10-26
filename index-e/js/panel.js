@@ -146,6 +146,7 @@ SF.panel.render = function (state) {
           ? '<p>Last checked <strong class="verified">' + esc(SF.format.date(school.lastVerified)) + '</strong>.</p>'
           : '<p>No date was recorded for when this record was last checked.</p>') +
         '<p class="fineprint">Fields not yet confirmed are shown as such rather than guessed.</p>' +
+        Atlas.corrections.block({ indexName: 'Index E — Education', name: school.name, id: school.id, pageUrl: pageUrl() }) +
       '</footer>' +
     '</div>';
 };
@@ -160,6 +161,12 @@ SF.panel.render = function (state) {
  */
 function verificationStatusFor(school) {
   return school.verificationStatus ? 'verified' : 'unverified';
+}
+
+/* This page's own address, for a correction report to link back to — only
+ * when it is a real web address (not file://). */
+function pageUrl() {
+  return /^https?:$/.test(location.protocol) ? location.origin + location.pathname : '';
 }
 
 /* The label under each source link. The line summarising all of a record's

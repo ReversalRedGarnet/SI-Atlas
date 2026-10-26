@@ -78,6 +78,9 @@ SI-Atlas/
 ├── 404.html               GitHub Pages' "not found" page: links to every
 │                           index, rebased to the site root (self-contained)
 ├── .nojekyll              keeps GitHub Pages from running files through Jekyll
+├── .github/ISSUE_TEMPLATE/correction.md
+│                           the same correction template, for issues started
+│                           on GitHub itself
 ├── shared/
 │   ├── util.js              small stateless helpers (Atlas.util.esc,
 │   │                         .safeUrl, .formatDate, .prefersReducedMotion)
@@ -86,6 +89,9 @@ SI-Atlas/
 │   ├── sources.js           renders a record's sources the same way in every
 │   │                         index: citations as text, URLs as links showing
 │   │                         their host (Atlas.sources)
+│   ├── corrections.js       the "Report a correction" link on every profile:
+│   │                         a pre-filled GitHub issue, no server
+│   │                         (Atlas.corrections)
 │   ├── schema.js           the generic entity envelope every index's data conforms to
 │   ├── map.js               Solomon-Islands-locked Leaflet setup (Atlas.map);
 │   │                         degrades to a "Map unavailable" note if Leaflet

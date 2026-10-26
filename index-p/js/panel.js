@@ -136,11 +136,18 @@ SP.panel.render = function (state) {
           'non-official sources. Fields with no confirmed source are left blank ' +
           'rather than guessed — including coordinates, which are never ' +
           'substituted with a town or island centre.</p>' +
+        Atlas.corrections.block({ indexName: 'Index P — Policing', name: station.name, id: station.id, pageUrl: pageUrl() }) +
       '</footer>' +
     '</div>';
 };
 
 /* --- section builders ---------------------------------------------------- */
+
+/* This page's own address, for a correction report to link back to — only
+ * when it is a real web address (not file://). */
+function pageUrl() {
+  return /^https?:$/.test(location.protocol) ? location.origin + location.pathname : '';
+}
 
 /* The coordinate line does three different things depending on the record: a
  * link for a located one, a plain statement for those with nothing to plot,
