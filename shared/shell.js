@@ -59,6 +59,20 @@ Atlas.shell.announce = function (text) {
   setTimeout(function () { el.textContent = text; }, 60);
 };
 
+/* Was the reader's last input a key press? The profile heading is focused by
+ * script, and the browser then often shows its :focus-visible ring after a
+ * mouse click too (the clicked row is re-rendered away, so focus moves from
+ * <body>) and on a shared-link load. A pointer pick marks the heading
+ * .is-pointer-focus, which hides that ring; any key press afterwards drops the
+ * class, so a keyboard user always sees where focus is. */
+var lastInputWasKey = false;
+document.addEventListener('keydown', function () {
+  lastInputWasKey = true;
+  var el = document.activeElement;
+  if (el && el.classList) el.classList.remove('is-pointer-focus');
+}, true);
+document.addEventListener('pointerdown', function () { lastInputWasKey = false; }, true);
+
 Atlas.shell.wire = function (ns, opts) {
   opts = opts || {};
   var INFO = opts.info || {};
@@ -186,7 +200,12 @@ Atlas.shell.wire = function (ns, opts) {
   function syncSelectionFocus(prevId, nextId) {
     if (nextId) {
       var heading = document.getElementById('detail-name');
-      if (heading) heading.focus({ preventScroll: true });
+      if (heading) {
+        /* Focus always moves; the ring is only for keyboard users (see
+         * lastInputWasKey below and .is-pointer-focus in each index's css). */
+        heading.classList.toggle('is-pointer-focus', !lastInputWasKey);
+        heading.focus({ preventScroll: true });
+      }
       return;
     }
     if (!prevId) return;

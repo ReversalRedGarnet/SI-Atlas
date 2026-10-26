@@ -129,6 +129,8 @@
    treatment and reasoning as Index E's (see index-e/css/styles.css). */
 .detail-head h2:focus { outline: none; }
 .detail-head h2:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+/* Opened by mouse, tap or a shared link: no ring (../shared/shell.js). */
+.detail-head h2.is-pointer-focus:focus-visible { outline: none; }
 .detail-place { font-size: .88rem; color: var(--text-mid); margin-top: .25rem; }
 .detail-distance { color: var(--navy); font-weight: 700; margin-left: .4rem; }
 .detail-kind {
