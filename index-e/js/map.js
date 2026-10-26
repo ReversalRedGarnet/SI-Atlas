@@ -20,6 +20,7 @@ SF.map = {};
 
 var atlasMap;               // the Atlas.map controller
 var markers = {};           // school id → L.marker
+var offsets = {};           // school id → [dx, dy] for exactly-stacked schools
 var lastSignature = null;   // result-set fingerprint, so we only refit on change
 
 SF.map.init = function () {
@@ -75,13 +76,19 @@ function locatedPoints(results) {
 function drawMarkers(results) {
   atlasMap.markerLayer.clearLayers();
   markers = {};
+  /* Schools given the exact same coordinate would otherwise stack, one
+   * permanently hiding the other; fan them a few pixels apart. */
+  offsets = Atlas.map.coincidentOffsets(results
+    .filter(function (s) { return s.latitude !== null && s.longitude !== null; })
+    .map(function (s) { return { id: s.id, lat: s.latitude, lng: s.longitude }; }));
 
   results.forEach(function (school) {
     if (school.latitude === null || school.longitude === null) return;
 
     var approx = school.locationPrecision === 'approximate';
+    var d = offsets[school.id] || [0, 0];
     var marker = L.marker([school.latitude, school.longitude], {
-      icon: Atlas.map.pinIcon(false, approx),
+      icon: Atlas.map.pinIcon(false, approx, d),
       title: school.name + (approx ? ' (approximate location)' : ''),
       alt: school.name,
       riseOnHover: true,
@@ -95,7 +102,7 @@ function drawMarkers(results) {
       SF.select(school.id);
     });
     /* Leaflet inserts a string tooltip as HTML, so the name is escaped. */
-    marker.bindTooltip(Atlas.util.esc(school.name + (approx ? ' — approximate location' : '')), { direction: 'top', offset: [0, -14], opacity: 1 });
+    marker.bindTooltip(Atlas.util.esc(school.name + (approx ? ' — approximate location' : '')), { direction: 'top', offset: [d[0], d[1] - 14], opacity: 1 });
 
     marker.addTo(atlasMap.markerLayer);
     markers[school.id] = marker;
@@ -105,7 +112,7 @@ function drawMarkers(results) {
 function paintSelection(selectedId) {
   Object.keys(markers).forEach(function (id) {
     var school = SF.getSchoolById(id);
-    markers[id].setIcon(Atlas.map.pinIcon(id === selectedId, school && school.locationPrecision === 'approximate'));
+    markers[id].setIcon(Atlas.map.pinIcon(id === selectedId, school && school.locationPrecision === 'approximate', offsets[id]));
     markers[id].setZIndexOffset(id === selectedId ? 1000 : 0);
   });
 }

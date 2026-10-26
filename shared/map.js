@@ -258,17 +258,56 @@ Atlas.map.showUnavailable = function (elementId) {
 };
 
 /**
+ * Pixel offsets that fan out records sharing an EXACT coordinate (two
+ * schools given the same "Lunga area" point, say), so every marker in the
+ * stack stays visible and clickable at every zoom instead of one sitting
+ * permanently under the other. Nothing about the data changes — only where
+ * each icon is drawn relative to its point, by a few pixels, in a small ring.
+ * Points that merely sit close together are left alone (that is clustering,
+ * a different job).
+ *
+ * @param {Array<{id: string, lat: number, lng: number}>} points
+ * @param {number} [radiusPx=12]
+ * @returns {Object} id -> [dx, dy], for stacked points only.
+ */
+Atlas.map.coincidentOffsets = function (points, radiusPx) {
+  radiusPx = radiusPx || 12;
+  var groups = {};
+  points.forEach(function (p) {
+    var key = p.lat + ',' + p.lng;
+    (groups[key] = groups[key] || []).push(p.id);
+  });
+  var out = {};
+  Object.keys(groups).forEach(function (key) {
+    var ids = groups[key];
+    if (ids.length < 2) return;
+    /* Sorted, so a record keeps its slot in the ring whatever the list's
+     * current sort order. */
+    ids.slice().sort().forEach(function (id, i, all) {
+      var a = 2 * Math.PI * i / all.length - Math.PI / 2;
+      out[id] = [Math.round(radiusPx * Math.cos(a)), Math.round(radiusPx * Math.sin(a))];
+    });
+  });
+  return out;
+};
+
+/**
  * A standard entity pin. Every entity is the same colour; the selected one
  * gets a highlighted ring, and an approximate-location entity gets a dashed
  * ring instead of a solid one, so a landmark/memory-based estimate never
  * reads as authoritatively as a surveyed coordinate would.
+ *
+ * @param {number[]} [offset] - [dx, dy] pixels to draw the pin away from its
+ *   point, from Atlas.map.coincidentOffsets().
  */
-Atlas.map.pinIcon = function (selected, approximate) {
+Atlas.map.pinIcon = function (selected, approximate, offset) {
   var cls = 'pin' + (selected ? ' pin-selected' : '') + (approximate ? ' pin-approx' : '');
+  var half = selected ? 13 : 12;
+  var d = offset || [0, 0];
   return L.divIcon({
     className: '',
     html: '<span class="' + cls + '"></span>',
-    iconSize: selected ? [26, 26] : [24, 24],
-    iconAnchor: selected ? [13, 13] : [12, 12]
+    iconSize: [half * 2, half * 2],
+    iconAnchor: [half - d[0], half - d[1]]
   });
 };
