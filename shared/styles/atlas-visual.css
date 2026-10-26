@@ -212,6 +212,8 @@ h1, h2, h3 { letter-spacing: -.025em; }
 .map-note-toggle { border-radius: 11px 11px 0 0; }
 .map-note-toggle:hover { background: #F0F7F4; }
 .map-key-title { color: var(--navy); }
+/* Leaflet failed to load: the same rounded card as the rest of the map UI. */
+.map-unavailable { border-color: var(--rule-strong); border-radius: 10px; box-shadow: 0 3px 10px rgba(12,48,60,.08); }
 .map-reset { border-radius: 8px; box-shadow: 0 3px 10px rgba(12,48,60,.12); }
 .leaflet-control-zoom { overflow: hidden; border: 1px solid var(--rule-strong) !important; border-radius: 9px !important; box-shadow: 0 3px 12px rgba(12,48,60,.12) !important; }
 .leaflet-control-zoom a { border-radius: 0 !important; color: var(--navy) !important; }
