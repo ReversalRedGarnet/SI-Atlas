@@ -75,10 +75,12 @@ body {
 }
 
 /* Focus: navy on light surfaces, gold over the navy bars where navy would
-   disappear (gold on navy measures 4.3:1). Base default is navy — see
-   shared/styles/base.css. */
+   disappear (gold on navy measures 4.95:1). Base default is navy — see
+   shared/styles/base.css. The filter drawer's header (.rail-head) is navy
+   too, and its "Clear all" and "Close" take focus first when it opens. */
 .gov-nav :focus-visible,
-.masthead :focus-visible { outline-color: var(--gold); }
+.masthead :focus-visible,
+.rail-head :focus-visible { outline-color: var(--gold); }
 
 /* --- Masthead ------------------------------------------------------------
    The logo and the service name, side by side. Nothing else — see the note
