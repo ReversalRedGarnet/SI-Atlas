@@ -216,6 +216,10 @@ h1, h2, h3 { letter-spacing: -.025em; }
 .leaflet-control-zoom { overflow: hidden; border: 1px solid var(--rule-strong) !important; border-radius: 9px !important; box-shadow: 0 3px 12px rgba(12,48,60,.12) !important; }
 .leaflet-control-zoom a { border-radius: 0 !important; color: var(--navy) !important; }
 .leaflet-control-zoom a:hover { background: #EAF5F1 !important; }
+/* The navy above is !important, so restate Leaflet's greyed-out look for the
+   button that cannot zoom any further (fully zoomed out or in). */
+.leaflet-control-zoom a.leaflet-disabled,
+.leaflet-control-zoom a.leaflet-disabled:hover { color: #A3B3B0 !important; background: #F4F7F6 !important; }
 .leaflet-popup-content-wrapper { border-radius: 10px !important; }
 .leaflet-popup-tip { box-shadow: none !important; }
 .leaflet-tooltip { border-radius: 6px; border-color: #C5D9D2; box-shadow: 0 2px 8px rgba(12,48,60,.08); }
