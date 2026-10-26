@@ -25,6 +25,8 @@ var lastSignature = null;   // result-set fingerprint, so we only refit on chang
 
 SF.map.init = function () {
   atlasMap = Atlas.map.create('map');
+  /* The key's swatches are the same pins the map draws. */
+  Atlas.map.renderPinSwatches(document.getElementById('map-note'));
 };
 
 SF.map.render = function (results, state) {
@@ -86,8 +88,12 @@ function drawMarkers(results) {
 
     var approx = school.locationPrecision === 'approximate';
     var d = offsets[school.id] || [0, 0];
+    /* Stacking: Leaflet orders markers by their on-screen y position, so a
+     * more southern pin is drawn over a more northern one and every pin's
+     * head stays clear of the pin above it; paintSelection() lifts the
+     * selected pin over all of them with zIndexOffset. */
     var marker = L.marker([school.latitude, school.longitude], {
-      icon: Atlas.map.pinIcon(false, approx, d),
+      icon: Atlas.map.pinIcon({ approximate: approx, offset: d }),
       title: school.name + (approx ? ' (approximate location)' : ''),
       alt: school.name,
       riseOnHover: true,
@@ -101,9 +107,13 @@ function drawMarkers(results) {
       SF.select(school.id);
     });
     /* Leaflet inserts a string tooltip as HTML, so the name is escaped. */
-    marker.bindTooltip(Atlas.util.esc(school.name + (approx ? ' — approximate location' : '')), { direction: 'top', offset: [d[0], d[1] - 14], opacity: 1 });
+    /* Opens from the pin's head (the icon's tooltipAnchor). */
+    marker.bindTooltip(Atlas.util.esc(school.name + (approx ? ' — approximate location' : '')), { direction: 'top', opacity: 1 });
 
     marker.addTo(atlasMap.markerLayer);
+    /* The pin's SVG is decorative (aria-hidden); the marker itself — a
+     * focusable role="button" Leaflet creates — carries the name. */
+    marker.getElement().setAttribute('aria-label', school.name + (approx ? ' (approximate location)' : ''));
     markers[school.id] = marker;
   });
 }
@@ -111,8 +121,12 @@ function drawMarkers(results) {
 function paintSelection(selectedId) {
   Object.keys(markers).forEach(function (id) {
     var school = SF.getSchoolById(id);
-    markers[id].setIcon(Atlas.map.pinIcon(id === selectedId, school && school.locationPrecision === 'approximate', offsets[id]));
-    markers[id].setZIndexOffset(id === selectedId ? 1000 : 0);
+    markers[id].setIcon(Atlas.map.pinIcon({
+      selected: id === selectedId,
+      approximate: !!school && school.locationPrecision === 'approximate',
+      offset: offsets[id]
+    }));
+    markers[id].setZIndexOffset(id === selectedId ? 10000 : 0);
   });
 }
 
