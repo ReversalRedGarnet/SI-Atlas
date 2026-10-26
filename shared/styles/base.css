@@ -1,11 +1,12 @@
 /* ============================================================================
    SI Atlas — shared design tokens & primitives
    ----------------------------------------------------------------------------
-   Visual reference: the live Solomon Islands Government service portal
-   (solomons.gov.sb) and the MEHRD site (mehrd.gov.sb). Both are Arial/Open
-   Sans over a light grey page, square-cornered almost everywhere, navy nav
-   bars, borders rather than shadows. Every SI Atlas index shares this
-   idiom — it's what makes them read as one service rather than several.
+   The tokens below are the original square, government-portal-style values.
+   The SI Atlas look is now set by atlas-visual.css, which every page loads
+   last and which overrides these tokens (palette, radii, system font); see
+   index-e/README.md "Design notes" for why it deliberately does not copy the
+   government sites. Without that layer, these values still render a
+   complete, older look.
 
    This file holds only what is genuinely generic: color/type tokens, a
    reset, and primitives (buttons, chips, selects, badges) any index is
@@ -27,9 +28,8 @@
   --green:  #1F6B2E;       /* page headings, as on both reference sites */
   --red:    #A5232B;       /* notices and warnings only */
   --gold:   #C8A415;       /* decorative fills, plus text only on dark (navy)
-                              surfaces — 4.95:1 on navy, but only 2.39:1 on
-                              white/panel, so never use it as text on a light
-                              surface */
+                              surfaces, never on a light one (atlas-visual.css
+                              overrides it with #E4B05C) */
 
   --page:      #ECECEB;    /* body background */
   --panel:     #FFFFFF;
@@ -46,7 +46,7 @@
   --mute:     #63696F;
 
   --font-ui: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  --font-head: 'Open Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --font-head: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 
   --shell-pad: 1rem;
 }

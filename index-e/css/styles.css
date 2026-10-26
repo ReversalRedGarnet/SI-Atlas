@@ -11,13 +11,10 @@
    (the drawer chrome and checkbox row are shared — see index-shell.css), the
    result rows, the detail panel and the map contents.
 
-   Visual reference: the live Solomon Islands Government service portal
-   (solomons.gov.sb) and the MEHRD site (mehrd.gov.sb). Both are Arial/Open
-   Sans over a light grey page, square-cornered almost everywhere (MEHRD:
-   border-radius 0 on 140 of 152 elements; SIG: 683 of 701), navy nav bar,
-   solid navy section header bars, green page headings, borders rather than
-   shadows. This stylesheet follows that idiom rather than a generic
-   "modern web app" one.
+   These rules draw the original square look. The SI Atlas look — rounded
+   cards, the teal/navy palette, the system font — is layered on top by
+   ../shared/styles/atlas-visual.css, which loads last; see README.md
+   "Design notes".
 
    Layout shell: masthead / nav / notice / intro / search, then a workspace of
    independently scrolling columns (results · detail · map). Filters live in
@@ -159,6 +156,8 @@
    bar above it, since a profile always opens scrolled to the top (2.4.11). */
 .detail-head h2:focus { outline: none; }
 .detail-head h2:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+/* Opened by mouse, tap or a shared link: no ring (../shared/shell.js). */
+.detail-head h2.is-pointer-focus:focus-visible { outline: none; }
 .detail-place { font-size: .88rem; color: var(--text-mid); margin-top: .25rem; }
 .detail-distance { color: var(--navy); font-weight: 700; }
 .detail-kind {

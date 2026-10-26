@@ -53,9 +53,11 @@ There is no build step, no bundler and no server-side code.
   root (`python -m http.server`). A local server is recommended, because
   browser geolocation only works on `https://` or `localhost`.
 
-External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs), a Google
-font (Open Sans) and Esri basemap tiles (see [Basemap](#basemap)). Nothing is
-installed. If Leaflet fails to load, the directory still works — search,
+External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs) and Esri
+basemap tiles (see [Basemap](#basemap)) — nothing else; text uses the
+system font stack (Segoe UI on Windows, San Francisco on Apple devices,
+Roboto or the distribution's sans-serif elsewhere), so no web font is
+fetched. Nothing is installed. If Leaflet fails to load, the directory still works — search,
 filters, list and profiles — and the map column says "Map unavailable, the
 list still works."
 
@@ -128,23 +130,52 @@ these"). Option counts beside each filter are live facet counts.
 
 ## Design notes
 
-**Visual reference** is the live Solomon Islands Government services portal
-(solomons.gov.sb) and the MEHRD site (mehrd.gov.sb), inspected directly rather
-than approximated. Both are Arial / Open Sans over a light grey page, navy nav
-bar, solid navy section header bars, green page headings, borders instead of
-shadows, and square corners almost everywhere — MEHRD renders `border-radius:
-0` on 140 of 152 elements, SIG on 683 of 701. This is the idiom every SI Atlas
-index follows (see `../shared/styles/base.css`): no gradients, no shadows
-except on the drawer and modal overlays, and `border-radius` is 0 throughout.
+**SI Atlas has its own look, on purpose not a government one.** Earlier
+versions copied the Solomon Islands Government services portal
+(solomons.gov.sb) and the MEHRD site (mehrd.gov.sb): Arial over a grey page,
+navy `#06337C` bars, green headings, square corners. That idiom has been
+dropped. An independent open-data directory that looks like a ministry site
+invites readers to take it for one, and the service notice and About panel
+already say plainly that it is not an MEHRD service. The current colours,
+shapes and type deliberately differ from both government sites.
 
-**Palette** (all text combinations meet WCAG AA), defined as tokens in
-`../shared/styles/base.css`: navy `#06337C` for the nav bar, section bars and
-primary buttons (11.9:1 on white); `#1257A0` for links (7.3:1); green
-`#1F6B2E` for page headings, as on both reference sites (6.6:1); red
-`#A5232B` for the prototype notice (6.6:1 on the notice's cream background,
-7.3:1 on white); gold `#C8A415` never carries text on a light surface — at
-2.39:1 on white it is decorative there — and is used for focus rings over the
-navy bars, where it measures 4.95:1.
+The look is set by `../shared/styles/atlas-visual.css`, an override layer
+every page loads after its other stylesheets: a dark ocean-navy masthead
+and nav with a thin gold rule, lagoon-teal links and accents, a pale
+green-grey page, and rounded cards and controls with soft shadows.
+`../shared/styles/base.css` still holds the token names, reset and primitives
+underneath it. Removing the `atlas-visual.css` link from a page restores the
+older square look (the marks and `theme-color` stay in the new navy).
+
+**Palette** — tokens on `:root` in `atlas-visual.css`, overriding
+`base.css`'s; every text pair meets WCAG AA at 4.7:1 or more, and
+`../audit-scripts/contrast.js` is the record (not shipped):
+
+| Token | Value | Used for |
+|---|---|---|
+| `--navy` | `#10394A` | headings, profile section bars, primary buttons, map pins (12.3:1 on white) |
+| `--navy-dark` | `#082B39` | nav bar, filter-drawer header, pin outline halo (14.8:1) |
+| `--link` | `#087674` | links, result names, focus rings, checked boxes (5.45:1 on white, 4.76:1 on the palest tint) |
+| `--green` | `#11766C` | free fees, last-checked dates (5.48:1) |
+| `--mute` | `#5B6E70` | labels, hints, counts (4.72:1 on the darkest tint it sits on) |
+| `--gold` | `#E4B05C` | masthead rule, the selected map pin, focus rings over dark chrome (7.5:1 on `--navy-dark`); never text on a light surface, where it is 1.97:1 |
+| `--rule-strong` | `#79948D` | control borders (3.26:1 on white, non-text AA) |
+| `--page` / `--panel` | `#F2F6F4` / `#FFFFFF` | page background / cards and panels |
+
+The prototype notice uses a warm cream (`--notice-bg #FFF5E3`) with a
+terracotta label `#95502E` (5.6:1).
+
+**Radii** — controls (buttons, search box, selects) 8px; result cards 9px;
+profile section bars 7px; the three workspace panels 13–14px; modals 16px;
+badges, chips, pills and the count pill fully rounded. Below 860px the results
+list and map go full-bleed and square, and the profile bottom sheet keeps 18px
+top corners.
+
+**Type** — one system font stack for text and headings
+(`ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+sans-serif`): Segoe UI on Windows, San Francisco on Apple devices, Roboto on
+Android, and fontconfig's default sans (usually DejaVu Sans or Noto Sans) on
+Linux. No web font is downloaded.
 
 **The masthead deliberately does not use the national coat of arms.** It
 carries a neutral service mark instead. The real crest should only be added
@@ -206,7 +237,9 @@ generic `{ id, name, type, location, sources, verification_status,
 last_verified, contact, notes }` envelope every future index is meant to
 follow. `js/panel.js`'s `verificationStatusFor()` bridges the two only for
 badge rendering (a non-empty `verificationStatus` note reads as
-`'verified'`, which every record has). Because that badge alone can't tell
+`'verified'`, which every record has, so every profile's badge reads
+"Checked <date>" from its `lastVerified`; it says "Checked", not
+"Verified", for exactly this reason). Because that badge alone can't tell
 records apart, each profile and list card also shows what its `sourceUrls`
 actually are, as a "Sources" line computed at render time
 (`SF.format.sourceStrength()` in `js/list.js`): "MEHRD and another public

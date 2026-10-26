@@ -16,8 +16,11 @@
 window.Atlas = window.Atlas || {};
 Atlas.verificationBadge = {};
 
+/* 'verified' reads "Checked <date>" rather than "Verified": the badge says a
+ * record was checked against its sources, and the profile's own source line
+ * says how strong those sources are. The status value itself is unchanged. */
 var LABELS = {
-  verified:   'Verified',
+  verified:   'Checked',
   unverified: 'Unverified',
   unknown:    'Verification unknown'
 };
@@ -43,7 +46,10 @@ Atlas.verificationBadge.labelFor = function (status, lastVerified) {
 Atlas.verificationBadge.render = function (status, lastVerified) {
   var cls = Atlas.verificationBadge.classFor(status);
   var label = Atlas.verificationBadge.labelFor(status, lastVerified);
-  return '<span class="' + cls + '">' + icon(status) + esc(label) + '</span>';
+  /* The sr-only prefix says what the badge is about ("Record status: Checked
+   * 7 Sept 2026"), which the tick icon only shows visually. */
+  return '<span class="' + cls + '">' + icon(status) +
+    '<span class="sr-only">Record status: </span>' + esc(label) + '</span>';
 };
 
 function icon(status) {

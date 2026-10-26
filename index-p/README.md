@@ -39,9 +39,9 @@ There is no build step, no bundler and no server-side code.
   (`python -m http.server`). A local server is recommended, because browser
   geolocation only works on `https://` or `localhost`.
 
-External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs), a Google
-font (Open Sans) and Esri basemap tiles (see "Design notes"). Nothing is
-installed. If Leaflet fails to load, the directory still works without a map.
+External dependencies are loaded at runtime: Leaflet 1.9.4 (cdnjs) and Esri
+basemap tiles (see "Design notes") — nothing else; text uses the system
+font stack, so no web font is fetched. Nothing is installed. If Leaflet fails to load, the directory still works without a map.
 
 ## Structure
 
@@ -80,7 +80,9 @@ lives in [`../shared/map.js`](../shared/map.js) (`Atlas.map`); the
 verified/unverified/unknown badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)
 (`Atlas.verificationBadge`), used unmodified so the badge looks and behaves
-identically to every other index; the profile's Sources section is rendered
+identically to every other index (a `verified` record's badge reads "Checked
+<date>", in the profile and the list; the filter keeps the status name
+"Verified" and its hint says which badge that is); the profile's Sources section is rendered
 by [`../shared/sources.js`](../shared/sources.js) (`Atlas.sources`), shared
 with Index E; and the entity envelope comes from
 [`../shared/schema.js`](../shared/schema.js) (`Atlas.schema`); the collapsible map key's disclosure behaviour and remembered state come from
@@ -195,11 +197,13 @@ turns gold, grows and is drawn on top.
 
 ## Design notes
 
-**Visual reference** is the same as every other SI Atlas index — the live
-Solomon Islands Government services portal (solomons.gov.sb): Arial / Open Sans
-over a light grey page, navy nav bar, solid navy section header bars, green
-page headings, borders instead of shadows, `border-radius: 0` throughout. See
-`../shared/styles/base.css`.
+**The look is SI Atlas's own, shared with every index**, and on purpose not a
+copy of the Solomon Islands Government or RSIPF sites, so the directory does
+not pass for an official service. It is set by
+`../shared/styles/atlas-visual.css` (loaded after the other stylesheets):
+ocean-navy `#10394A` and teal `#087674` with a gold `#E4B05C` accent, rounded
+cards and controls, and the system font stack, with no web font. Palette,
+radii, type and the reasons are in Index E's README, under "Design notes".
 
 **The masthead and favicon deliberately do not use the national coat of arms or
 an RSIPF badge.** They carry a neutral shield service mark instead, following
