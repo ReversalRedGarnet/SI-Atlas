@@ -99,6 +99,8 @@ SI-Atlas/
 │   │                         collapsible section, a checkbox row, a section
 │   │                         of checkboxes, the distance select
 │   │                         (Atlas.filterKit)
+│   ├── assets/favicon.svg   the SI Atlas umbrella mark (portal, Index H, 404
+│   │                         page); each working index keeps its own
 │   └── styles/
 │       ├── base.css         shared design tokens, reset, generic UI primitives
 │       └── index-shell.css  the page skeleton every index shares: masthead,
