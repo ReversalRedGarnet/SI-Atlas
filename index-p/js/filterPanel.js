@@ -175,7 +175,8 @@ function verificationSection() {
   return section('verification', 'Verification status',
     '<div class="check-list">' + items + '</div>' +
     '<p class="field-hint">“Verified” means confirmed against an official ' +
-      'government or RSIPF source — not merely found somewhere.</p>', false);
+      'government or RSIPF source — not merely found somewhere. Those records ' +
+      'carry a “Checked” badge with the date.</p>', false);
 }
 
 /* Not cosmetic: some records have no coordinates, and this is how you see

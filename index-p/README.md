@@ -80,7 +80,9 @@ lives in [`../shared/map.js`](../shared/map.js) (`Atlas.map`); the
 verified/unverified/unknown badge renderer lives in
 [`../shared/verification-badge.js`](../shared/verification-badge.js)
 (`Atlas.verificationBadge`), used unmodified so the badge looks and behaves
-identically to every other index; the profile's Sources section is rendered
+identically to every other index (a `verified` record's badge reads "Checked
+<date>", in the profile and the list; the filter keeps the status name
+"Verified" and its hint says which badge that is); the profile's Sources section is rendered
 by [`../shared/sources.js`](../shared/sources.js) (`Atlas.sources`), shared
 with Index E; and the entity envelope comes from
 [`../shared/schema.js`](../shared/schema.js) (`Atlas.schema`); the collapsible map key's disclosure behaviour and remembered state come from

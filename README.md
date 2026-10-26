@@ -63,7 +63,10 @@ visual language once across every index. See the "critical principle" note
 at the top of `shared/schema.js` for the full reasoning.
 
 **Last-verified date.** Once a record is confirmed, the date it was checked
-is shown plainly next to the verified badge, not buried in metadata.
+is shown plainly in its badge ("Checked 7 Sept 2026"), not buried in
+metadata. The badge says "Checked" rather than "Verified" because the
+profile's own source line says how strong the sources behind that check
+are; screen readers hear "Record status: Checked 7 Sept 2026".
 
 **Open-source implementation.** No accounts, no tracking, no server-side
 logic to obscure how a number was arrived at. Anyone can read the source and

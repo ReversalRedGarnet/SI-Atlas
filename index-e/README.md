@@ -237,7 +237,9 @@ generic `{ id, name, type, location, sources, verification_status,
 last_verified, contact, notes }` envelope every future index is meant to
 follow. `js/panel.js`'s `verificationStatusFor()` bridges the two only for
 badge rendering (a non-empty `verificationStatus` note reads as
-`'verified'`, which every record has). Because that badge alone can't tell
+`'verified'`, which every record has, so every profile's badge reads
+"Checked <date>" from its `lastVerified`; it says "Checked", not
+"Verified", for exactly this reason). Because that badge alone can't tell
 records apart, each profile and list card also shows what its `sourceUrls`
 actually are, as a "Sources" line computed at render time
 (`SF.format.sourceStrength()` in `js/list.js`): "MEHRD and another public
