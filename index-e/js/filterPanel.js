@@ -156,9 +156,13 @@ SF.filterPanel.sync = function (state) {
   var fee = root.querySelector('#fee-range');
   if (fee) {
     fee.value = f.feeMax === null ? FEE_CEILING : f.feeMax;
-    root.querySelector('#fee-output').textContent = f.feeMax === null
+    var feeText = f.feeMax === null
       ? 'Any fee'
       : 'Up to $' + f.feeMax.toLocaleString('en-US') + ' a year';
+    root.querySelector('#fee-output').textContent = feeText;
+    /* Without this a screen reader reads the raw slider number ("8500")
+     * where the screen says "Any fee". */
+    fee.setAttribute('aria-valuetext', feeText);
   }
 
   /* Subjects: chips + section state */
@@ -325,7 +329,7 @@ function yearLevelSection() {
 
 function feeSection() {
   var body =
-    '<output class="range-output" id="fee-output" for="fee-range">Any annual fee</output>' +
+    '<output class="range-output" id="fee-output" for="fee-range">Any fee</output>' +
     '<input type="range" class="range" id="fee-range" min="0" max="' + FEE_CEILING + '" step="' + FEE_STEP + '" value="' + FEE_CEILING + '" aria-label="Maximum annual fee in Solomon Islands dollars">' +
     '<div class="range-scale"><span>Free</span><span>$' + FEE_CEILING.toLocaleString('en-US') + '+</span></div>' +
     '<p class="field-hint">Shows schools where fees start at or below this amount.</p>';
