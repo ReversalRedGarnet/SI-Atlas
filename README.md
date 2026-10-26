@@ -4,15 +4,15 @@ SI Atlas is an open-data information layer for Solomon Islands public
 services: a family of directories, each covering one domain, built the same
 way and sharing the same visual and data conventions.
 
-- **[Index E — Education](index-e/README.md)** ([live](index-e/index.html)):
+- **[Index E — Education](index-e/README.md)** ([live](https://reversalredgarnet.github.io/SI-Atlas/index-e/)):
   SI Atlas — Index E, a searchable directory and map of schools — 188 records
   across all ten provinces, though verification depth varies (see its own
   README for the two coverage tiers).
-- **[Index P — Policing](index-p/README.md)** ([live](index-p/index.html)):
+- **[Index P — Policing](index-p/README.md)** ([live](https://reversalredgarnet.github.io/SI-Atlas/index-p/)):
   SI Atlas — Index P, a searchable directory and map of RSIPF police stations,
   posts and outposts — 42 records across ten provinces, 31 of them with
   confirmed coordinates.
-- **Index H — Health** ([stub](index-h/index.html)): a planned directory and
+- **Index H — Health** ([stub](https://reversalredgarnet.github.io/SI-Atlas/index-h/)): a planned directory and
   map of health facilities. Not yet built.
 - Further indexes (government services, disaster/emergency, agriculture,
   transport, business) may follow the same pattern.
