@@ -29,10 +29,13 @@
  * records, independent public sources (news coverage, Wikipedia, government
  * facility maps) used to confirm a school's town/village, coordinate or
  * denomination where MEHRD's own listings only confirm the province. Every
- * record carries `sourceUrls` and `verificationStatus` for provenance — kept
- * in the data for traceability, deliberately not rendered on school cards
- * (see js/panel.js: only `lastVerified` surfaces, as a plain "Verified"
- * indicator).
+ * record carries `sourceUrls` and `verificationStatus` for provenance. Each
+ * school's profile lists every `sourceUrls` entry, labelled MEHRD (official)
+ * or other public source, with a line computed from them at render time
+ * (MEHRD and an independent source / MEHRD only / public sources only) —
+ * see js/panel.js. The free-text `verificationStatus` note is kept in the
+ * data for traceability but not shown; `lastVerified` appears as the badge
+ * date and the profile's "Last checked" line.
  *
  * DATA POLICY — never fabricate. A field that was not confirmed in public
  * sources is `null` (or an empty array), not a guess:
