@@ -1702,7 +1702,7 @@ SF.SCHOOLS = [
   {
     "id": "sch_dala_chs",
     "name": "Dala CHS",
-    "description": "A Catholic community school in Central Province, full name St Joseph's Dala CHS per MEHRD's own province page.",
+    "description": "A community school in Central Province, full name St Joseph's Dala CHS per MEHRD's own province page.",
     "denomination": null,
     "province": "Central",
     "island": null,
