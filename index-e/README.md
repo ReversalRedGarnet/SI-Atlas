@@ -11,11 +11,11 @@ This document covers Index E's own implementation.
 > so records split by outcome rather than by which pass or province touched
 > them, both explained in full at the top of that file. The two tiers are
 > defined by which fields are filled in:
-> - **Tier 1 — has a confirmed town, location or denomination** (125 of 188
+> - **Tier 1 — has a confirmed town, location or denomination** (124 of 188
 >   records): at least one of `town`, coordinates, or `denomination` is set
 >   to a non-null value.
 > - **Tier 2 — name, code and province confirmed against the MEHRD Year 10
->   Placement 2026 roster only** (63 of 188 records): none of `town`,
+>   Placement 2026 roster only** (64 of 188 records): none of `town`,
 >   coordinates or `denomination` is set, so they stay `null` rather than
 >   guessed. Three Tier 2 records rest on something other than that roster
 >   (two on MEHRD's Isabel Province list, one on public evidence without a
@@ -24,7 +24,7 @@ This document covers Index E's own implementation.
 > **The tiers are not a measure of source strength.** That is the "Sources"
 > line on every profile and list card, computed from each record's cited
 > URLs: "MEHRD and another public source", "MEHRD only", or "No MEHRD source
-> cited; public sources only". The two measures differ — 36 of the 125 Tier 1
+> cited; public sources only". The two measures differ — 35 of the 124 Tier 1
 > records cite only MEHRD.
 >
 > Several fields (fees, contact details, exact coordinates, subjects) are
@@ -216,7 +216,7 @@ list on every profile, and whether the fee and year-group controls are
 offered (`SF.HAS_FEE_DATA` / `SF.HAS_YEAR_DATA` in `js/filters.js`) are all
 computed from `SF.SCHOOLS` on every load, so they can't go stale. The meta
 tags in `index.html` deliberately carry no numbers. These places still quote
-counts by hand (188 records, 125 / 63 per tier, 123 without coordinates) and
+counts by hand (188 records, 124 / 64 per tier, 123 without coordinates) and
 need updating with the data:
 
 - this README and the repo-root `README.md`;

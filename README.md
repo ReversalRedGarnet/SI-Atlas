@@ -7,8 +7,8 @@ way and sharing the same visual and data conventions.
 - **[Index E — Education](index-e/README.md)** ([live](https://reversalredgarnet.github.io/SI-Atlas/index-e/)):
   SI Atlas — Index E, a searchable directory and map of schools — 188 records
   across all ten provinces. How much is confirmed varies by record: its
-  README explains the two coverage tiers (125 with a confirmed town, location
-  or denomination; 63 confirmed against MEHRD's Year 10 Placement 2026
+  README explains the two coverage tiers (124 with a confirmed town, location
+  or denomination; 64 confirmed against MEHRD's Year 10 Placement 2026
   roster only), and every profile shows a "Sources" line computed from the
   record's cited URLs, which is the measure of source strength.
 - **[Index P — Policing](index-p/README.md)** ([live](https://reversalredgarnet.github.io/SI-Atlas/index-p/)):
