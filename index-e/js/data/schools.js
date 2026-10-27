@@ -244,7 +244,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://www.mehrd.gov.sb/101-uncategorised/243-honiara"
     ],
-    "verificationStatus": "Confirmed — MEHRD Honiara list",
+    "verificationStatus": "Confirmed — MEHRD Honiara list; denomination: Confirmed by team site visit, 28 Oct 2026",
     "image": null
   },
   {
@@ -316,7 +316,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://www.mehrd.gov.sb/101-uncategorised/243-honiara"
     ],
-    "verificationStatus": "Confirmed — MEHRD Honiara list",
+    "verificationStatus": "Confirmed — MEHRD Honiara list; denomination: Confirmed by team site visit, 28 Oct 2026",
     "image": null
   },
   {
@@ -1209,7 +1209,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://www.mehrd.gov.sb/101-uncategorised/242-guadalcanal-province"
     ],
-    "verificationStatus": "Confirmed — public evidence; cross-source",
+    "verificationStatus": "Confirmed — public evidence; cross-source; denomination: Confirmed by team site visit, 28 Oct 2026",
     "image": null
   },
   {
@@ -1248,7 +1248,7 @@ SF.SCHOOLS = [
     "sourceUrls": [
       "https://www.mehrd.gov.sb/101-uncategorised/242-guadalcanal-province"
     ],
-    "verificationStatus": "Confirmed — public evidence; cross-source",
+    "verificationStatus": "Confirmed — public evidence; cross-source; denomination: Confirmed by team site visit, 28 Oct 2026",
     "image": null
   },
   {
@@ -1703,7 +1703,7 @@ SF.SCHOOLS = [
     "id": "sch_dala_chs",
     "name": "Dala CHS",
     "description": "A Catholic community school in Central Province, full name St Joseph's Dala CHS per MEHRD's own province page.",
-    "denomination": "Catholic",
+    "denomination": null,
     "province": "Central",
     "island": null,
     "town": null,
