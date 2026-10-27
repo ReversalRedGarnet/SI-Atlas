@@ -6,11 +6,11 @@
  * province-by-province difference left in methodology), so coverage is
  * split by outcome instead, into two tiers defined by which fields are
  * filled in:
- *   - Tier 1 — has a confirmed town, location or denomination (125 of 188
+ *   - Tier 1 — has a confirmed town, location or denomination (124 of 188
  *     records): at least one of `town`, `latitude`/`longitude`, or
  *     `denomination` is set to a non-null value.
  *   - Tier 2 — name, code and province confirmed against the MEHRD Year 10
- *     Placement 2026 roster only (63 of 188 records): the school's own
+ *     Placement 2026 roster only (64 of 188 records): the school's own
  *     roster document was fetched and read directly (not estimated from a
  *     folder listing), and none of `town`, coordinates or `denomination` is
  *     set, so those stay `null` per the data policy below rather than
@@ -21,7 +21,7 @@
  * The tiers measure which fields are filled in, NOT how strong the sources
  * are. That is measured by the source line on each profile and list card,
  * computed from `sourceUrls` (SF.format.sourceStrength() in js/list.js) —
- * and the two differ: 36 of the 125 Tier 1 records cite only mehrd.gov.sb
+ * and the two differ: 35 of the 124 Tier 1 records cite only mehrd.gov.sb
  * URLs. SF.PROVINCES lists every province this build now covers — all ten.
  *
  * These counts are a snapshot of the data as it stands, not a fixed split by
